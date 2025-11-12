@@ -1,0 +1,17 @@
+
+model PatientCareAssignment {
+  id              String      @id @default(uuid())
+  notes           String?     @db.Text
+  shiftDuration   String? 
+   
+  patientId       String
+  patient         Patient     @relation(fields: [patientId], references: [id])
+
+  staffId         String
+  staff           Staff       @relation(fields: [staffId], references: [id])
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt 
+  //@@index([patientId, staffId])
+  @@map("patient_care_assignments")
+}

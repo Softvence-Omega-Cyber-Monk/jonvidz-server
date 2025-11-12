@@ -1,0 +1,21 @@
+model Patient {
+  id              String   @id @default(uuid())           
+  medicalRecordNo String   @unique
+  dob             DateTime
+  gender          String?
+  allergies       String?
+  
+  primaryDoctorId String?
+  primaryDoctor   Staff?   @relation("PrimaryDoctor", fields: [primaryDoctorId], references: [id])
+
+  userId          String?           @unique
+  user            User?             @relation(fields: [userId], references: [id]) // Patient user
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  patientCareAssignments PatientCareAssignment[]
+
+  @@map("patients")
+  
+}

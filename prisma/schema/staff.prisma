@@ -1,0 +1,20 @@
+
+model Staff {
+  id              String           @id @default(uuid())
+  staffID         String?          @unique 
+  specialty       String?          
+  licenseNumber   String           @unique
+   
+  userId          String           @unique
+  user            User             @relation(fields: [userId], references: [id]) // Staff user
+
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  patientCareAssignments PatientCareAssignment[]
+
+  @@map("staffs")
+  
+  patients Patient[] @relation("PrimaryDoctor")
+}
+
