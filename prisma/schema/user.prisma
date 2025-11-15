@@ -6,12 +6,14 @@ enum UserStatus {
 }
 
 enum UserRole {
-  USER
   ADMIN
-  MODERATOR
   PATIENT
   DOCTOR
   NURSE
+  RECEPTIONIST
+  LAB_TECHNICIAN
+  MODERATOR
+  USER
 }
 
 model User {
