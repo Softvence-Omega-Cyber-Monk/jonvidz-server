@@ -3,6 +3,7 @@ import { PatientCareAssignmentService } from './patient-care-assignment.service'
 import { CreatePatientCareAssignmentDto } from './dto/create-patient-care-assignment.dto';
 import { UpdatePatientCareAssignmentDto } from './dto/update-patient-care-assignment.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {safeUserSelect} from "../user/dto/safeUserSelect"
 
 @ApiTags('Patient Care Assignments')
 @Controller('patient-care-assignments')
@@ -10,10 +11,8 @@ export class PatientCareAssignmentController {
   constructor(private readonly service: PatientCareAssignmentService) {}
 
   @Post()
-  //@ApiOperation({ summary: 'Create a new patient care assignment' })
-  //@ApiResponse({ status: 201, description: 'Assignment created successfully.' })
   create(@Body() dto: CreatePatientCareAssignmentDto) {
-    console.log("controller dto---->",dto);
+    //console.log("controller dto---->",dto);
     return this.service.create(dto);
   }
 
