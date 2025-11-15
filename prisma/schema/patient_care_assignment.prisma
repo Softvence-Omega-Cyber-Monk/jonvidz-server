@@ -1,17 +1,23 @@
+enum AssignmentStatus {
+  ACTIVE
+  LEAVE
+  RELEASE
+}
 
 model PatientCareAssignment {
-  id              String      @id @default(uuid())
-  notes           String?     @db.Text
-  shiftDuration   String? 
-   
-  patientId       String
-  patient         Patient     @relation(fields: [patientId], references: [id])
+  id            String  @id @default(uuid())
+  notes         String? @db.Text
+  shiftDuration String?
 
-  staffId         String
-  staff           Staff       @relation(fields: [staffId], references: [id])
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt 
+  staffId   String
+  staff     Staff            @relation(fields: [staffId], references: [id])
+  status    AssignmentStatus @default(ACTIVE)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
   //@@index([patientId, staffId])
   @@map("patient_care_assignments")
 }

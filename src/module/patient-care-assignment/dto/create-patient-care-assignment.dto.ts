@@ -15,6 +15,10 @@ export class CreatePatientCareAssignmentDto {
   @IsString()
   notes?: string;
 
+  @ApiPropertyOptional({ description: 'Assignment status', })
+  @IsOptional()
+  status?: "ACTIVE" | "LEAVE" | "RELEASE"
+
   @ApiPropertyOptional({ description: 'Shift duration, e.g., 08:00-16:00' })
   @IsOptional()
   @IsString()
