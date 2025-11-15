@@ -2,15 +2,26 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import {jwtConstants} from '../../common/jwt.constants';
+import { PrismaService } from '../../prisma/prisma.service';
+import { JwtStrategy } from './strategy/jwt.strategy';
 
+//../../../common/jwt.constants
 @Module({
   imports: [
+    PassportModule,
     JwtModule.register({
-      secret: 'YOUR_SECRET_KEY', // <-- এটিকে একটি এনভায়রনমেন্ট ভেরিয়েবল (.env) থেকে নেওয়া উচিত
-      signOptions: { expiresIn: '1h' }, // টোকেনটি কতক্ষণ বৈধ থাকবে
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: "1d" },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    PrismaService,
+    JwtStrategy
+  ],
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}
