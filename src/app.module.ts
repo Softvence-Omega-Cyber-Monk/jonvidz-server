@@ -6,6 +6,9 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './module/user/user.module';
 import { AuthModule } from './module/auth/auth.module';
 import { PatientCareAssignmentModule } from './module/patient-care-assignment/patient-care-assignment.module';
+import { MedicationModule } from './module/medication/medication.module';
+import { EquipmentModule } from './module/equipment/equipment.module';
+import { StandardVitalRangeModule } from './module/standard_vital_range/standard_vital_range.module';
 
 
 @Module({
@@ -16,6 +19,9 @@ import { PatientCareAssignmentModule } from './module/patient-care-assignment/pa
       UserModule,
       AuthModule,
       PatientCareAssignmentModule,
+      MedicationModule,
+      EquipmentModule,
+      StandardVitalRangeModule,
    
   ],
   controllers: [AppController],

@@ -1,0 +1,23 @@
+enum VitalSignType {
+  HEART_RATE_BPM
+  RESPIRATORY_RATE_BPM
+  OXYGEN_SAT_PERCENTAGE
+}
+
+model StandardVitalRange {
+  id String @id @default(uuid())
+
+  vitalSignType VitalSignType @unique
+
+  maxValue Float?
+  minValue Float?
+
+  minAcceptablePercentage Float?
+
+  normalRangeText String? @db.VarChar(50)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("standard_vital_ranges")
+}

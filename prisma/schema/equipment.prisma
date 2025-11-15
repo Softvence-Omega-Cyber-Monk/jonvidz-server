@@ -1,0 +1,21 @@
+enum EquipmentFrequency {
+  QDAY
+  QMONTH
+  THREEMOS
+  SIXTYMOS
+  PRN
+  ORAL
+}
+
+model Equipment {
+  id                String             @id @default(uuid())
+  name              String             @unique
+  standardFrequency EquipmentFrequency
+  notesOrPurpose    String?            @db.Text
+
+  // Optional: Timestamps for auditing
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("master_equipment_list")
+}
