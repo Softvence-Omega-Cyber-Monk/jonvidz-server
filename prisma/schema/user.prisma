@@ -4,12 +4,13 @@ enum UserStatus {
   INACTIVE
   SUSPEND
 }
+
 enum UserRole {
   USER
   ADMIN
   MODERATOR
   PATIENT
-  DOCTOR 
+  DOCTOR
   NURSE
 }
 
@@ -21,10 +22,11 @@ model User {
   lastName     String?
   phone        String?
   profileImage String?
-  role    UserRole @default(USER)
+  role         UserRole   @default(USER)
   status       UserStatus @default(ACTIVE)
   staff        Staff?
   patient      Patient?
+  lastLogin    DateTime?
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 
