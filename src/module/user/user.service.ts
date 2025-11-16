@@ -52,6 +52,7 @@ export class UserService {
       },});
     return users;
   }
+
   async update(id: string, dto: UpdateUserDto) {
     // check if user exists
     const user = await this.prisma.user.findUnique({ where: { id } });
