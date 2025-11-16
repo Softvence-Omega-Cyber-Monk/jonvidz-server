@@ -13,6 +13,7 @@ import { AuditLogModule } from './module/audit_log/audit_log.module';
 import { PatientModule } from './module/patient/patient.module';
 import { RoomModule } from './module/room/room.module';
 import { StaffModule } from './module/staff/staff.module';
+import { MyPatientsModule } from './module/my-patients/my-patients.module';
 
 
 @Module({
@@ -30,6 +31,7 @@ import { StaffModule } from './module/staff/staff.module';
       PatientModule,
       RoomModule,
       StaffModule,
+      MyPatientsModule,
    
   ],
   controllers: [AppController],
