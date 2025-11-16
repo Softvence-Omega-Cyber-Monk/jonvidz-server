@@ -33,4 +33,5 @@ model User {
   updatedAt    DateTime   @updatedAt
 
   @@map("users")
+  AuditLog AuditLog[]
 }

@@ -15,11 +15,6 @@ export class UserService {
         patient: true,
       },});
     return users;
-    // const users = await this.prisma.user.findMany({include: {
-    //     staff: true,
-    //     patient: true,
-    //   },});
-    // return users;
   }
   async update(id: string, dto: UpdateUserDto) {
     // check if user exists

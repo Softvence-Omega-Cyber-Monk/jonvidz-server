@@ -10,7 +10,7 @@ export class PatientCareAssignmentService {
 
   // Create a new assignment
   async create(dto: CreatePatientCareAssignmentDto) {
-    console.log("dto------------->",dto);
+    //console.log("dto------------->",dto);
     const patient = await this.prisma.patient.findUnique({
       where: { id: dto.patientId },
     });

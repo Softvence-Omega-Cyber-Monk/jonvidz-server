@@ -113,6 +113,13 @@ export class AuthService {
       where: { id: user.id },
       data: { lastLogin: new Date() },
     });
+    await this.prisma.auditLog.create({
+      data: {
+        userId:user.id,
+        eventType:"LOGIN",
+        details:"User logged in"
+      },
+    })
     const payload = {
       sub: user.id,
       email: user.email,

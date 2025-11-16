@@ -9,6 +9,7 @@ import { PatientCareAssignmentModule } from './module/patient-care-assignment/pa
 import { MedicationModule } from './module/medication/medication.module';
 import { EquipmentModule } from './module/equipment/equipment.module';
 import { StandardVitalRangeModule } from './module/standard_vital_range/standard_vital_range.module';
+import { AuditLogModule } from './module/audit_log/audit_log.module';
 
 
 @Module({
@@ -22,6 +23,7 @@ import { StandardVitalRangeModule } from './module/standard_vital_range/standard
       MedicationModule,
       EquipmentModule,
       StandardVitalRangeModule,
+      AuditLogModule,
    
   ],
   controllers: [AppController],

@@ -1,0 +1,31 @@
+enum AuditEventType {
+  USER_MANAGEMENT
+  ASSIGNMENT
+  LOGIN
+  PATIENT_VIEW
+  OTHER
+}
+
+model AuditLog {
+  id String @id @default(uuid())
+
+  // ID of the user who triggered this event
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  // Type/category of the audit event
+  eventType AuditEventType
+
+  // Optional patient reference (only applicable for patient-related events)
+  patientId String?
+  patient   Patient? @relation(fields: [patientId], references: [id])
+
+  // A descriptive message explaining the details of the event
+  details String
+
+  // Audit timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("audit_logs")
+}
