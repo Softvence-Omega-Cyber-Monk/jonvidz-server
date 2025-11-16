@@ -3,7 +3,7 @@ import { PatientCareAssignmentService } from './patient-care-assignment.service'
 import { CreatePatientCareAssignmentDto } from './dto/create-patient-care-assignment.dto';
 import { UpdatePatientCareAssignmentDto } from './dto/update-patient-care-assignment.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import {safeUserSelect} from "../user/dto/safeUserSelect"
+
 
 @ApiTags('Patient Care Assignments')
 @Controller('patient-care-assignments')

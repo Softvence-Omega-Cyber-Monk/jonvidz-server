@@ -10,6 +10,8 @@ import { MedicationModule } from './module/medication/medication.module';
 import { EquipmentModule } from './module/equipment/equipment.module';
 import { StandardVitalRangeModule } from './module/standard_vital_range/standard_vital_range.module';
 import { AuditLogModule } from './module/audit_log/audit_log.module';
+import { PatientModule } from './module/patient/patient.module';
+import { RoomModule } from './module/room/room.module';
 
 
 @Module({
@@ -24,6 +26,8 @@ import { AuditLogModule } from './module/audit_log/audit_log.module';
       EquipmentModule,
       StandardVitalRangeModule,
       AuditLogModule,
+      PatientModule,
+      RoomModule,
    
   ],
   controllers: [AppController],

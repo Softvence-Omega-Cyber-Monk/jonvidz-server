@@ -1,22 +1,25 @@
 model Patient {
-  id              String   @id @default(uuid())           
+  id              String   @id @default(uuid())
   medicalRecordNo String   @unique
   dob             DateTime
   gender          String?
   allergies       String?
-  
+
   primaryDoctorId String?
-  primaryDoctor   Staff?   @relation("PrimaryDoctor", fields: [primaryDoctorId], references: [id])
+  primaryDoctor   Staff?  @relation("PrimaryDoctor", fields: [primaryDoctorId], references: [id])
 
-  userId          String?           @unique
-  user            User?             @relation(fields: [userId], references: [id]) // Patient user
+  userId String? @unique
+  user   User?   @relation(fields: [userId], references: [id]) // Patient user
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  roomId String? // reference to current room, null if none
+  room   Room?   @relation(fields: [roomId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   patientCareAssignments PatientCareAssignment[]
 
-  @@map("patients")
-  
   AuditLog AuditLog[]
+
+  @@map("patients")
 }

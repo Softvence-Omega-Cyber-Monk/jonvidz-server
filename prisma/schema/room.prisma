@@ -1,0 +1,15 @@
+enum RoomStatus {
+  AVAILABLE
+  BOOKED
+}
+
+model Room {
+  id        String     @id @default(uuid())
+  name      String     @unique
+  status    RoomStatus @default(AVAILABLE)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Patient   Patient[]
+
+  @@map("rooms")
+}
