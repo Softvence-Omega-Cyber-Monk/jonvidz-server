@@ -11,9 +11,19 @@ export class PatientService {
   // }
 
   async findAll() {
-    const data = await this.prisma.patient.findMany({include: {
+    // const data = await this.prisma.patient.findMany({include: {
+    //     user: { select: safeUserSelect },
+    //   },});
+    const data = await this.prisma.patient.findMany({
+      where: {
+        user: {
+          status: 'ACTIVE',
+        },
+      },
+      include: {
         user: { select: safeUserSelect },
-      },});
+      },
+    });
     return data;
   }
 

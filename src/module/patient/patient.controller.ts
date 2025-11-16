@@ -13,6 +13,7 @@ import { PatientService } from './patient.service';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { Request, Response } from 'express';
 import sendResponse from '../../../utils/sendResponse';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('patient')
 export class PatientController {
@@ -24,6 +25,7 @@ export class PatientController {
   // }
 
   @Get()
+  @ApiOperation({ summary: 'Retrieve all patients with an active user account' })
   async findAll(@Req() req: Request, @Res() res: Response) {
     const data = await this.patientService.findAll();
     return sendResponse(res, {
