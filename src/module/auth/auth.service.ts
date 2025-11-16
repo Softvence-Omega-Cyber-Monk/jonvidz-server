@@ -95,6 +95,7 @@ export class AuthService {
           dob: new Date(dto.dob),
           gender: dto.gender,
           allergies: dto.allergies,
+          room: dto.room,
         },
       });
     });
@@ -104,9 +105,13 @@ export class AuthService {
 
   async login(dto: LoginDto): Promise<AuthResponse> {
     const user = await this.prisma.user.findUnique({ where: { email: dto.email } });
-
     if (!user) {
       throw new UnauthorizedException('Invalid credentials.');
+    }
+    if (user.status !== 'ACTIVE') {
+      throw new UnauthorizedException(
+        'Your account is currently inactive. Please contact the administrator to reactivate your access.'
+      );
     }
 
     const isPasswordValid = await bcrypt.compare(dto.password, user.password);
