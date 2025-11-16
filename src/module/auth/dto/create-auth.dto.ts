@@ -80,15 +80,20 @@ export class RegisterPatientDto {
   @IsNotEmpty()
   dob: string;
 
-  @ApiProperty({ example: 'MRN-90210', description: 'Optional Medical Record Number (if entered by staff)', required: false })
-  @IsString()
-  @IsOptional()
-  medicalRecordNo?: string;
+  // @ApiProperty({ example: 'MRN-90210', description: 'Optional Medical Record Number (if entered by staff)', required: false })
+  // @IsString()
+  // @IsOptional()
+  // medicalRecordNo?: string;
 
   @ApiProperty({ example: 'Female', description: 'Gender', required: false })
   @IsString()
   @IsOptional()
   gender?: string;
+
+  @ApiProperty({ example: '107A', required: false })
+  @IsString()
+  @IsOptional()
+  room?: string;
 
   @ApiProperty({ example: 'Penicillin, Dust', description: 'Known patient allergies', required: false })
   @IsString()

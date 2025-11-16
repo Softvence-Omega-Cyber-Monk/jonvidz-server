@@ -3,7 +3,7 @@ import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { RoomStatus } from '@prisma/client';
 
 export class CreateRoomDto {
-  @ApiProperty({ description: 'Unique room name', example: 'Room 101' })
+  @ApiProperty({ description: ' room name', example: 'Room 101' })
   @IsString()
   @IsNotEmpty()
   name: string;

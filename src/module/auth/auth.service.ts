@@ -65,14 +65,14 @@ export class AuthService {
 
     const patient = await this.prisma.$transaction(async (tx:Prisma.TransactionClient) => {
 
-      let finalMrn: string;
+      // let finalMrn: string;
 
-      if (dto.medicalRecordNo) {
-        finalMrn = dto.medicalRecordNo;
-      } else {
-        finalMrn = await this.generateSequentialMrnInTx(tx);
-      }
-
+      // if (dto.medicalRecordNo) {
+      //   finalMrn = dto.medicalRecordNo;
+      // } else {
+      //   finalMrn = await this.generateSequentialMrnInTx(tx);
+      // }
+     const finalMrn = await this.generateSequentialMrnInTx(tx)
       const user = await tx.user.create({
         data: {
           email: dto.email,

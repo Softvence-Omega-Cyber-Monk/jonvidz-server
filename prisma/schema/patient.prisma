@@ -11,15 +11,17 @@ model Patient {
   userId String? @unique
   user   User?   @relation(fields: [userId], references: [id]) // Patient user
 
-  roomId String? // reference to current room, null if none
-  room   Room?   @relation(fields: [roomId], references: [id])
-
+  // roomId String?
+  // room   Room?   @relation(fields: [roomId], references: [id])
+  room      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   patientCareAssignments PatientCareAssignment[]
 
   AuditLog AuditLog[]
+  Room     Room?      @relation(fields: [roomId], references: [id])
+  roomId   String?
 
   @@map("patients")
 }
