@@ -12,6 +12,7 @@ import { StandardVitalRangeModule } from './module/standard_vital_range/standard
 import { AuditLogModule } from './module/audit_log/audit_log.module';
 import { PatientModule } from './module/patient/patient.module';
 import { RoomModule } from './module/room/room.module';
+import { StaffModule } from './module/staff/staff.module';
 
 
 @Module({
@@ -28,6 +29,7 @@ import { RoomModule } from './module/room/room.module';
       AuditLogModule,
       PatientModule,
       RoomModule,
+      StaffModule,
    
   ],
   controllers: [AppController],

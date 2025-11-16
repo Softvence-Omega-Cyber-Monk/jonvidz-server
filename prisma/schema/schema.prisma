@@ -17,3 +17,12 @@ model DailySequence {
 
   @@map("daily_sequence")
 }
+
+//staffRecordNo
+model StaffSequence {
+  id           String @id @default(uuid())
+  key          String @unique
+  currentCount Int    @default(0)
+
+  @@map("staff_sequence")
+}

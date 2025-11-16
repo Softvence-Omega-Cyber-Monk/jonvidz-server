@@ -27,12 +27,16 @@ export class AuthService {
     if (existingUser) {
       throw new ConflictException('User with this email already exists.');
     }
+    const existingStaffByLicense = await this.prisma.staff.findUnique({ where: { licenseNumber: dto.licenseNumber } });
+    if (existingStaffByLicense) {
+      throw new ConflictException('User with this licenseNumber already exists.');
+    }
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
     const role: UserRole = dto.role;
 
     const staff = await this.prisma.$transaction(async (tx:Prisma.TransactionClient) => {
-
+      const staffID = await this.generateSequentialStaffIdInTx(tx);
       const user = await tx.user.create({
         data: {
           email: dto.email,
@@ -46,6 +50,7 @@ export class AuthService {
       return tx.staff.create({
         data: {
           userId: user.id,
+          staffID: staffID,
           licenseNumber: dto.licenseNumber,
           specialty: dto.specialty,
         },
@@ -155,6 +160,25 @@ export class AuthService {
     const paddedSequence = String(sequenceNumber).padStart(5, '0');
     console.log(`${paddedSequence} - ${sequenceNumber}`);
     return `${dateKey}-${paddedSequence}`;
+  }
+  private async generateSequentialStaffIdInTx(
+    tx: Prisma.TransactionClient,
+    opts?: { key?: string; prefix?: string; padLength?: number; }
+  ): Promise<string> {
+    const key = opts?.key ?? 'staff';     // staff_sequence.key value
+    const prefix = opts?.prefix ?? 'USR-';
+    const padLength = opts?.padLength ?? 3;
+
+    // Atomically create or increment the sequence row for 'staff'
+    const seq = await tx.staffSequence.upsert({
+      where: { key },
+      create: { key, currentCount: 1 },
+      update: { currentCount: { increment: 1 } },
+    });
+
+    const newNumber = seq.currentCount;
+    const padded = String(newNumber).padStart(padLength, '0');
+    return `${prefix}${padded}`;
   }
 
 }
