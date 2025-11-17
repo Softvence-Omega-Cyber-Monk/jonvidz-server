@@ -1,0 +1,24 @@
+enum NoteType {
+  ShiftAssessment
+  InterventionNote
+  ChangeofCondition
+}
+model ProgressNotes {
+  id       String    @id @default(uuid())
+  noteType NoteType?
+  checked  Boolean?
+
+  comments  String? @db.Text
+  signature String? @db.Text
+
+  userId String? // <-- Make nullable
+  user   User?   @relation(fields: [userId], references: [id])
+
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("progress_notes")
+}

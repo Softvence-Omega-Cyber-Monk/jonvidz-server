@@ -34,6 +34,8 @@ model Patient {
   PreSuctionVitals      PreSuctionVitals[]
   SecretionsDescription SecretionsDescription[]
   PostSuctionVitals     PostSuctionVitals[]
+  ProgressNotes         ProgressNotes[]
+  ShiftCheckList        ShiftCheckList[]
 
   @@map("patients")
 }

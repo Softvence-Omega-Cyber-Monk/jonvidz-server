@@ -2,7 +2,7 @@ model PostSuctionVitals {
   id           String     @id @default(uuid())
   sp_o2        Int? // SPO2
   hr_bpm       Int? // HR (bpm)
-  pr_bpm       Int // RR (bpm)
+  pr_bpm       Int? // RR (bpm)
   checked      Boolean?
   suctionLogId String
   SuctionLog   SuctionLog @relation(fields: [suctionLogId], references: [id])

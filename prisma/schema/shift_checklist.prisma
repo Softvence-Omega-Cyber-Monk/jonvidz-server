@@ -1,0 +1,17 @@
+model ShiftCheckList {
+  id String @id @default(uuid())
+
+  userId String? // <-- Make nullable
+  user   User?   @relation(fields: [userId], references: [id])
+
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  comments  String? @db.Text
+  signature String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("shift_check_list")
+}
