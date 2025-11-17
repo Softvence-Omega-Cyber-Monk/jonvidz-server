@@ -4,7 +4,7 @@ import { CreateEquipmentDto } from './dto/create-equipment.dto';
 import { UpdateEquipmentDto } from './dto/update-equipment.dto';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import sendResponse from 'utils/sendResponse';
+import sendResponse from 'src/utils/sendResponse';
 
 @Controller('equipment')
 export class EquipmentController {

@@ -20,7 +20,7 @@ import { Roles } from '../auth/guards/roles.decorator';
 import { UserRole } from '@prisma/client';
 import { RequestWithUser } from '../user/dto/request-with-user.interface';
 import { Response } from 'express';
-import sendResponse from '../../../utils/sendResponse';
+import sendResponse from '../../utils/sendResponse';
 
 @Controller('my-patients')
 export class MyPatientsController {

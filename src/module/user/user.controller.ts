@@ -18,7 +18,7 @@ import { UserRole } from '@prisma/client';
 import { RequestWithUser } from './dto/request-with-user.interface';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Request, Response } from 'express';
-import sendResponse from '../../../utils/sendResponse';
+import sendResponse from '../../utils/sendResponse';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
 

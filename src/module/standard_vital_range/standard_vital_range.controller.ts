@@ -16,7 +16,7 @@ import { CreateStandardVitalRangeDto } from './dto/create-standard_vital_range.d
 import { UpdateStandardVitalRangeDto } from './dto/update-standard_vital_range.dto';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import sendResponse from '../../../utils/sendResponse';
+import sendResponse from '../../utils/sendResponse';
 
 @Controller('standard-vital-range')
 export class StandardVitalRangeController {

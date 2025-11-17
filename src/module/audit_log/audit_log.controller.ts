@@ -14,7 +14,7 @@ import { AuditLogService } from './audit_log.service';
 import { CreateAuditLogDto } from './dto/create-audit_log.dto';
 import { UpdateAuditLogDto } from './dto/update-audit_log.dto';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
-import sendResponse from '../../../utils/sendResponse';
+import sendResponse from '../../utils/sendResponse';
 import { Request, Response } from 'express';
 
 @Controller('audit-log')

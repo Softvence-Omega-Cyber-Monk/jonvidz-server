@@ -14,7 +14,7 @@ import { CreatePatientCareAssignmentDto } from './dto/create-patient-care-assign
 import { UpdatePatientCareAssignmentDto } from './dto/update-patient-care-assignment.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import sendResponse from '../../../utils/sendResponse';
+import sendResponse from '../../utils/sendResponse';
 
 
 @ApiTags('Patient Care Assignments')

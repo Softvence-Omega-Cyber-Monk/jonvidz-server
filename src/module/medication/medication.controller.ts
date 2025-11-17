@@ -15,7 +15,7 @@ import { MedicationService } from './medication.service';
 import { CreateMedicationDto } from './dto/create-medication.dto';
 import { UpdateMedicationDto } from './dto/update-medication.dto';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import sendResponse from 'utils/sendResponse';
+import sendResponse from 'src/utils/sendResponse';
 import { Request, Response } from 'express';
 
 @Controller('medication')

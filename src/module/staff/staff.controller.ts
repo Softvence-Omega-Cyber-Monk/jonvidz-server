@@ -13,7 +13,7 @@ import { StaffService } from './staff.service';
 import { UpdateStaffDto } from './dto/update-staff.dto';
 import { ApiOperation } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import sendResponse from '../../../utils/sendResponse';
+import sendResponse from '../../utils/sendResponse';
 
 @Controller('staff')
 export class StaffController {

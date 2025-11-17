@@ -12,7 +12,7 @@ import {
 import { PatientService } from './patient.service';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { Request, Response } from 'express';
-import sendResponse from '../../../utils/sendResponse';
+import sendResponse from '../../utils/sendResponse';
 import { ApiOperation } from '@nestjs/swagger';
 
 @Controller('patient')
