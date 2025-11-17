@@ -1,0 +1,15 @@
+model SuctionLog {
+  id String @id @default(uuid())
+
+  comments  String? @db.Text
+  signature String? @db.Text
+
+  userId String? // <-- Make nullable
+  user   User?   @relation(fields: [userId], references: [id])
+
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  @@map("suction_logs")
+  PreSuctionVitals PreSuctionVitals[]
+}

@@ -19,9 +19,19 @@ model Patient {
 
   patientCareAssignments PatientCareAssignment[]
 
-  AuditLog AuditLog[]
-  Room     Room?      @relation(fields: [roomId], references: [id])
-  roomId   String?
+  AuditLog          AuditLog[]
+  Room              Room?               @relation(fields: [roomId], references: [id])
+  roomId            String?
+  FlowSheet         FlowSheet[]
+  VitalParameters   VitalParameters[]
+  VentSetting       VentSetting[]
+  MeasuredData      MeasuredData[]
+  AlarmsParameters  AlarmsParameters[]
+  OffVentMonitoring OffVentMonitoring[]
+  MAR               MAR[]
+  Medication        Medication[]
+  SuctionLog        SuctionLog[]
+  PreSuctionVitals  PreSuctionVitals[]
 
   @@map("patients")
 }

@@ -1,0 +1,37 @@
+enum VentMode {
+  AC_VC
+  SIMV
+  PSV
+  PCV
+  CPAP
+  BiPAP
+}
+
+enum TrachType {
+  Cuffed
+  Uncuffed
+  Fenestrated
+  Cuffless
+}
+
+model VitalParameters {
+  id String @id @default(uuid())
+
+  hrBPM   Int?
+  rrBPM   Int?
+  spO2Pct Decimal? @db.Decimal(5, 2)
+
+  ventMode  VentMode  @default(AC_VC)
+  trachType TrachType @default(Cuffed)
+
+  flowSheetId String
+  FlowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
+
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("vital_parameters")
+}

@@ -1,0 +1,34 @@
+enum Status {
+  Normal
+  AbNormal
+}
+enum Medication_ENUM {
+  Given
+  Not_Given
+}
+
+model AlarmsParameters {
+  id String @id @default(uuid())
+
+  hi_p Int? // Hi P (High Pressure)
+
+  lo_p        Int? // Lo P (Low Pressure)
+  low_ve      Int? // Low Ve
+  apnea_s     Int? // Apnea (s)
+  head_of_bed Int? // Head of Bed (HOB)
+  pmv         Int? // PMV (Passy-Muir)
+
+  status     Status          @default(Normal)
+  medication Medication_ENUM @default(Not_Given)
+
+  flowSheetId String
+  FlowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
+
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("alarms_parameters")
+}

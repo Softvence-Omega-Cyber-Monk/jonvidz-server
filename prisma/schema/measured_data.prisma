@@ -1,0 +1,27 @@
+model MeasuredData {
+  id String @id @default(uuid())
+
+  pip_cmh_2_o   Int?
+  peep_cmh_2_o  Int?
+  pmean_cmh_2_o Int?
+  leak_cmh_2_o  Int?
+
+  mve_l_min  Decimal? @db.Decimal(5, 2)
+  vte_ml     Int?
+  total_rate Int?
+  spont_rate Int?
+
+  e_time Int?
+  i_time Int?
+
+  flowSheetId String
+  FlowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
+
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("measured_data")
+}

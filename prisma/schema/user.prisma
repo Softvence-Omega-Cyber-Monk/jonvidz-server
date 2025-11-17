@@ -17,21 +17,24 @@ enum UserRole {
 }
 
 model User {
-  id           String     @id @default(uuid())
-  email        String     @unique
+  id           String       @id @default(uuid())
+  email        String       @unique
   password     String
   firstName    String
   lastName     String?
   phone        String?
   profileImage String?
-  role         UserRole   @default(USER)
-  status       UserStatus @default(ACTIVE)
+  role         UserRole     @default(USER)
+  status       UserStatus   @default(ACTIVE)
   staff        Staff?
   patient      Patient?
   lastLogin    DateTime?
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  AuditLog     AuditLog[]
+  FlowSheet    FlowSheet[]
+  MAR          MAR[]
+  SuctionLog   SuctionLog[]
 
   @@map("users")
-  AuditLog AuditLog[]
 }

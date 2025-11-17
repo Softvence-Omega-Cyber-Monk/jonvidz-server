@@ -1,0 +1,26 @@
+enum CheckedPreSuctionVitals {
+  ORAL
+  NASAL
+  TRACHEAL
+}
+model PreSuctionVitals {
+  id String @id @default(uuid())
+
+  spO2Percent Int? // SPO2*   //spO2Percent Int?
+  hr_bpm      Int? // HR (bpm)*
+  pr_bpm      Int? // RR (bpm)
+
+  checkedSuctionVital CheckedPreSuctionVitals?
+  checked             Boolean?
+
+  suctionLogId String
+  SuctionLog   SuctionLog @relation(fields: [suctionLogId], references: [id])
+
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("pre_suction_vitals")
+}

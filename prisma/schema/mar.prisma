@@ -1,0 +1,20 @@
+model MAR {
+  id String @id @default(uuid())
+
+  comments  String? @db.Text
+  signature String? @db.Text
+
+  full_e_cylinder  String?
+  empty_e_cylinder String?
+
+  userId String? // <-- Make nullable
+  user   User?   @relation(fields: [userId], references: [id])
+
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("mar")
+}
