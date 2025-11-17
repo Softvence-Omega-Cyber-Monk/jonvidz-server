@@ -18,12 +18,12 @@ export class UserService {
     if (existingUser) {
       throw new ConflictException('User with this email already exists.');
     }
- if(dto.licenseNumber){
-   const existingStaffByLicense = await this.prisma.staff.findUnique({ where: { licenseNumber: dto.licenseNumber } });
-   if (existingStaffByLicense) {
-     throw new ConflictException('User with this licenseNumber already exists.');
-   }
- }
+ // if(dto?.licenseNumber){
+ //   const existingStaffByLicense = await this.prisma.staff.findUnique({ where: { licenseNumber: dto.licenseNumber } });
+ //   if (existingStaffByLicense) {
+ //     throw new ConflictException('User with this licenseNumber already exists.');
+ //   }
+ // }
 
     const hashedPassword = await bcrypt.hash(dto.password, 10);
     //const role: UserRole = dto.role;
@@ -34,8 +34,8 @@ export class UserService {
         data: {
           email: dto.email,
           password: hashedPassword,
-          firstName: dto.firstName,
-          lastName: dto.lastName,
+          firstName: dto.fullName,
+          phone: dto.phone,
           role: 'USER',
         },
       });
@@ -44,8 +44,8 @@ export class UserService {
         data: {
           userId: user.id,
           staffID: staffID,
-          licenseNumber: dto.licenseNumber,
-          specialty: dto.specialty,
+          //licenseNumber: dto.licenseNumber,
+          //specialty: dto.specialty,
         },
       });
     });
