@@ -10,6 +10,7 @@ import {
   HttpStatus,
   Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { MedicationService } from './medication.service';
 import { CreateMedicationDto } from './dto/create-medication.dto';
@@ -17,11 +18,17 @@ import { UpdateMedicationDto } from './dto/update-medication.dto';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import sendResponse from 'src/utils/sendResponse';
 import { Request, Response } from 'express';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/guards/roles.decorator';
+import { UserRole } from '@prisma/client';
 
 @Controller('medication')
 export class MedicationController {
   constructor(private readonly medicationService: MedicationService) { }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Post()
   @ApiOperation({ summary: 'Create a new medication' })
   @ApiResponse({ status: 201, description: 'Medication successfully created.' })
@@ -36,7 +43,8 @@ export class MedicationController {
       data,
     });
   }
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Get()
   @ApiOperation({ summary: 'Retrieve all medications' })
   @ApiResponse({ status: 200, description: 'List of all medications.' })
@@ -51,7 +59,8 @@ export class MedicationController {
       data,
     });
   }
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Get(':id')
   @ApiOperation({ summary: 'Retrieve a medication by ID' })
   @ApiResponse({ status: 200, description: 'The requested medication.' })
@@ -67,7 +76,8 @@ export class MedicationController {
       data,
     });
   }
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Patch(':id')
   @ApiOperation({ summary: 'Update an existing medication' })
   @ApiResponse({ status: 200, description: 'Medication successfully updated.', })
@@ -82,7 +92,8 @@ export class MedicationController {
       data,
     });
   }
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT) // Use 204 for successful deletion
   @ApiOperation({ summary: 'Delete a medication by ID' })

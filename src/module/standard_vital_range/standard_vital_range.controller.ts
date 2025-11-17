@@ -10,6 +10,7 @@ import {
   HttpStatus,
   Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { StandardVitalRangeService } from './standard_vital_range.service';
 import { CreateStandardVitalRangeDto } from './dto/create-standard_vital_range.dto';
@@ -17,11 +18,16 @@ import { UpdateStandardVitalRangeDto } from './dto/update-standard_vital_range.d
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import sendResponse from '../../utils/sendResponse';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/guards/roles.decorator';
+import { UserRole } from '@prisma/client';
 
 @Controller('standard-vital-range')
 export class StandardVitalRangeController {
   constructor(private readonly standardVitalRangeService: StandardVitalRangeService) {}
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Post()
   @ApiOperation({ summary: 'Create a new standard vital sign range' })
   @ApiResponse({ status: 201, description: 'Range successfully created.'})
@@ -36,7 +42,8 @@ export class StandardVitalRangeController {
       data,
     });
   }
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Get()
   @ApiOperation({ summary: 'Retrieve all standard vital sign ranges' })
   @ApiResponse({ status: 200, description: 'List of all vital sign ranges.'})
@@ -50,7 +57,8 @@ export class StandardVitalRangeController {
       data,
     });
   }
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Get(':id')
   @ApiOperation({ summary: 'Retrieve a vital sign range by ID' })
   @ApiResponse({ status: 200, description: 'The requested vital sign range.' })
@@ -66,7 +74,8 @@ export class StandardVitalRangeController {
       data,
     });
   }
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Patch(':id')
   @ApiOperation({ summary: 'Update an existing vital sign range' })
   @ApiResponse({ status: 200, description: 'Range successfully updated.',})
@@ -81,7 +90,8 @@ export class StandardVitalRangeController {
       data,
     });
   }
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({ summary: 'Delete a vital sign range by ID' })

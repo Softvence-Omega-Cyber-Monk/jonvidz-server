@@ -8,6 +8,7 @@ import {
   Delete,
   Res,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { PatientCareAssignmentService } from './patient-care-assignment.service';
 import { CreatePatientCareAssignmentDto } from './dto/create-patient-care-assignment.dto';
@@ -15,6 +16,10 @@ import { UpdatePatientCareAssignmentDto } from './dto/update-patient-care-assign
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import sendResponse from '../../utils/sendResponse';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/guards/roles.decorator';
+import { UserRole } from '@prisma/client';
 
 
 @ApiTags('Patient Care Assignments')
@@ -22,6 +27,8 @@ import sendResponse from '../../utils/sendResponse';
 export class PatientCareAssignmentController {
   constructor(private readonly service: PatientCareAssignmentService) {}
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Post()
   async create(@Body() dto: CreatePatientCareAssignmentDto,@Res() res: Response) {
     //console.log("controller dto---->",dto);
@@ -34,6 +41,8 @@ export class PatientCareAssignmentController {
     });
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Get()
   @ApiOperation({ summary: 'Get all patient care assignments' })
   @ApiResponse({ status: 200, description: 'List of all assignments.' })
@@ -47,6 +56,8 @@ export class PatientCareAssignmentController {
     });
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Get(':id')
   @ApiOperation({ summary: 'Get a specific patient care assignment by ID' })
   @ApiResponse({ status: 200, description: 'Assignment details.' })
@@ -60,6 +71,8 @@ export class PatientCareAssignmentController {
     });
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Patch(':id')
   @ApiOperation({ summary: 'Update a patient care assignment' })
   @ApiResponse({ status: 200, description: 'Assignment updated successfully.' })
@@ -73,6 +86,8 @@ export class PatientCareAssignmentController {
     });
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a patient care assignment' })
   @ApiResponse({ status: 200, description: 'Assignment removed successfully.' })

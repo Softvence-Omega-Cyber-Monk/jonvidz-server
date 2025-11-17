@@ -2,12 +2,16 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { safeUserSelect } from './dto/safeUserSelect';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
-import {  Prisma } from '@prisma/client';
+import { Prisma, UserRole } from '@prisma/client';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/guards/roles.decorator';
 
 @Injectable()
 export class UserService {
@@ -52,6 +56,8 @@ export class UserService {
 
     return staff;
   }
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   async findAll() {
     const users = await this.prisma.user.findMany({select: {
         ...safeUserSelect,
@@ -60,6 +66,7 @@ export class UserService {
       },});
     return users;
   }
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async findOne(id: string) {
     const isUser=await this.prisma.staff.findUnique({ where: { id: id } });
     if (!isUser) {
@@ -72,6 +79,7 @@ export class UserService {
       },
     });
   }
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async update(id: string, dto: any) {
     // check if user exists
     const user = await this.prisma.user.findUnique({ where: { id } });

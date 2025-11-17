@@ -8,12 +8,17 @@ import {
   Req,
   Res,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { PatientService } from './patient.service';
 import { UpdatePatientDto } from './dto/update-patient.dto';
 import { Request, Response } from 'express';
 import sendResponse from '../../utils/sendResponse';
 import { ApiOperation } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/guards/roles.decorator';
+import { UserRole } from '@prisma/client';
 
 @Controller('patient')
 export class PatientController {
@@ -23,7 +28,8 @@ export class PatientController {
   // create(@Body() createPatientDto: CreatePatientDto) {
   //   return this.patientService.create(createPatientDto);
   // }
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Get()
   @ApiOperation({ summary: 'Retrieve all patients with an active user account' })
   async findAll(@Req() req: Request, @Res() res: Response) {
@@ -35,7 +41,8 @@ export class PatientController {
       data,
     });
   }
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR,UserRole.PATIENT)
   @Get(':id')
   async findOne(@Param('id') id: string, @Req() req: Request, @Res() res: Response) {
     const data = await this.patientService.findOne(id);
@@ -47,7 +54,8 @@ export class PatientController {
     });
 
   }
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updatePatientDto: UpdatePatientDto,@Req() req: Request, @Res() res: Response) {
     const data = await this.patientService.update(id, updatePatientDto);
@@ -58,7 +66,8 @@ export class PatientController {
       data,
     });
   }
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Delete(':id')
   async remove(@Param('id') id: string,@Req() req: Request, @Res() res: Response) {
     const data =await this.patientService.remove(id);

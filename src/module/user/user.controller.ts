@@ -32,7 +32,7 @@ export class UserController {
   }
   @ApiOperation({ summary: 'Get all Users' })
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.DOCTOR,UserRole.ADMIN)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Get()
   async findAll(@Req() req: RequestWithUser,@Res() res: Response) {
     //console.log("userID--->",req.user)
@@ -44,7 +44,7 @@ export class UserController {
       data,
     });
   }
-
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   @ApiOperation({ summary: 'Retrieve User by ID' })
   @ApiResponse({ status: 200, description: 'The requested User.' })
@@ -61,8 +61,8 @@ export class UserController {
     });
   }
 
-  //@UseGuards(JwtAuthGuard, RolesGuard)
-  //@Roles(UserRole.DOCTOR, UserRole.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() dto: UpdateUserDto, @Res() res: Response) {
     const data = await this.userService.update(id, dto);
