@@ -4,11 +4,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { safeUserSelect } from './dto/safeUserSelect';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
-import { Prisma } from '@prisma/client';
+import {  Prisma } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -19,25 +18,34 @@ export class UserService {
     if (existingUser) {
       throw new ConflictException('User with this email already exists.');
     }
+ if(dto.licenseNumber){
+   const existingStaffByLicense = await this.prisma.staff.findUnique({ where: { licenseNumber: dto.licenseNumber } });
+   if (existingStaffByLicense) {
+     throw new ConflictException('User with this licenseNumber already exists.');
+   }
+ }
+
     const hashedPassword = await bcrypt.hash(dto.password, 10);
+    //const role: UserRole = dto.role;
+
     const staff = await this.prisma.$transaction(async (tx:Prisma.TransactionClient) => {
+      const staffID = await this.generateSequentialStaffIdInTx(tx);
       const user = await tx.user.create({
         data: {
           email: dto.email,
           password: hashedPassword,
           firstName: dto.firstName,
           lastName: dto.lastName,
-          role: "USER",
-          status: "INACTIVE",
+          role: 'USER',
         },
       });
 
       return tx.staff.create({
         data: {
-          userId: user?.id,
-          staffID: null,
-          licenseNumber: "",
-          specialty: "",
+          userId: user.id,
+          staffID: staffID,
+          licenseNumber: dto.licenseNumber,
+          specialty: dto.specialty,
         },
       });
     });
@@ -52,25 +60,63 @@ export class UserService {
       },});
     return users;
   }
-
-  async update(id: string, dto: UpdateUserDto) {
+  async findOne(id: string) {
+    const isUser=await this.prisma.staff.findUnique({ where: { id: id } });
+    if (!isUser) {
+      throw new NotFoundException('User with this ID Not exists.');
+    }
+    return this.prisma.staff.findUnique({
+      where: { id },
+      include: {
+        user: { select: safeUserSelect },
+      },
+    });
+  }
+  async update(id: string, dto: any) {
     // check if user exists
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) throw new NotFoundException(`User with id ${id} not found`);
 
-    const data: any = { ...dto };
-
-
-
-    const updated = await this.prisma.user.update({
+    return this.prisma.user.update({
       where: { id },
-      data,
-      include: { staff: true },
+      data: dto,
     });
-
-    const { password, ...result } = updated;
-    return result;
   }
 
+  private async generateSequentialMrnInTx(tx: Prisma.TransactionClient): Promise<string> {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const dateKey = `${year}${month}${day}`;
+    const sequenceRecord = await tx.dailySequence.upsert({
+      where: { date: dateKey },
+      update: { currentCount: { increment: 1 } },
+      create: { date: dateKey, currentCount: 1 },
+    });
 
+    const sequenceNumber = sequenceRecord.currentCount;
+    const paddedSequence = String(sequenceNumber).padStart(5, '0');
+    console.log(`${paddedSequence} - ${sequenceNumber}`);
+    return `${dateKey}-${paddedSequence}`;
+  }
+  private async generateSequentialStaffIdInTx(
+    tx: Prisma.TransactionClient,
+    opts?: { key?: string; prefix?: string; padLength?: number; }
+  ): Promise<string> {
+    const key = opts?.key ?? 'staff';
+    const prefix = opts?.prefix ?? 'USR-';
+    const padLength = opts?.padLength ?? 3;
+
+    // Atomically create or increment the sequence row for 'staff'
+    const seq = await tx.staffSequence.upsert({
+      where: { key },
+      create: { key, currentCount: 1 },
+      update: { currentCount: { increment: 1 } },
+    });
+
+    const newNumber = seq.currentCount;
+    const padded = String(newNumber).padStart(padLength, '0');
+    return `${prefix}${padded}`;
+  }
 }

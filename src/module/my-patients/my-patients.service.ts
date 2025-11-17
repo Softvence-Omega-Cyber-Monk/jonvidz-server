@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateMyPatientDto } from './dto/update-my-patient.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { JwtUser } from '../../common/request-with-user.interface';
@@ -25,15 +25,36 @@ export class MyPatientsService {
     return data;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} myPatient`;
+  async findOne(id: string) {
+    // 1. Find existing assignment
+    const assignment = await this.prisma.patientCareAssignment.findUnique({
+      where: { id },
+    });
+    if (!assignment) throw new NotFoundException(`Assignment with id ${id} not found`);
+    const data = await this.prisma.patientCareAssignment.findUnique({where:{id}});
+    return data;
   }
 
-  update(id: number, updateMyPatientDto: UpdateMyPatientDto) {
-    return `This action updates a #${id} myPatient`;
+  async update(id: string, updateMyPatientDto: UpdateMyPatientDto) {
+    // 1. Find existing assignment
+    const assignment = await this.prisma.patientCareAssignment.findUnique({
+      where: { id },
+    });
+    if (!assignment) throw new NotFoundException(`Assignment with id ${id} not found`);
+    const data = await this.prisma.patientCareAssignment.update({
+      where: { id },
+      data: updateMyPatientDto,
+    })
+    return data;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} myPatient`;
+  async remove(id: string) {
+    // 1. Find existing assignment
+    const assignment = await this.prisma.patientCareAssignment.findUnique({
+      where: { id },
+    });
+    if (!assignment) throw new NotFoundException(`Assignment with id ${id} not found`);
+    const data = await this.prisma.patientCareAssignment.delete({where:{id:id}});
+    return data;
   }
 }

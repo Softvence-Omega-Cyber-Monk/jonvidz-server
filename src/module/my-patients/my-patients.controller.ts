@@ -45,19 +45,44 @@ export class MyPatientsController {
       data,
     });
   }
-
+  @ApiOperation({ summary: 'Get Single patient care assignments' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.myPatientsService.findOne(+id);
+  async findOne(@Param('id') id: string,@Res() res: Response) {
+    const data = await this.myPatientsService.findOne(id);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'patient care assignment retrieve successfully.',
+      data,
+    });
   }
 
+  @ApiOperation({ summary: 'Update patient care assignments' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMyPatientDto: UpdateMyPatientDto) {
-    return this.myPatientsService.update(+id, updateMyPatientDto);
+  async update(@Param('id') id: string, @Body() updateMyPatientDto: UpdateMyPatientDto,@Res() res: Response) {
+    const data = await this.myPatientsService.update(id, updateMyPatientDto);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'patient care assignment updated successfully.',
+      data,
+    });
   }
-
+  @ApiOperation({ summary: 'delete patient care assignments' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.myPatientsService.remove(+id);
+  async remove(@Param('id') id: string,@Res() res: Response) {
+    const data = await this.myPatientsService.remove(id);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'patient care assignment deleted successfully.',
+      data,
+    });
   }
 }
