@@ -1,0 +1,17 @@
+model PostSuctionVitals {
+  id           String     @id @default(uuid())
+  sp_o2        Int? // SPO2
+  hr_bpm       Int? // HR (bpm)
+  pr_bpm       Int // RR (bpm)
+  checked      Boolean?
+  suctionLogId String
+  SuctionLog   SuctionLog @relation(fields: [suctionLogId], references: [id])
+
+  patientId String
+  patient   Patient @relation(fields: [patientId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("post_suction_vitals")
+}

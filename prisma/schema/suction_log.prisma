@@ -11,5 +11,7 @@ model SuctionLog {
   patient   Patient @relation(fields: [patientId], references: [id])
 
   @@map("suction_logs")
-  PreSuctionVitals PreSuctionVitals[]
+  PreSuctionVitals      PreSuctionVitals[]
+  SecretionsDescription SecretionsDescription[]
+  PostSuctionVitals     PostSuctionVitals[]
 }
