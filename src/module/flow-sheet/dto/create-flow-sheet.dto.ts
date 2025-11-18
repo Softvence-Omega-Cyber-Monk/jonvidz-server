@@ -10,11 +10,11 @@ export class CreateFlowSheetDto {
   @IsOptional()
   @IsString()
   signature?: string;
-  @ApiProperty({ description: 'staff user Id here', example: '07ca9ab9-e808-4c45-850a-2b7baafb1287' })
+  //@ApiProperty({ description: 'staff user Id here', example: '07ca9ab9-e808-4c45-850a-2b7baafb1287' })
   @IsOptional()
   @IsString()
   userId?: string;
-  @ApiProperty({ description: 'patientId here', example: '07ca9ab9-e808-4c45-850a-2b7baafb1288' })
+  //@ApiProperty({ description: 'patientId here', example: '07ca9ab9-e808-4c45-850a-2b7baafb1288' })
   @IsString()
   patientId: string;
 

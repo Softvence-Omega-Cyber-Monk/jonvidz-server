@@ -14,10 +14,12 @@ import { CreateFlowSheetDto } from './dto/create-flow-sheet.dto';
 import { UpdateFlowSheetDto } from './dto/update-flow-sheet.dto';
 import { Response } from 'express';
 import sendResponse from '../../utils/sendResponse';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Controller('flow-sheet')
 export class FlowSheetController {
-  constructor(private readonly flowSheetService: FlowSheetService) {}
+  constructor(private readonly flowSheetService: FlowSheetService,
+              private readonly prisma: PrismaService) {}
 
   @Post()
   async create(@Body() createFlowSheetDto: CreateFlowSheetDto,@Res() res: Response) {
@@ -31,22 +33,46 @@ export class FlowSheetController {
   }
 
   @Get()
-  findAll() {
-    return this.flowSheetService.findAll();
+  async findAll(@Res() res: Response) {
+    const data = await this.flowSheetService.findAll();
+    return sendResponse(res, {
+      statusCode: HttpStatus.CREATED,
+      success: true,
+      message: 'FlowSheet retrieve successfully.',
+      data,
+    })
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.flowSheetService.findOne(+id);
+  async findOne(@Param('id') id: string,@Res() res: Response) {
+    const data = await this.flowSheetService.findOne(id);
+    return sendResponse(res, {
+      statusCode: HttpStatus.CREATED,
+      success: true,
+      message: 'FlowSheet retrieve successfully.',
+      data,
+    })
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFlowSheetDto: UpdateFlowSheetDto) {
-    return this.flowSheetService.update(+id, updateFlowSheetDto);
+  async update(@Param('id') id: string, @Body() dto: UpdateFlowSheetDto,@Res() res: Response) {
+    const data = await this.flowSheetService.update(id, dto);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'FlowSheet updated successfully.',
+      data,
+    })
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.flowSheetService.remove(+id);
+  async remove(@Param('id') id: string,@Res() res: Response) {
+    const data = await this.flowSheetService.remove(id);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'FlowSheet deleted successfully.',
+      data,
+    })
   }
 }
