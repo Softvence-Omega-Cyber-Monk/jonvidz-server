@@ -18,6 +18,7 @@ import { FlowSheetModule } from './module/flow-sheet/flow-sheet.module';
 import { MarModule } from './module/mar/mar.module';
 import { SuctionLogModule } from './module/suction-log/suction-log.module';
 import { ProgressNotesModule } from './module/progress-notes/progress-notes.module';
+import { OffVentMonitoringModule } from './module/off-vent-monitoring/off-vent-monitoring.module';
 
 
 @Module({
@@ -40,6 +41,7 @@ import { ProgressNotesModule } from './module/progress-notes/progress-notes.modu
       MarModule,
       SuctionLogModule,
       ProgressNotesModule,
+      OffVentMonitoringModule,
    
   ],
   controllers: [AppController],
