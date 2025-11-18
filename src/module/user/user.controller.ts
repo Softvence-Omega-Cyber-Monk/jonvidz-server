@@ -9,6 +9,7 @@ import {
   UseGuards,
   HttpStatus,
   Post,
+  Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -49,8 +50,7 @@ export class UserController {
   @ApiOperation({ summary: 'Retrieve User by ID' })
   @ApiResponse({ status: 200, description: 'The requested User.' })
   @ApiResponse({ status: 404, description: 'User not found.' })
-  async findOne(@Param('id') id: string, @Req() req: Request,
-                @Res() res: Response) {
+  async findOne(@Param('id') id: string, @Req() req: Request, @Res() res: Response) {
     // Pass the string UUID directly to the service
     const data = await this.userService.findOne(id);
     return sendResponse(res, {
@@ -61,8 +61,8 @@ export class UserController {
     });
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
+  //@UseGuards(JwtAuthGuard, RolesGuard)
+  //@Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() dto: UpdateUserDto, @Res() res: Response) {
     const data = await this.userService.update(id, dto);
@@ -72,5 +72,18 @@ export class UserController {
       message: 'User updated successfully.',
       data,
     });
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
+  @Delete(':id')
+  async remove(@Param('id') id: string, @Res() res: Response) {
+    const data = await this.userService.remove(id);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'User deleted successfully.',
+      data,
+    })
   }
 }

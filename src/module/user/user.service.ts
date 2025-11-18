@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -12,6 +13,7 @@ import { Prisma, UserRole } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/guards/roles.decorator';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
@@ -80,15 +82,38 @@ export class UserService {
     });
   }
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async update(id: string, dto: any) {
+  async update(id: string, dto: UpdateUserDto) {
     // check if user exists
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) throw new NotFoundException(`User with id ${id} not found`);
+    // Build update data object properly
+    const updateData = {
+      ...(dto.email && { email: dto.email }),
+      ...(dto.phone && { phone: dto.phone }),
+      ...(dto.fullName && { firstName: dto.fullName }),
+    };
+
+    if (Object.keys(updateData).length === 0) {
+      throw new BadRequestException('No valid fields provided for update');
+    }
 
     return this.prisma.user.update({
       where: { id },
-      data: dto,
+      data: updateData,
     });
+  }
+
+  async remove(id: string) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const isExists = await this.prisma.user.findUnique({
+      where: { id }
+    });
+    if (!isExists) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return this.prisma.user.delete({where: { id }});
   }
 
   private async generateSequentialMrnInTx(tx: Prisma.TransactionClient): Promise<string> {
