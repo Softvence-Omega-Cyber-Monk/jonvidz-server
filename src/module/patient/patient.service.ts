@@ -44,7 +44,10 @@ export class PatientService {
     });
     return data;
   }
-
+  async totalPatient() {
+    const data = await this.prisma.patient.findMany();
+    return data;
+  }
   async update(id: string,dto: UpdatePatientDto) {
     try {
       return await this.prisma.patient.update({

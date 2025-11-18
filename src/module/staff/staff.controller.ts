@@ -38,7 +38,19 @@ export class StaffController {
       statusCode: HttpStatus.OK,
       success: true,
       message: 'Staffs retrieved successfully.',
-      data,
+      data
+    });
+  }
+  @Get("active-staff")
+  @ApiOperation({ summary: 'Retrieve all Staffs' })
+  async activeStaff(@Req() req: Request, @Res() res: Response) {
+    const data = await this.staffService.activeStaff();
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'Active Staffs retrieved successfully.',
+      total:data?.length,
+      data:data,
     });
   }
   @UseGuards(JwtAuthGuard, RolesGuard)

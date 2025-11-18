@@ -41,6 +41,19 @@ export class PatientController {
       data,
     });
   }
+  @Get('total-patients')
+  @ApiOperation({ summary: 'Retrieve all patients with an active user account' })
+  async totalPatient(@Req() req: Request, @Res() res: Response) {
+    const data = await this.patientService.totalPatient();
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'Patients retrieved successfully.',
+      data:{
+        totalPatients: data?.length,
+      },
+    });
+  }
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR,UserRole.PATIENT)
   @Get(':id')

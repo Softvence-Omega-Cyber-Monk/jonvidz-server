@@ -19,6 +19,20 @@ export class StaffService {
     });
     return data;
   }
+  async activeStaff() {
+    const data = await this.prisma.staff.findMany({
+      where: {
+        user: {
+          status: 'ACTIVE'
+        }
+      },
+      include: {
+        user: { select: safeUserSelect },
+      },
+    });
+    console.log("-------->",data.length)
+    return data;
+  }
 
   async findOne(id: string) {
     const data = await this.prisma.staff.findUnique({where: { id }});
