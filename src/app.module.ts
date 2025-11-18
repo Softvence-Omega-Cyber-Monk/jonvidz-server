@@ -19,6 +19,7 @@ import { MarModule } from './module/mar/mar.module';
 import { SuctionLogModule } from './module/suction-log/suction-log.module';
 import { ProgressNotesModule } from './module/progress-notes/progress-notes.module';
 import { OffVentMonitoringModule } from './module/off-vent-monitoring/off-vent-monitoring.module';
+import { MeasuredDataModule } from './module/measured-data/measured-data.module';
 
 
 @Module({
@@ -42,6 +43,7 @@ import { OffVentMonitoringModule } from './module/off-vent-monitoring/off-vent-m
       SuctionLogModule,
       ProgressNotesModule,
       OffVentMonitoringModule,
+      MeasuredDataModule,
    
   ],
   controllers: [AppController],
