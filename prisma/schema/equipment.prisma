@@ -8,10 +8,10 @@ enum EquipmentFrequency {
 }
 
 model Equipment {
-  id                String             @id @default(uuid())
-  name              String             @unique
-  standardFrequency EquipmentFrequency
-  notesOrPurpose    String?            @db.Text
+  id                 String              @id @default(uuid())
+  name               String              @unique
+  standard_frequency EquipmentFrequency?
+  notes_or_purpose   String?             @db.Text
 
   // Optional: Timestamps for auditing
   createdAt DateTime @default(now())

@@ -28,7 +28,20 @@ export class PatientService {
   }
 
   async findOne(id: string) {
-    const data = await this.prisma.patient.findUnique({where: { id }});
+    const data = await this.prisma.patient.findUnique({where: { id },include: {
+        patientCareAssignments: true, // <- returns full objects (all columns on that model)
+        flow_sheet: {
+          orderBy: { createdAt: 'desc' }, // newest first
+          include: {
+            off_vent_monitoring: true,
+            measured_data: true,
+            alarms_parameters: true,
+            vent_setting: true,
+            vital_parameters: true,
+          },
+        },
+      },
+    });
     return data;
   }
 

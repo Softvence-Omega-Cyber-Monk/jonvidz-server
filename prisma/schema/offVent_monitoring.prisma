@@ -10,17 +10,17 @@ model OffVentMonitoring {
   withO2BleedIn  Boolean?
 
   // --- Physiological Parameters ---
-  o2FlowLMin  Decimal? @db.Decimal(5, 2) // e.g. 0.50 L/min
-  spO2Percent Int?
-  hrBpm       Int?
-  rrBpm       Int?
+  oto_low_l_min Decimal? @db.Decimal(5, 2) // e.g. 0.50 L/min
+  spoto_percent Int?
+  hr_bpm        Int?
+  rr_bpm        Int?
 
   // --- Time Tracking ---
   startTime DateTime?
   endTime   DateTime?
 
   flowSheetId String
-  FlowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
+  flowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
 
   patientId String
   patient   Patient @relation(fields: [patientId], references: [id])

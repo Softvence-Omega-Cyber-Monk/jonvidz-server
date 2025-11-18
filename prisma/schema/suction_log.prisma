@@ -12,8 +12,9 @@ model SuctionLog {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  pre_suction_vitals     PreSuctionVitals[]
+  secretions_description SecretionsDescription[]
+  post_suction_vitals    PostSuctionVitals[]
+
   @@map("suction_logs")
-  PreSuctionVitals      PreSuctionVitals[]
-  SecretionsDescription SecretionsDescription[]
-  PostSuctionVitals     PostSuctionVitals[]
 }

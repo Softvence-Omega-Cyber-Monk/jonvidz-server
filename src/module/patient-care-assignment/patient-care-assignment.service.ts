@@ -25,6 +25,23 @@ export class PatientCareAssignmentService {
     if (!staff) {
       throw new NotFoundException(`Staff with ID ${dto.staffId} not found`);
     }
+    // const flowSheet=await this.prisma.flowSheet.create({data:{patientId: dto.patientId}});
+    // const offVentMonitoring = await this.prisma.offVentMonitoring.create({data:{
+    //     patientId: dto.patientId, flowSheetId:flowSheet.id
+    //   }})
+    // const measuredData=await this.prisma.measuredData.create({data:{
+    //   patientId:dto.patientId, flowSheetId:flowSheet.id
+    // }})
+    // const alarmParameters=await this.prisma.alarmsParameters.create({data:{
+    //     patientId: dto.patientId, flowSheetId:flowSheet.id
+    //   }})
+    // const ventSetting=await this.prisma.ventSetting.create({data:{
+    //     patientId: dto.patientId, flowSheetId:flowSheet.id
+    //   }})
+    // const vitalParameters= await this.prisma.vitalParameters.create({data:{
+    //     patientId: dto.patientId, flowSheetId:flowSheet.id
+    //   }})
+
     const assignment = await this.prisma.patientCareAssignment.create({
       data: {
         patientId: dto.patientId,
@@ -37,6 +54,77 @@ export class PatientCareAssignmentService {
         staff: true,   // return staff details
       },
     });
+    const result = await this.prisma.$transaction(async (tx) => {
+      // 1) create parent FlowSheet
+      const flowSheet = await tx.flowSheet.create({
+        data: {
+          patientId: dto.patientId,
+          //userId: dto.userId ?? undefined,
+          //comments: dto.comments ?? undefined,
+          //signature: dto.signature ?? undefined,
+        },
+      });
+
+      // 2) create minimal child rows, each referencing the parent's id
+      // We use tx.[model].create so everything runs inside the same DB transaction
+      const offVentMonitoring = await tx.offVentMonitoring.create({
+        data: {
+          patientId: dto.patientId,
+          flowSheetId: flowSheet.id,
+          // leave optional fields null/undefined (placeholders)
+        },
+      });
+
+      const measuredData = await tx.measuredData.create({
+        data: {
+          patientId: dto.patientId,
+          flowSheetId: flowSheet.id,
+        },
+      });
+
+      const alarmParameters = await tx.alarmsParameters.create({
+        data: {
+          patientId: dto.patientId,
+          flowSheetId: flowSheet.id,
+        },
+      });
+
+      const ventSetting = await tx.ventSetting.create({
+        data: {
+          patientId: dto.patientId,
+          flowSheetId: flowSheet.id,
+        },
+      });
+
+      const vitalParameters = await tx.vitalParameters.create({
+        data: {
+          patientId: dto.patientId,
+          flowSheetId: flowSheet.id,
+        },
+      });
+
+      // 3) Fetch and return the full FlowSheet including the child records
+      const full = await tx.flowSheet.findUnique({
+        where: { id: flowSheet.id },
+        include: {
+          off_vent_monitoring: true,
+          measured_data: true,
+          alarms_parameters: true,
+          vent_setting: true,
+          vital_parameters: true,
+        },
+      });
+
+      // Optionally you can add debug logging
+      // this.logger.debug(`Created FlowSheet ${flowSheet.id} and placeholder children`);
+
+      return full;
+    }); // end transaction
+
+    //return result;
+
+      await this.prisma.mAR.create({data:{patientId: dto.patientId}})
+      //await this.prisma.suctionLog.create({data:{patientId: dto.patientId}})
     return assignment;
   }
 

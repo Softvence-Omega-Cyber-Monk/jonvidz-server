@@ -15,7 +15,7 @@ model MeasuredData {
   i_time Int?
 
   flowSheetId String
-  FlowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
+  flowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
 
   patientId String
   patient   Patient @relation(fields: [patientId], references: [id])

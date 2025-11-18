@@ -12,12 +12,12 @@ model FlowSheet {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
-  VitalParameters   VitalParameters[]
-  VentSetting       VentSetting[]
-  MeasuredData      MeasuredData[]
-  AlarmsParameters  AlarmsParameters[]
-  OffVentMonitoring OffVentMonitoring[]
+
+  vital_parameters    VitalParameters[]
+  vent_setting        VentSetting[]
+  measured_data       MeasuredData[]
+  alarms_parameters   AlarmsParameters[]
+  off_vent_monitoring OffVentMonitoring[]
 
   @@map("flow_sheets")
 }

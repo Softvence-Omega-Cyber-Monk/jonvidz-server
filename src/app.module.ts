@@ -14,6 +14,10 @@ import { PatientModule } from './module/patient/patient.module';
 import { RoomModule } from './module/room/room.module';
 import { StaffModule } from './module/staff/staff.module';
 import { MyPatientsModule } from './module/my-patients/my-patients.module';
+import { FlowSheetModule } from './module/flow-sheet/flow-sheet.module';
+import { MarModule } from './module/mar/mar.module';
+import { SuctionLogModule } from './module/suction-log/suction-log.module';
+import { ProgressNotesModule } from './module/progress-notes/progress-notes.module';
 
 
 @Module({
@@ -32,6 +36,10 @@ import { MyPatientsModule } from './module/my-patients/my-patients.module';
       RoomModule,
       StaffModule,
       MyPatientsModule,
+      FlowSheetModule,
+      MarModule,
+      SuctionLogModule,
+      ProgressNotesModule,
    
   ],
   controllers: [AppController],
