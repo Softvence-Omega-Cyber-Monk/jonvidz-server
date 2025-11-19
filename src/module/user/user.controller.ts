@@ -45,6 +45,18 @@ export class UserController {
       data,
     });
   }
+  @ApiOperation({ summary: 'Active staff and Total Patients retrieve successfully' })
+  @Get('active-staff-total-user')
+  async activeStaffAndTotalUser(@Res() res: Response){
+    const data = await this.userService.activeStaffAndTotalUser();
+    return sendResponse(res, {
+      statusCode: HttpStatus.CREATED,
+      success: true,
+      message: 'Active-Staff and Total Patients retrieve successfully.',
+      data,
+    });
+  }
+
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   @ApiOperation({ summary: 'Retrieve User by ID' })
@@ -60,7 +72,6 @@ export class UserController {
       data,
     });
   }
-
   //@UseGuards(JwtAuthGuard, RolesGuard)
   //@Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Patch(':id')

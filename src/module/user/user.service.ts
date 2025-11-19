@@ -115,7 +115,20 @@ export class UserService {
     }
     return this.prisma.user.delete({where: { id }});
   }
-
+  async activeStaffAndTotalUser() {
+    const data = await this.prisma.staff.findMany({
+      where: {
+        user: {
+          status: 'ACTIVE'
+        }
+      },
+      include: {
+        user: { select: safeUserSelect },
+      },
+    });
+    const totalPatients = await this.prisma.patient.findMany();
+    return {'active-staffs':data.length, 'total-patients':totalPatients.length};
+  }
   private async generateSequentialMrnInTx(tx: Prisma.TransactionClient): Promise<string> {
     const today = new Date();
     const year = today.getFullYear();
