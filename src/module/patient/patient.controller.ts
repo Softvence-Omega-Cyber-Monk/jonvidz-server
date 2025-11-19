@@ -42,7 +42,7 @@ export class PatientController {
     });
   }
   @Get('total-patients')
-  @ApiOperation({ summary: 'Retrieve all patients with an active user account' })
+  @ApiOperation({ summary: 'Retrieve total patients' })
   async totalPatient(@Req() req: Request, @Res() res: Response) {
     const data = await this.patientService.totalPatient();
     return sendResponse(res, {

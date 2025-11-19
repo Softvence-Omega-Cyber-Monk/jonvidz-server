@@ -42,7 +42,7 @@ export class StaffController {
     });
   }
   @Get("active-staff")
-  @ApiOperation({ summary: 'Retrieve all Staffs' })
+  @ApiOperation({ summary: 'Retrieve active Staffs' })
   async activeStaff(@Req() req: Request, @Res() res: Response) {
     const data = await this.staffService.activeStaff();
     return sendResponse(res, {
