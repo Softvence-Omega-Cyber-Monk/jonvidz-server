@@ -9,7 +9,7 @@ model VentSetting {
   fiO2Pct               Decimal? @db.Decimal(5, 2)
   heatedHumidifierTemp  Decimal? @db.Decimal(5, 2)
 
-  flowSheetId String
+  flowSheetId String    @unique
   flowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
 
   patientId String

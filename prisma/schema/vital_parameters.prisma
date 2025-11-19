@@ -24,7 +24,7 @@ model VitalParameters {
   ventMode  VentMode  @default(AC_VC)
   trachType TrachType @default(Cuffed)
 
-  flowSheetId String
+  flowSheetId String    @unique
   FlowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
 
   patientId String

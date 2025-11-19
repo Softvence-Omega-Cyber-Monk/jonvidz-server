@@ -19,8 +19,10 @@ model OffVentMonitoring {
   startTime DateTime?
   endTime   DateTime?
 
-  flowSheetId String
+  flowSheetId String    @unique
   flowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
+  // flowSheetId String
+  // flowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
 
   patientId String
   patient   Patient @relation(fields: [patientId], references: [id])

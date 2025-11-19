@@ -22,7 +22,7 @@ model AlarmsParameters {
   status     Status          @default(Normal)
   medication Medication_ENUM @default(Not_Given)
 
-  flowSheetId String
+  flowSheetId String    @unique
   flowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
 
   patientId String
