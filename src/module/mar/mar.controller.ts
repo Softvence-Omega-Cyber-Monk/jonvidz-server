@@ -1,34 +1,68 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Res,
+  HttpStatus,
+} from '@nestjs/common';
 import { MarService } from './mar.service';
-import { CreateMarDto } from './dto/create-mar.dto';
 import { UpdateMarDto } from './dto/update-mar.dto';
+import { Response } from 'express';
+import sendResponse from '../../utils/sendResponse';
 
 @Controller('mar')
 export class MarController {
   constructor(private readonly marService: MarService) {}
 
-  @Post()
-  create(@Body() createMarDto: CreateMarDto) {
-    return this.marService.create(createMarDto);
-  }
+  // @Post()
+  // create(@Body() createMarDto: CreateMarDto) {
+  //   return this.marService.create(createMarDto);
+  // }
 
   @Get()
-  findAll() {
-    return this.marService.findAll();
+  async findAll(@Res() res: Response) {
+    const data =await this.marService.findAll();
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'MAR retrieve successfully.',
+      data,
+    });
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.marService.findOne(+id);
+  async findOne(@Param('id') id: string, @Res() res: Response) {
+    const data = await this.marService.findOne(id);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'MAR retrieve successfully.',
+      data,
+    });
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMarDto: UpdateMarDto) {
-    return this.marService.update(+id, updateMarDto);
+  async update(@Param('id') id: string, @Body() updateMarDto: UpdateMarDto, @Res() res: Response) {
+    const data = await this.marService.update(id, updateMarDto);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'MAR updated successfully.',
+      data,
+    });
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.marService.remove(+id);
+  async remove(@Param('id') id: string, @Res() res: Response) {
+    const data = await this.marService.remove(id);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'MAR Deleted successfully.',
+      data,
+    });
   }
 }

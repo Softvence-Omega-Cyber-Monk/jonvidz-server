@@ -1,26 +1,62 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateMarDto } from './dto/create-mar.dto';
 import { UpdateMarDto } from './dto/update-mar.dto';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class MarService {
+  constructor(private prisma: PrismaService) {}
   create(createMarDto: CreateMarDto) {
     return 'This action adds a new mar';
   }
 
   findAll() {
-    return `This action returns all mar`;
+    return this.prisma.mAR.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} mar`;
+  async findOne(id: string) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const isExists = await this.prisma.mAR.findUnique({
+      where: { id }
+    });
+    if (!isExists) {
+      throw new NotFoundException(`MAR with ID ${id} not found`);
+    }
+    return this.prisma.mAR.findUnique({where: {id}});
   }
 
-  update(id: number, updateMarDto: UpdateMarDto) {
-    return `This action updates a #${id} mar`;
+  async update(id: string, updateMarDto: UpdateMarDto) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const isExists = await this.prisma.mAR.findUnique({
+      where: { id }
+    });
+    if (!isExists) {
+      throw new NotFoundException(`MAR with ID ${id} not found`);
+    }
+    return this.prisma.mAR.update({
+      where: { id },
+      data: updateMarDto,
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} mar`;
+  async remove(id: string) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const isExists = await this.prisma.mAR.findUnique({
+      where: { id }
+    });
+    if (!isExists) {
+      throw new NotFoundException(`MAR with ID ${id} not found`);
+    }
+    return this.prisma.mAR.delete({where: {id}});
   }
 }
