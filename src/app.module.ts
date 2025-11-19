@@ -20,6 +20,7 @@ import { SuctionLogModule } from './module/suction-log/suction-log.module';
 import { ProgressNotesModule } from './module/progress-notes/progress-notes.module';
 import { OffVentMonitoringModule } from './module/off-vent-monitoring/off-vent-monitoring.module';
 import { MeasuredDataModule } from './module/measured-data/measured-data.module';
+import { ShiftCheckListModule } from './module/shift-check-list/shift-check-list.module';
 
 
 @Module({
@@ -44,6 +45,7 @@ import { MeasuredDataModule } from './module/measured-data/measured-data.module'
       ProgressNotesModule,
       OffVentMonitoringModule,
       MeasuredDataModule,
+      ShiftCheckListModule,
    
   ],
   controllers: [AppController],
