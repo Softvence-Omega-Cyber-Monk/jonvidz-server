@@ -15,14 +15,14 @@ import {
 import { StandardVitalRangeService } from './standard_vital_range.service';
 import { CreateStandardVitalRangeDto } from './dto/create-standard_vital_range.dto';
 import { UpdateStandardVitalRangeDto } from './dto/update-standard_vital_range.dto';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import sendResponse from '../../utils/sendResponse';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/guards/roles.decorator';
 import { UserRole } from '@prisma/client';
-
+@ApiTags('protocol management - Standard Vitals Ranges')
 @Controller('standard-vital-range')
 export class StandardVitalRangeController {
   constructor(private readonly standardVitalRangeService: StandardVitalRangeService) {}
@@ -78,8 +78,8 @@ export class StandardVitalRangeController {
   @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Patch(':id')
   @ApiOperation({ summary: 'Update an existing vital sign range' })
-  @ApiResponse({ status: 200, description: 'Range successfully updated.',})
-  @ApiResponse({ status: 404, description: 'Range not found.' })
+  @ApiResponse({ status: 200, description: 'Range successfully updated.'})
+  @ApiResponse({ status: 404, description: 'Range not found.'})
   async update(@Param('id') id: string, @Body() updateStandardVitalRangeDto: UpdateStandardVitalRangeDto,@Req() req: Request,
          @Res() res: Response){
     const data = await this.standardVitalRangeService.update(id, updateStandardVitalRangeDto);

@@ -31,6 +31,7 @@ model ChecklistCategory {
 
   @@map("checklist_categories")
 }
+
 model ChecklistItem {
   id           String            @id @default(uuid())
   categoryId   String
@@ -40,10 +41,7 @@ model ChecklistItem {
   displayOrder Int               @default(0)
   isRequired   Boolean           @default(false)
 
-  // Store response directly for UI simplicity
-  isChecked      Boolean? @default(false) // For checkbox items
-  textResponse   String? // For text responses
-  selectedOption String? // For select/dropdown items
+  isChecked Boolean? @default(false)
 
   createdAt DateTime @default(now())
 

@@ -15,14 +15,14 @@ import {
 import { MedicationService } from './medication.service';
 import { CreateMedicationDto } from './dto/create-medication.dto';
 import { UpdateMedicationDto } from './dto/update-medication.dto';
-import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import sendResponse from 'src/utils/sendResponse';
 import { Request, Response } from 'express';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/guards/roles.decorator';
 import { UserRole } from '@prisma/client';
-
+@ApiTags('protocol management - medication')
 @Controller('medication')
 export class MedicationController {
   constructor(private readonly medicationService: MedicationService) { }
