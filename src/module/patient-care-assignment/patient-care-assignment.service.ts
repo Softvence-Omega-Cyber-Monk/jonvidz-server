@@ -137,7 +137,17 @@ export class PatientCareAssignmentService {
       },
     });
   }
-
+  async activeAssignments() {
+    return this.prisma.patientCareAssignment.findMany({
+      where: {
+        status: 'ACTIVE'
+      },
+      include: {
+        patient: { include: { user: { select: safeUserSelect } } },
+        staff: { include: { user: { select: safeUserSelect } } },
+      },
+    });
+  }
   // Get a single assignment by ID
   async findOne(id: string) {
     const assignment = await this.prisma.patientCareAssignment.findUnique({

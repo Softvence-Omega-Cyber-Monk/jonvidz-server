@@ -56,6 +56,19 @@ export class PatientCareAssignmentController {
     });
   }
 
+  @ApiOperation({ summary: 'Get all active patient care assignments' })
+  @Get('active-assignments')
+  async activeAssignments(@Res() res: Response){
+    const data = await this.service.activeAssignments();
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'Active Patient Care Assignment Retrieve Successfully.',
+      data,
+    });
+  }
+
+
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Get(':id')

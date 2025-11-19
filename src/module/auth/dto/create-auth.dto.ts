@@ -4,12 +4,12 @@ import { IsDateString, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MinLen
 import { ApiProperty } from '@nestjs/swagger';
 
 export class LoginDto {
-  @ApiProperty({ example: 'doctor.john@clinic.com', description: 'User email address for login' })
+  @ApiProperty({ example: 'admin@gmail.com', description: 'User email address for login' })
   @IsEmail()
   @IsNotEmpty()
   email: string;
 
-  @ApiProperty({ example: 'StrongP@ss123', description: 'User password' })
+  @ApiProperty({ example: 'admin123', description: 'User password' })
   @IsString()
   @IsNotEmpty()
   @MinLength(6)

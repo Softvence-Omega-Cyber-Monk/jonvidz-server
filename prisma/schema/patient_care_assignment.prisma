@@ -2,6 +2,7 @@ enum AssignmentStatus {
   ACTIVE
   LEAVE
   RELEASE
+  COMPLETED
 }
 
 model PatientCareAssignment {
