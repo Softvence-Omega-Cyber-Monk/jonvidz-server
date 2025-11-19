@@ -50,9 +50,13 @@ export class PatientService {
   }
   async update(id: string,dto: UpdatePatientDto) {
     try {
+      const updateData = {
+        ...dto,
+        ...(dto.dob && { dob: new Date(dto.dob) })
+      };
       return await this.prisma.patient.update({
         where: { id },
-        data: dto,
+        data: updateData,
       });
     } catch (error) {
       // Handle the case where the ID does not exist

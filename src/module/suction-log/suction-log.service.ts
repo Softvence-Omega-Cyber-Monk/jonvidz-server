@@ -1,26 +1,61 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateSuctionLogDto } from './dto/create-suction-log.dto';
 import { UpdateSuctionLogDto } from './dto/update-suction-log.dto';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class SuctionLogService {
+  constructor(private prisma: PrismaService) {}
   create(createSuctionLogDto: CreateSuctionLogDto) {
     return 'This action adds a new suctionLog';
   }
 
-  findAll() {
-    return `This action returns all suctionLog`;
+  async findAll() {
+    const data = await this.prisma.suctionLog.findMany();
+    return data;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} suctionLog`;
+  async findOne(id: string) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const isExists = await this.prisma.suctionLog.findUnique({
+      where: { id }
+    });
+    if (!isExists) {
+      throw new NotFoundException(`Suction Log with ID ${id} not found`);
+    }
+    return this.prisma.suctionLog.findUnique({where: {id}});
   }
 
-  update(id: number, updateSuctionLogDto: UpdateSuctionLogDto) {
-    return `This action updates a #${id} suctionLog`;
+  async update(id: string, updateSuctionLogDto: UpdateSuctionLogDto) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const isExists = await this.prisma.suctionLog.findUnique({
+      where: { id }
+    });
+    if (!isExists) {
+      throw new NotFoundException(`Suction Log with ID ${id} not found`);
+    }
+    return this.prisma.suctionLog.update({where: { id },
+      data: updateSuctionLogDto,});
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} suctionLog`;
+  async remove(id: string) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const isExists = await this.prisma.suctionLog.findUnique({
+      where: { id }
+    });
+    if (!isExists) {
+      throw new NotFoundException(`Suction Log with ID ${id} not found`);
+    }
+    return this.prisma.suctionLog.delete({where: {id}});
   }
 }
