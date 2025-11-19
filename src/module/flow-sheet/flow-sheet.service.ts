@@ -43,21 +43,133 @@ export class FlowSheetService {
       }});
   }
 
-  async update(id: string, dto: UpdateFlowSheetDto) {
+  // async update(id: string, dto: UpdateFlowSheetDto) {
+  //   if (!id) {
+  //     throw new BadRequestException('ID is required');
+  //   }
+  //   const isExists = await this.prisma.flowSheet.findUnique({
+  //     where: { id }
+  //   });
+  //   if (!isExists) {
+  //     throw new NotFoundException(`FlowSheet with ID ${id} not found`);
+  //   }
+  //   const data = await this.prisma.flowSheet.update({where: { id },
+  //     data: dto,})
+  //   return data;
+  // }
+  async update(id: string, updateFlowSheetDto: any) {
     if (!id) {
       throw new BadRequestException('ID is required');
     }
-    const isExists = await this.prisma.flowSheet.findUnique({
+
+    // Check if flow sheet exists
+    const existingFlowSheet = await this.prisma.flowSheet.findUnique({
       where: { id }
     });
-    if (!isExists) {
+
+    if (!existingFlowSheet) {
       throw new NotFoundException(`FlowSheet with ID ${id} not found`);
     }
-    const data = await this.prisma.flowSheet.update({where: { id },
-      data: dto,})
-    return data;
-  }
 
+    // Use transaction to update all related records
+    return this.prisma.$transaction(async (prisma) => {
+      // Extract main flow sheet data (excluding nested relations)
+      const {
+        off_vent_monitoring,
+        measured_data,
+        alarms_parameters,
+        vent_setting,
+        vital_parameters,
+        ...flowSheetData
+      } = updateFlowSheetDto;
+
+      // Update main flow sheet
+      const updatedFlowSheet = await prisma.flowSheet.update({
+        where: { id },
+        data: flowSheetData,
+        include: {
+          off_vent_monitoring: true,
+          measured_data: true,
+          alarms_parameters: true,
+          vent_setting: true,
+          vital_parameters: true,
+        }
+      });
+
+      // Update related records if provided
+      if (off_vent_monitoring) {
+        await prisma.offVentMonitoring.upsert({
+          where: { flowSheetId: id },
+          update: off_vent_monitoring,
+          create: {
+            ...off_vent_monitoring,
+            flowSheetId: id,
+            patientId: existingFlowSheet.patientId,
+          }
+        });
+      }
+
+      if (measured_data) {
+        await prisma.measuredData.upsert({
+          where: { flowSheetId: id },
+          update: measured_data,
+          create: {
+            ...measured_data,
+            flowSheetId: id,
+            patientId: existingFlowSheet.patientId,
+          }
+        });
+      }
+
+      if (alarms_parameters) {
+        await prisma.alarmsParameters.upsert({
+          where: { flowSheetId: id },
+          update: alarms_parameters,
+          create: {
+            ...alarms_parameters,
+            flowSheetId: id,
+            patientId: existingFlowSheet.patientId,
+          }
+        });
+      }
+
+      if (vent_setting) {
+        await prisma.ventSetting.upsert({
+          where: { flowSheetId: id },
+          update: vent_setting,
+          create: {
+            ...vent_setting,
+            flowSheetId: id,
+            patientId: existingFlowSheet.patientId,
+          }
+        });
+      }
+
+      if (vital_parameters) {
+        await prisma.vitalParameters.upsert({
+          where: { flowSheetId: id },
+          update: vital_parameters,
+          create: {
+            ...vital_parameters,
+            flowSheetId: id,
+            patientId: existingFlowSheet.patientId,
+          }
+        });
+      }
+
+      // Return the updated flow sheet with all relations
+      return prisma.flowSheet.findUnique({
+        where: { id },
+        include: {
+          off_vent_monitoring: true,
+          measured_data: true,
+          alarms_parameters: true,
+          vent_setting: true,
+          vital_parameters: true,
+        }
+      });
+    });
+  }
   async remove(id: string) {
     if (!id) {
       throw new BadRequestException('ID is required');
