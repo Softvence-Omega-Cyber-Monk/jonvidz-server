@@ -48,7 +48,7 @@ export class PatientController {
     return sendResponse(res, {
       statusCode: HttpStatus.OK,
       success: true,
-      message: 'Patients retrieved successfully.',
+      message: 'Total Patients retrieved successfully.',
       data:{
         totalPatients: data?.length,
       },
