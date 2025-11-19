@@ -4,7 +4,6 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateShiftCheckListDto } from './dto/create-shift-check-list.dto';
-import { UpdateShiftCheckListDto } from './dto/update-shift-check-list.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import {STOMA_SITE_CARE,STOMA_SITE_CONDITION,RESPIRATORY_EQUIPMENT_TEMPLATE,OXYGEN_INFECTION_CONTROL} from '../../constants/checklist-templates'
 
@@ -127,7 +126,9 @@ export class ShiftCheckListService {
     if (!isExists) {
       throw new NotFoundException(`Shift CheckList with ID ${id} not found`);
     }
-    return this.prisma.shiftCheckList.findUnique({where: {id: id},  include: {
+    return this.prisma.shiftCheckList.findUnique(
+      {where: {id: id},
+        include: {
         categories: {
           include: {
             items: true
