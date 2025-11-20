@@ -7,20 +7,28 @@ import {
   Delete,
   Res,
   HttpStatus,
+  Post,
 } from '@nestjs/common';
 import { MarService } from './mar.service';
 import { UpdateMarDto } from './dto/update-mar.dto';
 import { Response } from 'express';
 import sendResponse from '../../utils/sendResponse';
+import { CreateMarDto } from './dto/create-mar.dto';
 
 @Controller('mar')
 export class MarController {
   constructor(private readonly marService: MarService) {}
 
-  // @Post()
-  // create(@Body() createMarDto: CreateMarDto) {
-  //   return this.marService.create(createMarDto);
-  // }
+  @Post()
+  async create(@Body() createMarDto: CreateMarDto,@Res() res: Response) {
+    const data = await this.marService.create(createMarDto);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'MAR created successfully.',
+      data,
+    });
+  }
 
   @Get()
   async findAll(@Res() res: Response) {
@@ -32,7 +40,16 @@ export class MarController {
       data,
     });
   }
-
+  @Get('patientByMAR/:id')
+  async patientByMAR(@Param('id') id: string, @Res() res: Response) {
+    const data = await this.marService.patientByMAR(id);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'patientByMAR retrieve successfully.',
+      data,
+    });
+  }
   @Get(':id')
   async findOne(@Param('id') id: string, @Res() res: Response) {
     const data = await this.marService.findOne(id);

@@ -1,11 +1,16 @@
 model MAR {
-  id String @id @default(uuid())
-
-  comments  String? @db.Text
-  signature String? @db.Text
-
-  full_e_cylinder  String?
-  empty_e_cylinder String?
+  id                     String    @id @default(uuid())
+  standardDose           String?   @db.VarChar(100)
+  comments               String?   @db.Text
+  signature              String?   @db.Text
+  time_of_administration String?
+  status                 String?
+  isCheck                Boolean?
+  full_e_cylinder        String?
+  empty_e_cylinder       String?
+  schedule               DateTime?
+  // medicationId           String     @unique
+  // medication             Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
 
   userId String? // <-- Make nullable
   user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)

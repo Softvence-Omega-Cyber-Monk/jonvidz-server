@@ -13,10 +13,10 @@ enum MadicationStatus {
 }
 
 model Medication {
-  id           String          @id @default(uuid())
-  name         String          @unique // Unique name to prevent duplicates
-  standardDose String          @db.VarChar(100) // Stores the dose/unit string, e.g., "2.5 mg/3mL"
-  route        MedicationRoute // References the enum
+  id           String           @id @default(uuid())
+  name         String           @unique // Unique name to prevent duplicates
+  standardDose String           @db.VarChar(100) // Stores the dose/unit string, e.g., "2.5 mg/3mL"
+  route        MedicationRoute? // References the enum
 
   patientId String?
   patient   Patient? @relation(fields: [patientId], references: [id], onDelete: Cascade)

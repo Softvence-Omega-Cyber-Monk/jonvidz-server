@@ -1,16 +1,15 @@
 import { Injectable,NotFoundException } from '@nestjs/common';
-import { CreateMedicationDto } from './dto/create-medication.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Medication } from '@prisma/client';
 import { UpdateMedicationDto } from './dto/update-medication.dto';
-
+import { CreateMedicationDto } from './dto/create-medication.dto';
 
 @Injectable()
 export class MedicationService {
   constructor(private prisma: PrismaService) {}
 
   async create(createMedicationDto: CreateMedicationDto):Promise<Medication> {
-    return this.prisma.medication.create({data: createMedicationDto,})
+    return this.prisma.medication.create({data:createMedicationDto})
   }
 
   async findAll(): Promise<Medication[]> {

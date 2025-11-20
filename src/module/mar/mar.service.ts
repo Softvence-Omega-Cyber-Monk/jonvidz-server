@@ -11,11 +11,23 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class MarService {
   constructor(private prisma: PrismaService) {}
   create(createMarDto: CreateMarDto) {
-    return 'This action adds a new mar';
+    return this.prisma.mAR.create({data: createMarDto});
   }
 
   findAll() {
     return this.prisma.mAR.findMany();
+  }
+  async patientByMAR(id:string) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const isExists = await this.prisma.mAR.findMany({
+      where: { patientId:id }
+    });
+    if (!isExists) {
+      throw new NotFoundException(`MAR with ID ${id} not found`);
+    }
+    return this.prisma.mAR.findMany({where: { patientId:id }});
   }
 
   async findOne(id: string) {
