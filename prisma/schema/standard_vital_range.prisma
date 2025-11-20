@@ -7,7 +7,7 @@ enum VitalSignType {
 model StandardVitalRange {
   id String @id @default(uuid())
 
-  vitalSignType VitalSignType @unique
+  vitalSignType VitalSignType
 
   maxValue Float?
   minValue Float?
