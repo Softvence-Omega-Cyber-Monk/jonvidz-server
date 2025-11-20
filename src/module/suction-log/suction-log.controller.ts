@@ -25,7 +25,7 @@ export class SuctionLogController {
     return sendResponse(res, {
       statusCode: HttpStatus.OK,
       success: true,
-      message: 'No suction log data created successfully.',
+      message: 'suction log data created successfully.',
       data,
     });
   }
