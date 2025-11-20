@@ -25,10 +25,10 @@ model VitalParameters {
   trachType TrachType @default(Cuffed)
 
   flowSheetId String    @unique
-  FlowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
+  FlowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id], onDelete: Cascade)
 
   patientId String
-  patient   Patient @relation(fields: [patientId], references: [id])
+  patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

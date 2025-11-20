@@ -19,7 +19,7 @@ model Medication {
   route        MedicationRoute // References the enum
 
   patientId String?
-  patient   Patient? @relation(fields: [patientId], references: [id])
+  patient   Patient? @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
   time_of_admanistative      DateTime?
   status                     MadicationStatus?

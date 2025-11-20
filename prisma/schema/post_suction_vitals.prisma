@@ -5,7 +5,7 @@ model PostSuctionVitals {
   pr_bpm       Int? // RR (bpm)
   checked      Boolean?
   suctionLogId String
-  SuctionLog   SuctionLog @relation(fields: [suctionLogId], references: [id])
+  SuctionLog   SuctionLog @relation(fields: [suctionLogId], references: [id], onDelete: Cascade)
 
   patientId String
   patient   Patient @relation(fields: [patientId], references: [id])

@@ -10,10 +10,10 @@ model VentSetting {
   heatedHumidifierTemp  Decimal? @db.Decimal(5, 2)
 
   flowSheetId String    @unique
-  flowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
+  flowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id], onDelete: Cascade)
 
   patientId String
-  patient   Patient @relation(fields: [patientId], references: [id])
+  patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

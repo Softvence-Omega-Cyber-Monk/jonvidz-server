@@ -3,6 +3,7 @@ enum CheckedPreSuctionVitals {
   NASAL
   TRACHEAL
 }
+
 model PreSuctionVitals {
   id String @id @default(uuid())
 
@@ -14,7 +15,7 @@ model PreSuctionVitals {
   checked             Boolean?
 
   suctionLogId String
-  SuctionLog   SuctionLog @relation(fields: [suctionLogId], references: [id])
+  SuctionLog   SuctionLog @relation(fields: [suctionLogId], references: [id], onDelete: Cascade)
 
   patientId String
   patient   Patient @relation(fields: [patientId], references: [id])

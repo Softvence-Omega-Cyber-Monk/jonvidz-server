@@ -26,7 +26,7 @@ model ChecklistCategory {
   name             String
   displayOrder     Int             @default(0)
   shiftCheckListId String
-  shiftCheckList   ShiftCheckList  @relation(fields: [shiftCheckListId], references: [id])
+  shiftCheckList   ShiftCheckList  @relation(fields: [shiftCheckListId], references: [id], onDelete: Cascade)
   items            ChecklistItem[]
   createdAt        DateTime        @default(now())
 
@@ -36,7 +36,7 @@ model ChecklistCategory {
 model ChecklistItem {
   id           String            @id @default(uuid())
   categoryId   String
-  category     ChecklistCategory @relation(fields: [categoryId], references: [id])
+  category     ChecklistCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   description  String
   itemType     String            @default("checkbox")
   displayOrder Int               @default(0)

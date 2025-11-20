@@ -20,7 +20,7 @@ model OffVentMonitoring {
   endTime   DateTime?
 
   flowSheetId String    @unique
-  flowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
+  flowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id], onDelete: Cascade)
   // flowSheetId String
   // flowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
 

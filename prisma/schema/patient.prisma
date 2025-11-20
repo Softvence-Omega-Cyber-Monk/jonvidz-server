@@ -6,7 +6,7 @@ model Patient {
   allergies       String?
 
   primaryDoctorId String?
-  primaryDoctor   Staff?  @relation("PrimaryDoctor", fields: [primaryDoctorId], references: [id])
+  primaryDoctor   Staff?  @relation("PrimaryDoctor", fields: [primaryDoctorId], references: [id], onDelete: Cascade)
 
   userId String? @unique
   user   User?   @relation(fields: [userId], references: [id]) // Patient user
@@ -20,7 +20,7 @@ model Patient {
   patientCareAssignments PatientCareAssignment[]
 
   audit_log              AuditLog[]
-  Room                   Room?                   @relation(fields: [roomId], references: [id])
+  Room                   Room?                   @relation(fields: [roomId], references: [id], onDelete: Cascade)
   roomId                 String?
   flow_sheet             FlowSheet[]
   vital_parameters       VitalParameters[]

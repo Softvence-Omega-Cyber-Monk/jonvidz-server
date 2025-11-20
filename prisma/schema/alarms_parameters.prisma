@@ -23,7 +23,7 @@ model AlarmsParameters {
   medication Medication_ENUM @default(Not_Given)
 
   flowSheetId String    @unique
-  flowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id])
+  flowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id], onDelete: Cascade)
 
   patientId String
   patient   Patient @relation(fields: [patientId], references: [id])
