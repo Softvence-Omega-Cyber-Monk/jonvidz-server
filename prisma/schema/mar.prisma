@@ -9,11 +9,13 @@ model MAR {
   full_e_cylinder        String?
   empty_e_cylinder       String?
   schedule               DateTime?
-  // medicationId           String     @unique
-  // medication             Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
 
-  userId String? // <-- Make nullable
-  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // medicationId           String
+  // medication             Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+  medicationId String
+  medication   Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+  userId       String? // <-- Make nullable
+  user         User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   patientId String
   patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)

@@ -123,7 +123,7 @@ export class PatientCareAssignmentService {
 
     //return result;
 
-      await this.prisma.mAR.create({data:{patientId: dto.patientId}})
+      //await this.prisma.mAR.create({data:{patientId: dto.patientId,medicationId: dto.medicationId,}})
       //await this.prisma.suctionLog.create({data:{patientId: dto.patientId}})
     return assignment;
   }
