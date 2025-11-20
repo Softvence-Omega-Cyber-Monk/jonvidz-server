@@ -200,7 +200,7 @@ export class ShiftCheckListService {
   // }
 
   async update(id: string, updateShiftCheckListDto: UpdateShiftCheckListDto) {
-    console.log("updateShiftCheckListDto--------------->", updateShiftCheckListDto);
+    //console.log("updateShiftCheckListDto--------------->", updateShiftCheckListDto);
     if (!id) {
       throw new BadRequestException('ID is required');
     }
@@ -230,7 +230,7 @@ export class ShiftCheckListService {
             await prisma.checklistCategory.update({
               where: { id: category.id },
               data: {
-                //selectType: category.selectType,
+                selectType: category.selectType,
                 name: category.name,
                 displayOrder: category.displayOrder,
               },
