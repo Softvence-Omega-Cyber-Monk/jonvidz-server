@@ -6,6 +6,8 @@ import {
 import { CreateShiftCheckListDto } from './dto/create-shift-check-list.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import {STOMA_SITE_CARE,STOMA_SITE_CONDITION,RESPIRATORY_EQUIPMENT_TEMPLATE,OXYGEN_INFECTION_CONTROL} from '../../constants/checklist-templates'
+import { UpdateShiftCheckListDto } from './dto/update-shift-check-list.dto';
+
 
 @Injectable()
 export class ShiftCheckListService {
@@ -19,6 +21,7 @@ export class ShiftCheckListService {
       // Static Template: Respiratory Equipment
       {
         name: "Respiratory Equipment",
+        selectType:"",
         displayOrder: 1,
         items: {
           create: RESPIRATORY_EQUIPMENT_TEMPLATE.map(item => ({
@@ -30,6 +33,7 @@ export class ShiftCheckListService {
       // Static Template: Stoma Site Care
       {
         name: "Stoma Site Care",
+        selectType:"",
         displayOrder: 2,
         items: {
           create: STOMA_SITE_CARE.map(item => ({
@@ -41,6 +45,7 @@ export class ShiftCheckListService {
       // Static Template: Stoma Site Condition
       {
         name: "Stoma Site Condition",
+        selectType:"",
         displayOrder: 3,
         items: {
           create: STOMA_SITE_CONDITION.map(item => ({
@@ -52,6 +57,7 @@ export class ShiftCheckListService {
       // Static Template: Oxygen & Infection Control
       {
         name: "Oxygen & Infection Control",
+        selectType:"",
         displayOrder: 4,
         items: {
           create: OXYGEN_INFECTION_CONTROL.map(item => ({
@@ -137,7 +143,64 @@ export class ShiftCheckListService {
       }});
   }
 
-  async update(id: string, updateShiftCheckListDto: any) {
+  // async update(id: string, updateShiftCheckListDto: any) {
+  //   console.log("updateShiftCheckListDto--------------->",updateShiftCheckListDto);
+  //   if (!id) {
+  //     throw new BadRequestException('ID is required');
+  //   }
+  //
+  //   const existingChecklist = await this.prisma.shiftCheckList.findUnique({
+  //     where: { id }
+  //   });
+  //
+  //   if (!existingChecklist) {
+  //     throw new NotFoundException(`Shift CheckList with ID ${id} not found`);
+  //   }
+  //
+  //   const { categories, ...shiftCheckListData } = updateShiftCheckListDto;
+  //
+  //   return this.prisma.$transaction(async (prisma) => {
+  //     // Update main shift checklist
+  //     await prisma.shiftCheckList.update({
+  //       where: { id },
+  //       data: shiftCheckListData,
+  //     });
+  //
+  //     // Update item check status if provided
+  //     if (categories) {
+  //       for (const category of categories) {
+  //         if (category.items) {
+  //           for (const item of category.items) {
+  //             if (item.id && item.isChecked !== undefined) {
+  //               await prisma.checklistItem.update({
+  //                 where: { id: item.id },
+  //                 data: { isChecked: item.isChecked }
+  //               });
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //
+  //     // Return updated checklist
+  //     return prisma.shiftCheckList.findUnique({
+  //       where: { id },
+  //       include: {
+  //         categories: {
+  //           include: {
+  //             items: {
+  //               orderBy: { displayOrder: 'asc' }
+  //             }
+  //           },
+  //           orderBy: { displayOrder: 'asc' }
+  //         }
+  //       }
+  //     });
+  //   });
+  // }
+
+  async update(id: string, updateShiftCheckListDto: UpdateShiftCheckListDto) {
+    console.log("updateShiftCheckListDto--------------->", updateShiftCheckListDto);
     if (!id) {
       throw new BadRequestException('ID is required');
     }
@@ -159,15 +222,34 @@ export class ShiftCheckListService {
         data: shiftCheckListData,
       });
 
-      // Update item check status if provided
+      // Update categories and items if provided
       if (categories) {
         for (const category of categories) {
+          // Update category if it has an ID
+          if (category.id) {
+            await prisma.checklistCategory.update({
+              where: { id: category.id },
+              data: {
+                //selectType: category.selectType,
+                name: category.name,
+                displayOrder: category.displayOrder,
+              },
+            });
+          }
+
+          // Update items if provided
           if (category.items) {
             for (const item of category.items) {
-              if (item.id && item.isChecked !== undefined) {
+              if (item.id) {
                 await prisma.checklistItem.update({
                   where: { id: item.id },
-                  data: { isChecked: item.isChecked }
+                  data: {
+                    description: item.description,
+                    displayOrder: item.displayOrder,
+                    isRequired: item.isRequired,
+                    isChecked: item.isChecked,
+                    itemType: item.itemType,
+                  }
                 });
               }
             }
@@ -191,7 +273,6 @@ export class ShiftCheckListService {
       });
     });
   }
-
   async remove(id: string) {
     if (!id) {
       throw new BadRequestException('ID is required');

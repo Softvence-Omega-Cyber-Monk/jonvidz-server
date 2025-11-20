@@ -15,10 +15,10 @@ export class CreateEquipmentDto {
   })
   @IsNotEmpty()
   @IsEnum(EquipmentFrequency)
-  standardFrequency: EquipmentFrequency;
+  standard_frequency: EquipmentFrequency;
 
   @ApiProperty({ description: 'Notes or purpose for this equipment', required: false })
   @IsOptional()
   @IsString()
-  notesOrPurpose?: string;
+  notes_or_purpose?: string;
 }

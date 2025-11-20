@@ -22,6 +22,7 @@ model ShiftCheckList {
 
 model ChecklistCategory {
   id               String          @id @default(uuid())
+  selectType       String?
   name             String
   displayOrder     Int             @default(0)
   shiftCheckListId String

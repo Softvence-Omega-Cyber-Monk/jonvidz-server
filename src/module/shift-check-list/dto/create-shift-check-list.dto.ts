@@ -104,7 +104,7 @@ export class CreateShiftCheckListDto {
   @IsString()
   userId?: string;
 
-  @ApiProperty({ description: 'Patient ID' })
+  @ApiProperty({ description: 'Patient ID',example:"3c5b6d02-46e9-4d00-9605-897bdcbd6937" })
   @IsString()
   @IsNotEmpty()
   patientId: string;
@@ -119,10 +119,6 @@ export class CreateShiftCheckListDto {
   @IsString()
   signature?: string;
 
-  @ApiProperty({
-    type: [CreateChecklistCategoryDto],
-    description: 'Checklist categories with items'
-  })
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateChecklistCategoryDto)

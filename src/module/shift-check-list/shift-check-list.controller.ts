@@ -10,10 +10,13 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ShiftCheckListService } from './shift-check-list.service';
-import { CreateShiftCheckListDto } from './dto/create-shift-check-list.dto';
+import {
+  CreateShiftCheckListDto,
+} from './dto/create-shift-check-list.dto';
 import { UpdateShiftCheckListDto } from './dto/update-shift-check-list.dto';
 import { Response } from 'express';
 import sendResponse from '../../utils/sendResponse';
+import { ApiOperation, ApiParam } from '@nestjs/swagger';
 
 @Controller('shift-check-list')
 export class ShiftCheckListController {
@@ -61,14 +64,22 @@ export class ShiftCheckListController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateShiftCheckListDto: UpdateShiftCheckListDto, @Res() res: Response) {
-    const data = await this.shiftCheckListService.update(id, updateShiftCheckListDto);
-    return sendResponse(res, {
-      statusCode: HttpStatus.OK,
+  @ApiOperation({ summary: 'Update a shift check list partially' })
+  @ApiParam({ name: 'id', description: 'Shift Check List ID' })
+  async update(
+    @Param('id') id: string,
+    @Body() updateShiftCheckListDto: UpdateShiftCheckListDto,
+  ) {
+    const data = await this.shiftCheckListService.update(
+      id,
+      updateShiftCheckListDto,
+    );
+    return {
+      statusCode: 200,
       success: true,
       message: 'Shift Check List updated successfully.',
-      data,
-    });
+      data: data,
+    };
   }
 
   @Delete(':id')
