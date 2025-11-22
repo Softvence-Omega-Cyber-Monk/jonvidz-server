@@ -52,7 +52,7 @@ export class ShiftCheckListController {
     });
   }
 
-  @Get('patientCareAssignmentById:id')
+  @Get('patientCareAssignmentById/:id')
   async patientCareAssignmentById(@Param('id') id: string, @Res() res: Response) {
     const data = await this.shiftCheckListService.patientCareAssignmentById(id);
     return sendResponse(res, {

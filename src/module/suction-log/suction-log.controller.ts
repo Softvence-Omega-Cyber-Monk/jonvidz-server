@@ -49,7 +49,7 @@ export class SuctionLogController {
     });
   }
 
-  @Get('patientCareAssignmentId:id')
+  @Get('patientCareAssignmentId/:id')
   async patientCareAssignmentById(@Param('id') id: string, @Res() res: Response) {
     const data = await this.suctionLogService.patientCareAssignmentById(id);
     return sendResponse(res, {

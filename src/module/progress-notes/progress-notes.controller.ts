@@ -43,7 +43,7 @@ export class ProgressNotesController {
     });
   }
 
-  @Get('patientCareAssignmentById:id')
+  @Get('patientCareAssignmentById/:id')
   async patientCareAssignmentById(@Param('id') id: string, @Res() res: Response) {
     const data = await this.progressNotesService.patientCareAssignmentById(id);
     return sendResponse(res, {

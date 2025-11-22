@@ -43,7 +43,7 @@ export class FlowSheetController {
     })
   }
 
-  @Get(':id')
+  @Get('patientCareAssignmentById/:id')
   async patientCareAssignmentById(@Param('id') id: string,@Res() res: Response) {
     const data = await this.flowSheetService.patientCareAssignmentById(id);
     return sendResponse(res, {
