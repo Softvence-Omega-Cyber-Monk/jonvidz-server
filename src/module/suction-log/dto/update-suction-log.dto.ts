@@ -169,60 +169,39 @@ export class UpdatePostSuctionVitalsDto {
 
 // Main Update DTO with single objects
 export class UpdateSuctionLogDto extends PartialType(CreateSuctionLogDto) {
-  @ApiPropertyOptional({
-    description: 'Patient id',
-    example: '434b1b60-46a0-4a4b-8ba1-207c503f5a0d'
-  })
+ // @ApiPropertyOptional({ description: 'Patient id', example: '434b1b60-46a0-4a4b-8ba1-207c503f5a0d' })
   @IsOptional()
   @IsString()
   patientId?: string;
 
-  @ApiPropertyOptional({
-    description: 'User ID',
-    example: 'user-uuid-here'
-  })
+  //@ApiPropertyOptional({ description: 'User ID', example: 'user-uuid-here' })
   @IsOptional()
   @IsString()
   userId?: string;
 
-  @ApiPropertyOptional({
-    description: 'Signature',
-    example: 'ELON'
-  })
+  @ApiPropertyOptional({ description: 'Signature', example: 'ELON' })
   @IsOptional()
   @IsString()
   signature?: string;
 
-  @ApiPropertyOptional({
-    description: 'Notes/comments',
-    example: 'Patient had moderate secretions'
-  })
+  @ApiPropertyOptional({ description: 'Notes/comments', example: 'Patient had moderate secretions' })
   @IsOptional()
   @IsString()
   comments?: string;
 
-  @ApiPropertyOptional({
-    type: UpdatePreSuctionVitalsDto,
-    description: 'Pre-suction vitals'
-  })
+  @ApiPropertyOptional({ type: UpdatePreSuctionVitalsDto, description: 'Pre-suction vitals' })
   @IsOptional()
   @ValidateNested()
   @Type(() => UpdatePreSuctionVitalsDto)
   pre_suction_vitals?: UpdatePreSuctionVitalsDto;
 
-  @ApiPropertyOptional({
-    type: UpdateSecretionsDescriptionDto,
-    description: 'Secretions description'
-  })
+  @ApiPropertyOptional({ type: UpdateSecretionsDescriptionDto, description: 'Secretions description' })
   @IsOptional()
   @ValidateNested()
   @Type(() => UpdateSecretionsDescriptionDto)
   secretions_description?: UpdateSecretionsDescriptionDto;
 
-  @ApiPropertyOptional({
-    type: UpdatePostSuctionVitalsDto,
-    description: 'Post-suction vitals'
-  })
+  @ApiPropertyOptional({ type: UpdatePostSuctionVitalsDto, description: 'Post-suction vitals' })
   @IsOptional()
   @ValidateNested()
   @Type(() => UpdatePostSuctionVitalsDto)

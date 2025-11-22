@@ -129,7 +129,7 @@ export class PatientCareAssignmentService {
           patientCareAssignmentId:assignment.id
         } as Prisma.ProgressNotesUncheckedCreateInput,
       })
-      // Combine static templates with dynamic categories
+      //1) create shiftCheck List ---> Combine static templates with dynamic categories
       const allCategories = [
         // Static Template: Respiratory Equipment
         {
@@ -180,6 +180,7 @@ export class PatientCareAssignmentService {
           }
         },
       ];
+
       // 1) create shiftCheck List
       const shiftCheckList = await tx.shiftCheckList.create({
         data: {

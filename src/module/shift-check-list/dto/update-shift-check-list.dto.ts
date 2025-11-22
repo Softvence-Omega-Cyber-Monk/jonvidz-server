@@ -101,12 +101,12 @@ export class UpdateShiftCheckListDto {
   @IsString()
   empty_e_cylinders?: string;
 
-  @ApiPropertyOptional({ description: 'User ID (nullable)' })
+  //@ApiPropertyOptional({ description: 'User ID (nullable)' })
   @IsOptional()
   @IsString()
   userId?: string;
 
-  @ApiPropertyOptional({ description: 'Patient ID' })
+  //@ApiPropertyOptional({ description: 'Patient ID' })
   @IsOptional()
   @IsString()
   patientId?: string;
