@@ -1,8 +1,8 @@
 enum MedicationRoute {
   ORAL
-  NEB // Nebulizer
-  IV // Intravenous
-  IM // Intramuscular
+  Nebulizer
+  Intravenous
+  Intramuscular
   INHALED
   TOPICAL
 }

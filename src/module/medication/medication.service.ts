@@ -1,4 +1,4 @@
-import { Injectable,NotFoundException } from '@nestjs/common';
+import { Injectable,NotFoundException,BadRequestException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Medication } from '@prisma/client';
 import { UpdateMedicationDto } from './dto/update-medication.dto';
@@ -8,9 +8,20 @@ import { CreateMedicationDto } from './dto/create-medication.dto';
 export class MedicationService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createMedicationDto: CreateMedicationDto):Promise<Medication> {
-    return this.prisma.medication.create({data:createMedicationDto})
+  async create(createMedicationDto: CreateMedicationDto): Promise<Medication> {
+    const isRouteExist = await this.prisma.medication.findFirst({
+      where: { route: createMedicationDto.route },
+    });
+
+    if (isRouteExist) {
+      throw new BadRequestException('Medication route already exists');
+    }
+
+    return this.prisma.medication.create({
+      data: createMedicationDto,
+    });
   }
+
 
   async findAll(): Promise<Medication[]> {
     return this.prisma.medication.findMany();

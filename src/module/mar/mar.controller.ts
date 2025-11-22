@@ -21,6 +21,7 @@ export class MarController {
 
   @Post()
   async create(@Body() createMarDto: CreateMarDto,@Res() res: Response) {
+    console.log("createMarDto---->", createMarDto);
     const data = await this.marService.create(createMarDto);
     return sendResponse(res, {
       statusCode: HttpStatus.OK,

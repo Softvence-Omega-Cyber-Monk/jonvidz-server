@@ -8,10 +8,10 @@ export class CreateMedicationDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ example: 'Albuterol' })
-  @IsString()
-  @IsNotEmpty()
-  medicationId: string; // <-- required field
+  // @ApiProperty({ example: 'Albuterol' })
+  // @IsString()
+  // @IsNotEmpty()
+  // medicationId: string; // <-- required field
 
   @ApiProperty({ example: '2.5 mg/3mL' })
   @IsString()

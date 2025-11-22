@@ -21,16 +21,16 @@ export class FlowSheetController {
   constructor(private readonly flowSheetService: FlowSheetService,
               private readonly prisma: PrismaService) {}
 
-  @Post()
-  async create(@Body() createFlowSheetDto: CreateFlowSheetDto,@Res() res: Response) {
-    const data = await this.flowSheetService.create(createFlowSheetDto);
-    return sendResponse(res, {
-      statusCode: HttpStatus.CREATED,
-      success: true,
-      message: 'FlowSheet created successfully.',
-      data,
-    });
-  }
+  // @Post()
+  // async create(@Body() createFlowSheetDto: CreateFlowSheetDto,@Res() res: Response) {
+  //   const data = await this.flowSheetService.create(createFlowSheetDto);
+  //   return sendResponse(res, {
+  //     statusCode: HttpStatus.CREATED,
+  //     success: true,
+  //     message: 'FlowSheet created successfully.',
+  //     data,
+  //   });
+  // }
 
   @Get()
   async findAll(@Res() res: Response) {
