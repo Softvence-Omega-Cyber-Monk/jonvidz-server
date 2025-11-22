@@ -44,6 +44,17 @@ export class FlowSheetController {
   }
 
   @Get(':id')
+  async patientCareAssignmentById(@Param('id') id: string,@Res() res: Response) {
+    const data = await this.flowSheetService.patientCareAssignmentById(id);
+    return sendResponse(res, {
+      statusCode: HttpStatus.CREATED,
+      success: true,
+      message: 'PatientCareAssignmentById FlowSheet retrieve successfully.',
+      data,
+    })
+  }
+
+  @Get(':id')
   async findOne(@Param('id') id: string,@Res() res: Response) {
     const data = await this.flowSheetService.findOne(id);
     return sendResponse(res, {

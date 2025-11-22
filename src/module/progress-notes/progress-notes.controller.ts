@@ -43,6 +43,17 @@ export class ProgressNotesController {
     });
   }
 
+  @Get('patientCareAssignmentById:id')
+  async patientCareAssignmentById(@Param('id') id: string, @Res() res: Response) {
+    const data = await this.progressNotesService.patientCareAssignmentById(id);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'Progress Notes retrieve successfully.',
+      data,
+    });
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string, @Res() res: Response) {
     const data = await this.progressNotesService.findOne(id);

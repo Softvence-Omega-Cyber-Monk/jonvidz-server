@@ -23,7 +23,24 @@ export class FlowSheetService {
         vital_parameters: true,
       },});
   }
-
+  async patientCareAssignmentById(id: string) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const isExists = await this.prisma.flowSheet.findUnique({
+      where: { patientCareAssignmentId:id }
+    });
+    if (!isExists) {
+      throw new NotFoundException(`FlowSheet with ID ${id} not found`);
+    }
+    return this.prisma.flowSheet.findUnique({where: { patientCareAssignmentId:id }, include: {
+        off_vent_monitoring: true,
+        measured_data: true,
+        alarms_parameters: true,
+        vent_setting: true,
+        vital_parameters: true,
+      }});
+  }
   async findOne(id: string) {
     if (!id) {
       throw new BadRequestException('ID is required');

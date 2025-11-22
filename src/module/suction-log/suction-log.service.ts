@@ -66,6 +66,24 @@ export class SuctionLogService {
     return data;
   }
 
+  async patientCareAssignmentById(id: string) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const isExists = await this.prisma.suctionLog.findUnique({
+      where: { patientCareAssignmentId:id }
+    });
+    if (!isExists) {
+      throw new NotFoundException(`Suction Log with ID ${id} not found`);
+    }
+    return this.prisma.suctionLog.findUnique({where: {patientCareAssignmentId:id},include: {
+        user: true, // Include user relation
+        patient: true, // Include patient relation
+        pre_suction_vitals: true, // Include pre-suction vitals
+        secretions_description: true, // Include secretions description
+        post_suction_vitals: true, // Include post-suction vitals
+      },});
+  }
   async findOne(id: string) {
     if (!id) {
       throw new BadRequestException('ID is required');

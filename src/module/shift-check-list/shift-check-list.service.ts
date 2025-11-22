@@ -123,6 +123,27 @@ export class ShiftCheckListService {
     });
   }
 
+  async patientCareAssignmentById(id: string) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const isExists = await this.prisma.shiftCheckList.findUnique({
+      where: { patientCareAssignmentId:id }
+    });
+    if (!isExists) {
+      throw new NotFoundException(`Shift CheckList with ID ${id} not found`);
+    }
+    return this.prisma.shiftCheckList.findUnique(
+      {where: {patientCareAssignmentId: id},
+        include: {
+          categories: {
+            include: {
+              items: true
+            }
+          }
+        }});
+  }
+
   async findOne(id: string) {
     if (!id) {
       throw new BadRequestException('ID is required');

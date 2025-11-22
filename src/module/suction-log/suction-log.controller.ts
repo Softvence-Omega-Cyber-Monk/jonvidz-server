@@ -49,6 +49,17 @@ export class SuctionLogController {
     });
   }
 
+  @Get('patientCareAssignmentId:id')
+  async patientCareAssignmentById(@Param('id') id: string, @Res() res: Response) {
+    const data = await this.suctionLogService.patientCareAssignmentById(id);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'Suction Log retrieve successfully.',
+      data,
+    });
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string, @Res() res: Response) {
     const data = await this.suctionLogService.findOne(id);

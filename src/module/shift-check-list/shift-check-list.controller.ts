@@ -52,6 +52,17 @@ export class ShiftCheckListController {
     });
   }
 
+  @Get('patientCareAssignmentById:id')
+  async patientCareAssignmentById(@Param('id') id: string, @Res() res: Response) {
+    const data = await this.shiftCheckListService.patientCareAssignmentById(id);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'Shift Check List retrieve successfully.',
+      data,
+    });
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string, @Res() res: Response) {
     const data = await this.shiftCheckListService.findOne(id);

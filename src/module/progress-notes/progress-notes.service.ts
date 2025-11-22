@@ -18,11 +18,43 @@ export class ProgressNotesService {
     return this.prisma.progressNotes.findMany();
   }
 
+  async patientCareAssignmentById(id: string) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const isExists = await this.prisma.progressNotes.findUnique({
+      where: { patientCareAssignmentId:id }
+    });
+    if (!isExists) {
+      throw new NotFoundException(`Progression Notes with ID ${id} not found`);
+    }
+    return this.prisma.progressNotes.findUnique({where: {patientCareAssignmentId:id}});
+  }
+
   async findOne(id: string) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const isExists = await this.prisma.progressNotes.findUnique({
+      where: {id }
+    });
+    if (!isExists) {
+      throw new NotFoundException(`Progression Notes with ID ${id} not found`);
+    }
+
     return this.prisma.progressNotes.findUnique({where: {id}});
   }
 
   async update(id: string, updateProgressNoteDto: UpdateProgressNoteDto) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const isExists = await this.prisma.progressNotes.findUnique({
+      where: {id }
+    });
+    if (!isExists) {
+      throw new NotFoundException(`Progression Notes with ID ${id} not found`);
+    }
     return this.prisma.progressNotes.update({where: { id },
       data: updateProgressNoteDto});
   }

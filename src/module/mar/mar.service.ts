@@ -17,19 +17,24 @@ export class MarService {
   // }
 
   findAll() {
-    return this.prisma.mAR.findMany();
+    return this.prisma.mAR.findMany({
+      include: {
+        medication: true,
+      },
+    });
   }
-  async patientByMAR(id:string) {
+
+  async patientCareAssignmentById(id:string) {
     if (!id) {
       throw new BadRequestException('ID is required');
     }
     const isExists = await this.prisma.mAR.findMany({
-      where: { patientId:id }
+      where: { patientCareAssignmentId:id }
     });
     if (!isExists) {
       throw new NotFoundException(`MAR with ID ${id} not found`);
     }
-    return this.prisma.mAR.findMany({where: { patientId:id }});
+    return this.prisma.mAR.findMany({where: { patientCareAssignmentId:id },include: {medication: true}});
   }
 
   async findOne(id: string) {
@@ -42,7 +47,7 @@ export class MarService {
     if (!isExists) {
       throw new NotFoundException(`MAR with ID ${id} not found`);
     }
-    return this.prisma.mAR.findUnique({where: {id}});
+    return this.prisma.mAR.findUnique({where: {id},include: {medication: true}});
   }
 
   async update(id: string, updateMarDto: UpdateMarDto) {

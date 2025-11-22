@@ -41,9 +41,9 @@ export class MarController {
       data,
     });
   }
-  @Get('patientByMAR/:id')
-  async patientByMAR(@Param('id') id: string, @Res() res: Response) {
-    const data = await this.marService.patientByMAR(id);
+  @Get('patientCareAssignmentId/:id')
+  async patientCareAssignmentById(@Param('id') id: string, @Res() res: Response) {
+    const data = await this.marService.patientCareAssignmentById(id);
     return sendResponse(res, {
       statusCode: HttpStatus.OK,
       success: true,
