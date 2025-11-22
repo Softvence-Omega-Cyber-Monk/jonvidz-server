@@ -4,6 +4,7 @@ import { UpdatePatientCareAssignmentDto } from './dto/update-patient-care-assign
 import { PrismaService } from '../../prisma/prisma.service';
 import { safeUserSelect } from "../user/dto/safeUserSelect";
 import {STOMA_SITE_CARE,STOMA_SITE_CONDITION,RESPIRATORY_EQUIPMENT_TEMPLATE,OXYGEN_INFECTION_CONTROL} from '../../constants/checklist-templates'
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class PatientCareAssignmentService {
@@ -61,7 +62,7 @@ export class PatientCareAssignmentService {
         data: {
           patientId: dto.patientId,
           patientCareAssignmentId:assignment.id
-        },
+        } as Prisma.FlowSheetUncheckedCreateInput,
       });
       const offVentMonitoring = await tx.offVentMonitoring.create({
         data: {
@@ -106,7 +107,7 @@ export class PatientCareAssignmentService {
           patientCareAssignmentId:assignment.id
           // signature: dto.signature,
           // comments: dto.comments,
-        },
+        } as Prisma.SuctionLogUncheckedCreateInput,
       });
       await tx.preSuctionVitals.create({data:{
           suctionLogId:suctionLog.id,
@@ -126,7 +127,7 @@ export class PatientCareAssignmentService {
         data: {
           patientId: dto.patientId,
           patientCareAssignmentId:assignment.id
-        },
+        } as Prisma.ProgressNotesUncheckedCreateInput,
       })
       // Combine static templates with dynamic categories
       const allCategories = [
@@ -188,7 +189,7 @@ export class PatientCareAssignmentService {
           categories: {
             create: allCategories
           }
-        },
+        } as Prisma.ShiftCheckListUncheckedCreateInput,
         include: {
           categories: {
             include: {
@@ -207,9 +208,10 @@ export class PatientCareAssignmentService {
         data: {
           patientId: dto.patientId,
           patientCareAssignmentId:assignment.id,
-          //medicationId: dto.medicationId,
-        },
+        } as any,
       })
+
+
 
       // 3) Fetch and return the full FlowSheet including the child records
       const full = await tx.flowSheet.findUnique({
