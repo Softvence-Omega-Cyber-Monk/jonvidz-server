@@ -10,44 +10,44 @@ import { PrismaService } from '../../prisma/prisma.service';
 @Injectable()
 export class SuctionLogService {
   constructor(private prisma: PrismaService) {}
-  async create(dto: CreateSuctionLogDto) {
-    //console.log("dto----------------->",dto);
-    const result = await this.prisma.$transaction(async (tx) => {
-      // 1) create parent Suction
-      const suctionLog = await tx.suctionLog.create({
-        data: {
-          patientId: dto.patientId,
-          signature: dto.signature,
-          comments: dto.comments,
-        },
-      });
-      await tx.preSuctionVitals.create({data:{
-          suctionLogId:suctionLog.id,
-          patientId: dto.patientId,
-        }})
-      await tx.secretionsDescription.create({data:{
-          suctionLogId:suctionLog.id,
-          patientId: dto.patientId,
-        }})
-
-      await tx.postSuctionVitals.create({data:{
-        suctionLogId:suctionLog.id,
-        patientId: dto.patientId,
-      }})
-
-      // 3) Fetch and return the full FlowSheet including the child records
-      const full = await tx.suctionLog.findUnique({
-        where: { id: suctionLog.id },
-        include: {
-          pre_suction_vitals: true,
-          secretions_description: true,
-          post_suction_vitals: true,
-        },
-      });
-
-      return full;
-    }); // end transaction
-  }
+  // async create(dto: CreateSuctionLogDto) {
+  //   //console.log("dto----------------->",dto);
+  //   const result = await this.prisma.$transaction(async (tx) => {
+  //     // 1) create parent Suction
+  //     const suctionLog = await tx.suctionLog.create({
+  //       data: {
+  //         patientId: dto.patientId,
+  //         signature: dto.signature,
+  //         comments: dto.comments,
+  //       },
+  //     });
+  //     await tx.preSuctionVitals.create({data:{
+  //         suctionLogId:suctionLog.id,
+  //         patientId: dto.patientId,
+  //       }})
+  //     await tx.secretionsDescription.create({data:{
+  //         suctionLogId:suctionLog.id,
+  //         patientId: dto.patientId,
+  //       }})
+  //
+  //     await tx.postSuctionVitals.create({data:{
+  //       suctionLogId:suctionLog.id,
+  //       patientId: dto.patientId,
+  //     }})
+  //
+  //     // 3) Fetch and return the full FlowSheet including the child records
+  //     const full = await tx.suctionLog.findUnique({
+  //       where: { id: suctionLog.id },
+  //       include: {
+  //         pre_suction_vitals: true,
+  //         secretions_description: true,
+  //         post_suction_vitals: true,
+  //       },
+  //     });
+  //
+  //     return full;
+  //   }); // end transaction
+  // }
 
 
   async findAll() {

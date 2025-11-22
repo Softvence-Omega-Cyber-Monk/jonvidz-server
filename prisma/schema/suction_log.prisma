@@ -7,6 +7,9 @@ model SuctionLog {
   userId String? // <-- Make nullable
   user   User?   @relation(fields: [userId], references: [id])
 
+  patientCareAssignmentId String                @unique
+  patientCareAssignment   PatientCareAssignment @relation(fields: [patientCareAssignmentId], references: [id], onDelete: Cascade)
+
   patientId String
   patient   Patient  @relation(fields: [patientId], references: [id])
   createdAt DateTime @default(now())

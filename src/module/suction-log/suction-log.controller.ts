@@ -19,16 +19,16 @@ import { CreateSuctionLogDto } from './dto/create-suction-log.dto';
 export class SuctionLogController {
   constructor(private readonly suctionLogService: SuctionLogService) {}
 
-  @Post()
-  async create(@Body() createSuctionLogDto: CreateSuctionLogDto, @Res() res: Response) {
-    const data = await this.suctionLogService.create(createSuctionLogDto);
-    return sendResponse(res, {
-      statusCode: HttpStatus.OK,
-      success: true,
-      message: 'suction log data created successfully.',
-      data,
-    });
-  }
+  // @Post()
+  // async create(@Body() createSuctionLogDto: CreateSuctionLogDto, @Res() res: Response) {
+  //   const data = await this.suctionLogService.create(createSuctionLogDto);
+  //   return sendResponse(res, {
+  //     statusCode: HttpStatus.OK,
+  //     success: true,
+  //     message: 'suction log data created successfully.',
+  //     data,
+  //   });
+  // }
 
   @Get()
   async findAll(@Res() res: Response) {

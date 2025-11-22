@@ -19,17 +19,17 @@ import { CreateMarDto } from './dto/create-mar.dto';
 export class MarController {
   constructor(private readonly marService: MarService) {}
 
-  @Post()
-  async create(@Body() createMarDto: CreateMarDto,@Res() res: Response) {
-    console.log("createMarDto---->", createMarDto);
-    const data = await this.marService.create(createMarDto);
-    return sendResponse(res, {
-      statusCode: HttpStatus.OK,
-      success: true,
-      message: 'MAR created successfully.',
-      data,
-    });
-  }
+  // @Post()
+  // async create(@Body() createMarDto: CreateMarDto,@Res() res: Response) {
+  //   console.log("createMarDto---->", createMarDto);
+  //   const data = await this.marService.create(createMarDto);
+  //   return sendResponse(res, {
+  //     statusCode: HttpStatus.OK,
+  //     success: true,
+  //     message: 'MAR created successfully.',
+  //     data,
+  //   });
+  // }
 
   @Get()
   async findAll(@Res() res: Response) {

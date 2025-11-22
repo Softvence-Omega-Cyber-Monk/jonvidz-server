@@ -10,8 +10,9 @@ import { PrismaService } from '../../prisma/prisma.service';
 @Injectable()
 export class MarService {
   constructor(private prisma: PrismaService) {}
-  create(createMarDto: CreateMarDto) {
-    console.log("createMarDto----------->", createMarDto);
+  async create(createMarDto: CreateMarDto) {
+
+    //console.log("createMarDto----------->", createMarDto);
     return this.prisma.mAR.create({data: createMarDto});
   }
 

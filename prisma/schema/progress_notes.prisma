@@ -3,6 +3,7 @@ enum NoteType {
   InterventionNote
   ChangeofCondition
 }
+
 model ProgressNotes {
   id       String    @id @default(uuid())
   noteType NoteType?
@@ -10,6 +11,9 @@ model ProgressNotes {
 
   comments  String? @db.Text
   signature String? @db.Text
+
+  patientCareAssignmentId String                @unique
+  patientCareAssignment   PatientCareAssignment @relation(fields: [patientCareAssignmentId], references: [id], onDelete: Cascade)
 
   userId String? // <-- Make nullable
   user   User?   @relation(fields: [userId], references: [id])

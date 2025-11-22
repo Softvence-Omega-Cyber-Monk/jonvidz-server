@@ -4,8 +4,12 @@ model ShiftCheckList {
   selectType        String?
   full_e_cylinders  String?
   empty_e_cylinders String?
-  userId            String? // <-- Make nullable
-  user              User?   @relation(fields: [userId], references: [id])
+
+  patientCareAssignmentId String                @unique
+  patientCareAssignment   PatientCareAssignment @relation(fields: [patientCareAssignmentId], references: [id], onDelete: Cascade)
+
+  userId String? // <-- Make nullable
+  user   User?   @relation(fields: [userId], references: [id])
 
   patientId String
   patient   Patient @relation(fields: [patientId], references: [id])

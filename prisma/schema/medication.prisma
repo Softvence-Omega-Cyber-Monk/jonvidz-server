@@ -14,7 +14,7 @@ enum MadicationStatus {
 
 model Medication {
   id           String           @id @default(uuid())
-  name         String           @unique
+  name         String
   standardDose String           @db.VarChar(100)
   route        MedicationRoute?
 
@@ -27,7 +27,7 @@ model Medication {
   // Optional: Timestamps for auditing
   createdAt                  DateTime          @default(now())
   updatedAt                  DateTime          @updatedAt
-  MAR                        MAR[]
+  MAR                        MAR?
 
   @@map("medications")
 }

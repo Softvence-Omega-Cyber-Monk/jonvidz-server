@@ -3,6 +3,7 @@ import { CreatePatientCareAssignmentDto } from './dto/create-patient-care-assign
 import { UpdatePatientCareAssignmentDto } from './dto/update-patient-care-assignment.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { safeUserSelect } from "../user/dto/safeUserSelect";
+import {STOMA_SITE_CARE,STOMA_SITE_CONDITION,RESPIRATORY_EQUIPMENT_TEMPLATE,OXYGEN_INFECTION_CONTROL} from '../../constants/checklist-templates'
 
 @Injectable()
 export class PatientCareAssignmentService {
@@ -59,14 +60,9 @@ export class PatientCareAssignmentService {
       const flowSheet = await tx.flowSheet.create({
         data: {
           patientId: dto.patientId,
-          //userId: dto.userId ?? undefined,
-          //comments: dto.comments ?? undefined,
-          //signature: dto.signature ?? undefined,
+          patientCareAssignmentId:assignment.id
         },
       });
-
-      // 2) create minimal child rows, each referencing the parent's id
-      // We use tx.[model].create so everything runs inside the same DB transaction
       const offVentMonitoring = await tx.offVentMonitoring.create({
         data: {
           patientId: dto.patientId,
@@ -103,6 +99,118 @@ export class PatientCareAssignmentService {
         },
       });
 
+      // 1) create parent Suction
+      const suctionLog = await tx.suctionLog.create({
+        data: {
+          patientId: dto.patientId,
+          patientCareAssignmentId:assignment.id
+          // signature: dto.signature,
+          // comments: dto.comments,
+        },
+      });
+      await tx.preSuctionVitals.create({data:{
+          suctionLogId:suctionLog.id,
+          patientId: dto.patientId,
+        }})
+      await tx.secretionsDescription.create({data:{
+          suctionLogId:suctionLog.id,
+          patientId: dto.patientId,
+        }})
+      await tx.postSuctionVitals.create({data:{
+          suctionLogId:suctionLog.id,
+          patientId: dto.patientId,
+        }})
+
+      // 1) create progress Notes
+      const progressNotes = await tx.progressNotes.create({
+        data: {
+          patientId: dto.patientId,
+          patientCareAssignmentId:assignment.id
+        },
+      })
+      // Combine static templates with dynamic categories
+      const allCategories = [
+        // Static Template: Respiratory Equipment
+        {
+          name: "Respiratory Equipment",
+          selectType:"",
+          displayOrder: 1,
+          items: {
+            create: RESPIRATORY_EQUIPMENT_TEMPLATE.map(item => ({
+              ...item,
+              isChecked: false
+            }))
+          }
+        },
+        // Static Template: Stoma Site Care
+        {
+          name: "Stoma Site Care",
+          selectType:"",
+          displayOrder: 2,
+          items: {
+            create: STOMA_SITE_CARE.map(item => ({
+              ...item,
+              isChecked: false
+            }))
+          }
+        },
+        // Static Template: Stoma Site Condition
+        {
+          name: "Stoma Site Condition",
+          selectType:"",
+          displayOrder: 3,
+          items: {
+            create: STOMA_SITE_CONDITION.map(item => ({
+              ...item,
+              isChecked: false
+            }))
+          }
+        },
+        // Static Template: Oxygen & Infection Control
+        {
+          name: "Oxygen & Infection Control",
+          selectType:"",
+          displayOrder: 4,
+          items: {
+            create: OXYGEN_INFECTION_CONTROL.map(item => ({
+              ...item,
+              isChecked: false
+            }))
+          }
+        },
+      ];
+      // 1) create shiftCheck List
+      const shiftCheckList = await tx.shiftCheckList.create({
+        data: {
+          patientId: dto.patientId,
+          patientCareAssignmentId: assignment.id,
+          // add any other checklist-level fields you want here, e.g. title, notes, createdBy, etc.
+          categories: {
+            create: allCategories
+          }
+        },
+        include: {
+          categories: {
+            include: {
+              items: {
+                orderBy: { displayOrder: 'asc' }
+              }
+            },
+            orderBy: { displayOrder: 'asc' }
+          }
+        }
+      });
+
+
+      // 1) create MAR
+      const mar = await tx.mAR.create({
+        data: {
+          patientId: dto.patientId,
+          patientCareAssignmentId:assignment.id,
+          //medicationId: dto.medicationId,
+        },
+      })
+
       // 3) Fetch and return the full FlowSheet including the child records
       const full = await tx.flowSheet.findUnique({
         where: { id: flowSheet.id },
@@ -115,16 +223,10 @@ export class PatientCareAssignmentService {
         },
       });
 
-      // Optionally you can add debug logging
-      // this.logger.debug(`Created FlowSheet ${flowSheet.id} and placeholder children`);
-
       return full;
     }); // end transaction
 
-    //return result;
 
-      //await this.prisma.mAR.create({data:{patientId: dto.patientId,medicationId: dto.medicationId,}})
-      //await this.prisma.suctionLog.create({data:{patientId: dto.patientId}})
     return assignment;
   }
 

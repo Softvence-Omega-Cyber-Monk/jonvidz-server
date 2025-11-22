@@ -22,16 +22,16 @@ import { ApiOperation, ApiParam } from '@nestjs/swagger';
 export class ShiftCheckListController {
   constructor(private readonly shiftCheckListService: ShiftCheckListService) {}
 
-  @Post()
-  async create(@Body() createShiftCheckListDto: CreateShiftCheckListDto,@Res() res: Response) {
-    const data = await this.shiftCheckListService.create(createShiftCheckListDto);
-    return sendResponse(res, {
-      statusCode: HttpStatus.CREATED,
-      success: true,
-      message: 'Shift Check List created successfully.',
-      data,
-    });
-  }
+  // @Post()
+  // async create(@Body() createShiftCheckListDto: CreateShiftCheckListDto,@Res() res: Response) {
+  //   const data = await this.shiftCheckListService.create(createShiftCheckListDto);
+  //   return sendResponse(res, {
+  //     statusCode: HttpStatus.CREATED,
+  //     success: true,
+  //     message: 'Shift Check List created successfully.',
+  //     data,
+  //   });
+  // }
 
   @Get()
   async findAll(@Res() res: Response) {

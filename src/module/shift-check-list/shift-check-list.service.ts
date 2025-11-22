@@ -13,99 +13,100 @@ import { UpdateShiftCheckListDto } from './dto/update-shift-check-list.dto';
 export class ShiftCheckListService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createShiftCheckListDto: CreateShiftCheckListDto) {
-    const { categories = [], ...shiftCheckListData } = createShiftCheckListDto;
-
-    // Combine static templates with dynamic categories
-    const allCategories = [
-      // Static Template: Respiratory Equipment
-      {
-        name: "Respiratory Equipment",
-        selectType:"",
-        displayOrder: 1,
-        items: {
-          create: RESPIRATORY_EQUIPMENT_TEMPLATE.map(item => ({
-            ...item,
-            isChecked: false // Always start as unchecked
-          }))
-        }
-      },
-      // Static Template: Stoma Site Care
-      {
-        name: "Stoma Site Care",
-        selectType:"",
-        displayOrder: 2,
-        items: {
-          create: STOMA_SITE_CARE.map(item => ({
-            ...item,
-            isChecked: false
-          }))
-        }
-      },
-      // Static Template: Stoma Site Condition
-      {
-        name: "Stoma Site Condition",
-        selectType:"",
-        displayOrder: 3,
-        items: {
-          create: STOMA_SITE_CONDITION.map(item => ({
-            ...item,
-            isChecked: false
-          }))
-        }
-      },
-      // Static Template: Oxygen & Infection Control
-      {
-        name: "Oxygen & Infection Control",
-        selectType:"",
-        displayOrder: 4,
-        items: {
-          create: OXYGEN_INFECTION_CONTROL.map(item => ({
-            ...item,
-            isChecked: false
-          }))
-        }
-      },
-      // Dynamic categories from request (if any)
-      ...categories.map(category => ({
-        name: category.name,
-        displayOrder: Number(category.displayOrder)+1, // Start after static templates
-        items: {
-          create: category.items.map(item => ({
-            description: item.description,
-            itemType: item.itemType || 'checkbox',
-            displayOrder: item.displayOrder,
-            isRequired: item.isRequired,
-            isChecked: item.isChecked || false,
-            // Remove textResponse and selectedOption since they're not in your schema
-          }))
-        }
-      }))
-    ];
-
-    return this.prisma.shiftCheckList.create({
-      data: {
-        ...shiftCheckListData,
-        categories: {
-          create: allCategories
-        }
-      },
-      include: {
-        categories: {
-          include: {
-            items: {
-              orderBy: {
-                displayOrder: 'asc'
-              }
-            }
-          },
-          orderBy: {
-            displayOrder: 'asc'
-          }
-        }
-      }
-    });
-  }
+  // async create(createShiftCheckListDto: CreateShiftCheckListDto) {
+  //   const { categories = [], ...shiftCheckListData } = createShiftCheckListDto;
+  //
+  //   // Combine static templates with dynamic categories
+  //   const allCategories = [
+  //     // Static Template: Respiratory Equipment
+  //     {
+  //       name: "Respiratory Equipment",
+  //       selectType:"",
+  //       displayOrder: 1,
+  //       items: {
+  //         create: RESPIRATORY_EQUIPMENT_TEMPLATE.map(item => ({
+  //           ...item,
+  //           isChecked: false // Always start as unchecked
+  //         }))
+  //       }
+  //     },
+  //     // Static Template: Stoma Site Care
+  //     {
+  //       name: "Stoma Site Care",
+  //       selectType:"",
+  //       displayOrder: 2,
+  //       items: {
+  //         create: STOMA_SITE_CARE.map(item => ({
+  //           ...item,
+  //           isChecked: false
+  //         }))
+  //       }
+  //     },
+  //     // Static Template: Stoma Site Condition
+  //     {
+  //       name: "Stoma Site Condition",
+  //       selectType:"",
+  //       displayOrder: 3,
+  //       items: {
+  //         create: STOMA_SITE_CONDITION.map(item => ({
+  //           ...item,
+  //           isChecked: false
+  //         }))
+  //       }
+  //     },
+  //     // Static Template: Oxygen & Infection Control
+  //     {
+  //       name: "Oxygen & Infection Control",
+  //       selectType:"",
+  //       displayOrder: 4,
+  //       items: {
+  //         create: OXYGEN_INFECTION_CONTROL.map(item => ({
+  //           ...item,
+  //           isChecked: false
+  //         }))
+  //       }
+  //     },
+  //     // Dynamic categories from request (if any)
+  //     ...categories.map(category => ({
+  //       name: category.name,
+  //       displayOrder: Number(category.displayOrder)+1, // Start after static templates
+  //       items: {
+  //         create: category.items.map(item => ({
+  //           description: item.description,
+  //           itemType: item.itemType || 'checkbox',
+  //           displayOrder: item.displayOrder,
+  //           isRequired: item.isRequired,
+  //           isChecked: item.isChecked || false,
+  //           // Remove textResponse and selectedOption since they're not in your schema
+  //         }))
+  //       }
+  //     }))
+  //   ];
+  //
+  //   return this.prisma.shiftCheckList.create({
+  //     data: {
+  //       ...shiftCheckListData,
+  //       patientCareAssignmentId:shiftCheckListData.patientCareAssignmentId,
+  //       categories: {
+  //         create: allCategories
+  //       }
+  //     },
+  //     include: {
+  //       categories: {
+  //         include: {
+  //           items: {
+  //             orderBy: {
+  //               displayOrder: 'asc'
+  //             }
+  //           }
+  //         },
+  //         orderBy: {
+  //           displayOrder: 'asc'
+  //         }
+  //       }
+  //     }
+  //   });
+  // }
 
   async findAll() {
     return this.prisma.shiftCheckList.findMany({

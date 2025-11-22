@@ -18,6 +18,9 @@ export class CreateFlowSheetDto {
   @IsString()
   patientId: string;
 
+  @IsString()
+  patientCareAssignmentId: string;
+
   // @IsOptional()
   // @IsArray()
   // @ValidateNested({ each: true })
