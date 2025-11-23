@@ -23,6 +23,7 @@ import { MeasuredDataModule } from './module/measured-data/measured-data.module'
 import { ShiftCheckListModule } from './module/shift-check-list/shift-check-list.module';
 import { AssignMedicationModule } from './module/assign-medication/assign-medication.module';
 import { AssignEquipmentModule } from './module/assign-equipment/assign-equipment.module';
+import { ListEquipmentModule } from './module/list-equipment/list-equipment.module';
 
 
 @Module({
@@ -50,6 +51,7 @@ import { AssignEquipmentModule } from './module/assign-equipment/assign-equipmen
       ShiftCheckListModule,
       AssignMedicationModule,
       AssignEquipmentModule,
+      ListEquipmentModule,
    
   ],
   controllers: [AppController],

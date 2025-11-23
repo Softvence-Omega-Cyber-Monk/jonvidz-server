@@ -3,6 +3,7 @@ import { CreateAssignEquipmentDto } from './dto/create-assign-equipment.dto';
 import { UpdateAssignEquipmentDto } from './dto/update-assign-equipment.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 
+
 @Injectable()
 export class AssignEquipmentService {
   constructor(private prisma: PrismaService) {}
@@ -19,7 +20,10 @@ export class AssignEquipmentService {
   }
 
   async findAll() {
-    const data = await this.prisma.assignEquipment.findMany()
+    const data = await this.prisma.assignEquipment.findMany({include: {
+        equipment: true,
+        listOfEquipment: true,
+      },})
     return data;
   }
 
@@ -27,17 +31,20 @@ export class AssignEquipmentService {
     if(!id) {
       throw new BadRequestException('id is required');
     }
-    const data = await this.prisma.assignEquipment.findUnique({ where: { id: id } });
+    const data = await this.prisma.assignEquipment.findUnique({ where: { id: id },include: {
+        equipment: true,
+        listOfEquipment: true,
+      }, });
     return data;
   }
 
-  async update(id: string, updateAssignEquipmentDto: UpdateAssignEquipmentDto) {
-    if(!id) {
-      throw new BadRequestException('id is required');
-    }
-    const data = await this.prisma.assignEquipment.update({where: { id },data: updateAssignEquipmentDto});
+  async update(id: string, dto: UpdateAssignEquipmentDto) {
+    if (!id) throw new BadRequestException('id is required');
+
+    const data =await this.prisma.assignEquipment.update({where:{id: id},data:dto});
     return data;
   }
+
 
   async remove(id: string) {
     if(!id) {
