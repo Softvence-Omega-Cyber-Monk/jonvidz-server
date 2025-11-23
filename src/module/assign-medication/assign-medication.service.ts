@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateAssignMedicationDto } from './dto/create-assign-medication.dto';
 import { UpdateAssignMedicationDto } from './dto/update-assign-medication.dto';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -7,6 +11,13 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class AssignMedicationService {
   constructor(private prisma: PrismaService) {}
   async create(dto: CreateAssignMedicationDto) {
+    if(!dto.medicationId ){
+      throw new BadRequestException('medicationId is required');
+    }
+    if(!dto.marId ){
+      throw new BadRequestException('marId is required');
+    }
+
    const data = await this.prisma.listOfMadications.create({data:dto})
     return data
   }
