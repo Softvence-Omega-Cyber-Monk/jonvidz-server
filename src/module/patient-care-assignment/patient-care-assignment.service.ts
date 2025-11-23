@@ -217,6 +217,12 @@ export class PatientCareAssignmentService {
           patientCareAssignmentId: assignment.id,
         },
       });
+      const equipment = await tx.listOfEquipment.create({
+        data:{
+          patientId: dto.patientId,
+          patientCareAssignmentId: assignment.id,
+        }
+      })
       // await tx.listOfMadications.create({
       //   data: {
       //     marId: mar.id,

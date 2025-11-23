@@ -13,16 +13,17 @@ model PatientCareAssignment {
   patientId String
   patient   Patient @relation(fields: [patientId], references: [id])
 
-  staffId        String
-  staff          Staff            @relation(fields: [staffId], references: [id], onDelete: Cascade)
-  status         AssignmentStatus @default(ACTIVE)
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  mAR            MAR[]
-  flowSheet      FlowSheet[]
-  suctionLog     SuctionLog[]
-  progressNotes  ProgressNotes[]
-  shiftCheckList ShiftCheckList[]
+  staffId         String
+  staff           Staff             @relation(fields: [staffId], references: [id], onDelete: Cascade)
+  status          AssignmentStatus  @default(ACTIVE)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  mAR             MAR[]
+  flowSheet       FlowSheet[]
+  suctionLog      SuctionLog[]
+  progressNotes   ProgressNotes[]
+  shiftCheckList  ShiftCheckList[]
+  listOfEquipment ListOfEquipment[]
 
   //@@index([patientId, staffId])
   @@map("patient_care_assignments")

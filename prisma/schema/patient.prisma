@@ -36,6 +36,7 @@ model Patient {
   post_suction_vitals    PostSuctionVitals[]
   progress_notes         ProgressNotes[]
   shift_check_list       ShiftCheckList[]
+  listOfEquipment        ListOfEquipment[]
 
   @@map("patients")
 }

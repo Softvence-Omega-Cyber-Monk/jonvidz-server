@@ -14,8 +14,9 @@ model Equipment {
   notes_or_purpose   String?             @db.Text
 
   // Optional: Timestamps for auditing
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  assignEquipment AssignEquipment[]
 
   @@map("master_equipment_list")
 }
