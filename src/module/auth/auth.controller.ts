@@ -12,8 +12,8 @@ export class AuthController {
 
   // A. Staff and Doctor Registration
   // Note: An Admin Guard should typically be applied here to ensure only an authorized Admin can create staff accounts.
-  //@UseGuards(JwtAuthGuard, RolesGuard)
-  //@Roles(UserRole.DOCTOR,UserRole.ADMIN)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN)
   @Post('register/staff')
   async registerStaff(@Body() dto: RegisterStaffDto) {
 
