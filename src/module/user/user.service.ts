@@ -14,6 +14,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/guards/roles.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateMyProfileDto } from './dto/update-myprofile-dto';
 
 @Injectable()
 export class UserService {
@@ -109,7 +110,7 @@ export class UserService {
   }
 
   //@UseGuards(JwtAuthGuard, RolesGuard)
-  async myProfile(id: string, dto: UpdateUserDto) {
+  async myProfile(id: string, dto: UpdateMyProfileDto) {
     // check if user exists
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) throw new NotFoundException(`User with id ${id} not found`);

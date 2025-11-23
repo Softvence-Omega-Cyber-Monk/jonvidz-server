@@ -37,6 +37,7 @@ model Patient {
   progress_notes         ProgressNotes[]
   shift_check_list       ShiftCheckList[]
   listOfEquipment        ListOfEquipment[]
+  standardVitalRange     StandardVitalRange[]
 
   @@map("patients")
 }

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { VitalSignType } from '@prisma/client';
 import {
   IsNotEmpty,
@@ -7,6 +7,7 @@ import {
   IsString,
   Min,
   IsNumber,
+  IsUUID,
 } from 'class-validator';
 
 export class CreateStandardVitalRangeDto {
@@ -41,4 +42,9 @@ export class CreateStandardVitalRangeDto {
   @IsOptional()
   @IsString()
   normalRangeText?: string;
+
+  @ApiPropertyOptional({ description: 'Patient UUID' })
+  @IsUUID()
+  @IsOptional()
+  patientId?: string;
 }

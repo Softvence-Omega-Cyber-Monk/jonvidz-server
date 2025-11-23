@@ -16,6 +16,9 @@ model StandardVitalRange {
 
   normalRangeText String? @db.VarChar(50)
 
+  patientId String?
+  patient   Patient? @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

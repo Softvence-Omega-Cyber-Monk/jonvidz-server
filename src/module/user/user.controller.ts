@@ -22,6 +22,7 @@ import { Request, Response } from 'express';
 import sendResponse from '../../utils/sendResponse';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateMyProfileDto } from './dto/update-myprofile-dto';
 
 @Controller('user')
 export class UserController {
@@ -89,7 +90,7 @@ export class UserController {
   @ApiOperation({ summary: 'update my profile' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Patch('my-profile/:id')
-  async myProfile(@Param('id') id: string,@Body() dto: UpdateUserDto,@Req() req: RequestWithUser, @Res() res: Response) {
+  async myProfile(@Param('id') id: string,@Body() dto: UpdateMyProfileDto,@Req() req: RequestWithUser, @Res() res: Response) {
     //const user = req.user;
     // console.log("userID------------------------------------------->",user)
     // console.log("req.user------------------------------------------->",req.user)
