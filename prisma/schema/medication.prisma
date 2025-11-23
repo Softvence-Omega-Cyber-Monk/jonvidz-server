@@ -7,27 +7,17 @@ enum MedicationRoute {
   TOPICAL
 }
 
-enum MadicationStatus {
-  Given
-  Not_Given
-}
-
 model Medication {
-  id           String           @id @default(uuid())
+  id String @id @default(uuid())
+
   name         String
   standardDose String           @db.VarChar(100)
   route        MedicationRoute?
 
-  patientId String?
-  patient   Patient? @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  time_of_admanistative      DateTime?
-  status                     MadicationStatus?
-  administered_as_prescribed Boolean?
-  // Optional: Timestamps for auditing
-  createdAt                  DateTime          @default(now())
-  updatedAt                  DateTime          @updatedAt
-  MAR                        MAR?
+  listOfMadications ListOfMadications[]
 
   @@map("medications")
 }

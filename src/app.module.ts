@@ -21,6 +21,7 @@ import { ProgressNotesModule } from './module/progress-notes/progress-notes.modu
 import { OffVentMonitoringModule } from './module/off-vent-monitoring/off-vent-monitoring.module';
 import { MeasuredDataModule } from './module/measured-data/measured-data.module';
 import { ShiftCheckListModule } from './module/shift-check-list/shift-check-list.module';
+import { AssignMedicationModule } from './module/assign-medication/assign-medication.module';
 
 
 @Module({
@@ -46,6 +47,7 @@ import { ShiftCheckListModule } from './module/shift-check-list/shift-check-list
       OffVentMonitoringModule,
       MeasuredDataModule,
       ShiftCheckListModule,
+      AssignMedicationModule,
    
   ],
   controllers: [AppController],

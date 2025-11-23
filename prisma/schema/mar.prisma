@@ -1,28 +1,51 @@
+enum MedicationStatus {
+  Given
+  Not_Given
+  Pending
+}
+
 model MAR {
   id String @id @default(uuid())
 
-  comments               String?   @db.Text
-  signature              String?   @db.Text
-  time_of_administration String?
-  status                 String?
-  isCheck                Boolean?
-  full_e_cylinder        String?
-  empty_e_cylinder       String?
-  schedule               DateTime?
+  comments         String? @db.Text
+  signature        String? @db.Text
+  time_of_record   String?
+  full_e_cylinder  String?
+  empty_e_cylinder String?
 
   patientCareAssignmentId String                @unique
   patientCareAssignment   PatientCareAssignment @relation(fields: [patientCareAssignmentId], references: [id], onDelete: Cascade)
 
-  medicationId String?     @unique
-  medication   Medication? @relation(fields: [medicationId], references: [id], onDelete: Cascade)
-  userId       String? // <-- Make nullable
-  user         User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  patientId String
-  patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientId String?
+  patient   Patient? @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  listOfMadications ListOfMadications[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("mar")
+}
+
+model ListOfMadications {
+  id String @id @default(uuid())
+
+  marId        String
+  medicationId String?
+
+  mar        MAR         @relation(fields: [marId], references: [id], onDelete: Cascade)
+  medication Medication? @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+
+  time_of_record String?
+  schedule       String?
+  status         MedicationStatus?
+  isCheck        Boolean?          @default(false)
+  comments       String?           @db.Text
+
+  createdAt DateTime @default(now())
+
+  @@map("list_of_madications")
 }

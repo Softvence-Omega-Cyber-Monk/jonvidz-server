@@ -12,10 +12,12 @@ export class PatientCareAssignmentService {
 
   // Create a new assignment
   async create(dto: CreatePatientCareAssignmentDto) {
+
     //console.log("dto------------->",dto);
     const patient = await this.prisma.patient.findUnique({
       where: { id: dto.patientId },
     });
+
     if (!patient) {
       throw new NotFoundException(`Patient with ID ${dto.patientId} not found`);
     }
@@ -61,7 +63,7 @@ export class PatientCareAssignmentService {
       const flowSheet = await tx.flowSheet.create({
         data: {
           patientId: dto.patientId,
-          patientCareAssignmentId:assignment.id
+          patientCareAssignmentId: assignment.id,
         } as Prisma.FlowSheetUncheckedCreateInput,
       });
       const offVentMonitoring = await tx.offVentMonitoring.create({
@@ -104,80 +106,86 @@ export class PatientCareAssignmentService {
       const suctionLog = await tx.suctionLog.create({
         data: {
           patientId: dto.patientId,
-          patientCareAssignmentId:assignment.id
+          patientCareAssignmentId: assignment.id,
           // signature: dto.signature,
           // comments: dto.comments,
         } as Prisma.SuctionLogUncheckedCreateInput,
       });
-      await tx.preSuctionVitals.create({data:{
-          suctionLogId:suctionLog.id,
+      await tx.preSuctionVitals.create({
+        data: {
+          suctionLogId: suctionLog.id,
           patientId: dto.patientId,
-        }})
-      await tx.secretionsDescription.create({data:{
-          suctionLogId:suctionLog.id,
+        },
+      });
+      await tx.secretionsDescription.create({
+        data: {
+          suctionLogId: suctionLog.id,
           patientId: dto.patientId,
-        }})
-      await tx.postSuctionVitals.create({data:{
-          suctionLogId:suctionLog.id,
+        },
+      });
+      await tx.postSuctionVitals.create({
+        data: {
+          suctionLogId: suctionLog.id,
           patientId: dto.patientId,
-        }})
+        },
+      });
 
       // 1) create progress Notes
       const progressNotes = await tx.progressNotes.create({
         data: {
           patientId: dto.patientId,
-          patientCareAssignmentId:assignment.id
+          patientCareAssignmentId: assignment.id,
         } as Prisma.ProgressNotesUncheckedCreateInput,
-      })
+      });
       //1) create shiftCheck List ---> Combine static templates with dynamic categories
       const allCategories = [
         // Static Template: Respiratory Equipment
         {
-          name: "Respiratory Equipment",
-          selectType:"",
+          name: 'Respiratory Equipment',
+          selectType: '',
           displayOrder: 1,
           items: {
-            create: RESPIRATORY_EQUIPMENT_TEMPLATE.map(item => ({
+            create: RESPIRATORY_EQUIPMENT_TEMPLATE.map((item) => ({
               ...item,
-              isChecked: false
-            }))
-          }
+              isChecked: false,
+            })),
+          },
         },
         // Static Template: Stoma Site Care
         {
-          name: "Stoma Site Care",
-          selectType:"",
+          name: 'Stoma Site Care',
+          selectType: '',
           displayOrder: 2,
           items: {
-            create: STOMA_SITE_CARE.map(item => ({
+            create: STOMA_SITE_CARE.map((item) => ({
               ...item,
-              isChecked: false
-            }))
-          }
+              isChecked: false,
+            })),
+          },
         },
         // Static Template: Stoma Site Condition
         {
-          name: "Stoma Site Condition",
-          selectType:"",
+          name: 'Stoma Site Condition',
+          selectType: '',
           displayOrder: 3,
           items: {
-            create: STOMA_SITE_CONDITION.map(item => ({
+            create: STOMA_SITE_CONDITION.map((item) => ({
               ...item,
-              isChecked: false
-            }))
-          }
+              isChecked: false,
+            })),
+          },
         },
         // Static Template: Oxygen & Infection Control
         {
-          name: "Oxygen & Infection Control",
-          selectType:"",
+          name: 'Oxygen & Infection Control',
+          selectType: '',
           displayOrder: 4,
           items: {
-            create: OXYGEN_INFECTION_CONTROL.map(item => ({
+            create: OXYGEN_INFECTION_CONTROL.map((item) => ({
               ...item,
-              isChecked: false
-            }))
-          }
+              isChecked: false,
+            })),
+          },
         },
       ];
 
@@ -188,32 +196,32 @@ export class PatientCareAssignmentService {
           patientCareAssignmentId: assignment.id,
           // add any other checklist-level fields you want here, e.g. title, notes, createdBy, etc.
           categories: {
-            create: allCategories
-          }
+            create: allCategories,
+          },
         } as Prisma.ShiftCheckListUncheckedCreateInput,
         include: {
           categories: {
             include: {
               items: {
-                orderBy: { displayOrder: 'asc' }
-              }
+                orderBy: { displayOrder: 'asc' },
+              },
             },
-            orderBy: { displayOrder: 'asc' }
-          }
-        }
+            orderBy: { displayOrder: 'asc' },
+          },
+        },
       });
 
-
-      // 1) create MAR
       const mar = await tx.mAR.create({
         data: {
           patientId: dto.patientId,
-          patientCareAssignmentId:assignment.id,
-        } as any,
-      })
-
-
-
+          patientCareAssignmentId: assignment.id,
+        },
+      });
+      // await tx.listOfMadications.create({
+      //   data: {
+      //     marId: mar.id,
+      //   }
+      // });
       // 3) Fetch and return the full FlowSheet including the child records
       const full = await tx.flowSheet.findUnique({
         where: { id: flowSheet.id },

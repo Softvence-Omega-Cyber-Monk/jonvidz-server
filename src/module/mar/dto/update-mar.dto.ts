@@ -1,64 +1,57 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsOptional, IsBoolean, IsDateString } from 'class-validator';
+import { ApiPropertyOptional } from '@nestjs/swagger';
+import { IsString, IsArray, ValidateNested, IsBoolean } from 'class-validator';
+import { Type } from 'class-transformer';
 
-export class UpdateMarDto {
-  @ApiPropertyOptional({ example: 'Patient tolerated well' })
-  @IsOptional()
+class UpdateListOfMedicationsDto {
+  @ApiPropertyOptional()
   @IsString()
-  comments?: string;
+  id?: string;
 
-  @ApiPropertyOptional({ example: 'Signed by Nurse A' })
-  @IsOptional()
+  @ApiPropertyOptional()
   @IsString()
-  signature?: string;
+  time_of_record?: string;
 
-  @ApiPropertyOptional({ example: '14:30' })
-  @IsOptional()
+  @ApiPropertyOptional()
   @IsString()
-  time_of_administration?: string;
+  schedule?: string;
 
-  @ApiPropertyOptional({ example: 'Given' })
-  @IsOptional()
+  @ApiPropertyOptional()
   @IsString()
-  status?: string;
+  status?: 'Given' | 'Not_Given' | 'Pending';
 
-  @ApiPropertyOptional({ example: true })
-  @IsOptional()
+  @ApiPropertyOptional()
   @IsBoolean()
   isCheck?: boolean;
 
-  @ApiPropertyOptional({ example: '1200 psi' })
-  @IsOptional()
+  @ApiPropertyOptional()
+  @IsString()
+  comments?: string;
+}
+
+export class UpdateMarDto {
+  @ApiPropertyOptional()
+  @IsString()
+  comments?: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  signature?: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  time_of_record?: string;
+
+  @ApiPropertyOptional()
   @IsString()
   full_e_cylinder?: string;
 
-  @ApiPropertyOptional({ example: '300 psi' })
-  @IsOptional()
+  @ApiPropertyOptional()
   @IsString()
   empty_e_cylinder?: string;
 
-  @ApiPropertyOptional({ example: '2025-11-21T10:00:00.000Z' })
-  @IsOptional()
-  @IsDateString()
-  schedule?: Date;
-
-  //@ApiPropertyOptional({ example: 'fe6182f7-3c80-4fc0-96b4-c1f2f41a5a22' })
-  @IsOptional()
-  @IsString()
-  patientCareAssignmentId?: string;
-
-  //@ApiPropertyOptional({ example: 'ca382e0d-8d80-4e8c-8fac-1d46974f0abd' })
-  @IsOptional()
-  @IsString()
-  medicationId?: string;
-
-  //@ApiPropertyOptional({ example: '2bd9c447-4f49-43a6-9b78-70ed2ee54201' })
-  @IsOptional()
-  @IsString()
-  userId?: string;
-
-  //@ApiPropertyOptional({ example: '7c0beaa8-3714-49d0-9e47-479050d55aea' })
-  @IsOptional()
-  @IsString()
-  patientId?: string;
+  @ApiPropertyOptional({ type: [UpdateListOfMedicationsDto] })
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => UpdateListOfMedicationsDto)
+  listOfMadications?: UpdateListOfMedicationsDto[];
 }

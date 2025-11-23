@@ -76,6 +76,19 @@ export class MedicationController {
       data,
     });
   }
+  // @Patch('assignMedication/:id')
+  // async assignMedication(@Param('id') id: string, @Body() dto: CreateListOfMedicationsDto, @Req() req: Request,
+  //              @Res() res: Response,) {
+  //   const data = await this.medicationService.assignMedication(id, dto);
+  //   return sendResponse(res, {
+  //     statusCode: HttpStatus.OK,
+  //     success: true,
+  //     message: 'medication Update successfully.',
+  //     data,
+  //   });
+  // }
+
+
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
   @Patch(':id')

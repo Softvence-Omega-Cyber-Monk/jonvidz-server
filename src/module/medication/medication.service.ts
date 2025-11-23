@@ -1,8 +1,9 @@
 import { Injectable,NotFoundException,BadRequestException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { Medication } from '@prisma/client';
 import { UpdateMedicationDto } from './dto/update-medication.dto';
 import { CreateMedicationDto } from './dto/create-medication.dto';
+import { CreateListOfMedicationsDto } from './dto/createList-of-medications-dto';
 
 @Injectable()
 export class MedicationService {
@@ -52,6 +53,12 @@ export class MedicationService {
     }
   }
 
+  // async assignMedication( id: string,dto:CreateListOfMedicationsDto) {
+  //   return this.prisma.listOfMadications.update({
+  //     where: { id },
+  //     data: dto,
+  //   })
+  // }
   async remove(id: string): Promise<Medication> {
     try {
       return await this.prisma.medication.delete({

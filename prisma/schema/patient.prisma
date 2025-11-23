@@ -29,7 +29,7 @@ model Patient {
   alarms_parameters      AlarmsParameters[]
   off_vent_monitoring    OffVentMonitoring[]
   mar                    MAR[]
-  medication             Medication[]
+  // medication             Medication[]
   suction_log            SuctionLog[]
   pre_suction_vitals     PreSuctionVitals[]
   secretions_description SecretionsDescription[]

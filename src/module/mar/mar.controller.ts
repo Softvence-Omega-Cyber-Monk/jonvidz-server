@@ -64,7 +64,7 @@ export class MarController {
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateMarDto: UpdateMarDto, @Res() res: Response) {
-    const data = await this.marService.update(id, updateMarDto);
+    const data = await this.marService.updateMar(id, updateMarDto);
     return sendResponse(res, {
       statusCode: HttpStatus.OK,
       success: true,
