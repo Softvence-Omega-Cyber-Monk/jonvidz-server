@@ -22,6 +22,7 @@ import { OffVentMonitoringModule } from './module/off-vent-monitoring/off-vent-m
 import { MeasuredDataModule } from './module/measured-data/measured-data.module';
 import { ShiftCheckListModule } from './module/shift-check-list/shift-check-list.module';
 import { AssignMedicationModule } from './module/assign-medication/assign-medication.module';
+import { AssignEquipmentModule } from './module/assign-equipment/assign-equipment.module';
 
 
 @Module({
@@ -48,6 +49,7 @@ import { AssignMedicationModule } from './module/assign-medication/assign-medica
       MeasuredDataModule,
       ShiftCheckListModule,
       AssignMedicationModule,
+      AssignEquipmentModule,
    
   ],
   controllers: [AppController],
