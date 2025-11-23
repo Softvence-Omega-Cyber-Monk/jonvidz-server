@@ -21,8 +21,7 @@ export class AssignEquipmentService {
 
   async findAll() {
     const data = await this.prisma.assignEquipment.findMany({include: {
-        equipment: true,
-        listOfEquipment: true,
+        equipment: true
       },})
     return data;
   }
@@ -32,19 +31,48 @@ export class AssignEquipmentService {
       throw new BadRequestException('id is required');
     }
     const data = await this.prisma.assignEquipment.findUnique({ where: { id: id },include: {
-        equipment: true,
-        listOfEquipment: true,
+        equipment: true
       }, });
     return data;
   }
 
+  // async update(id: string, dto: UpdateAssignEquipmentDto) {
+  //   if (!id) throw new BadRequestException('id is required');
+  //
+  //   const data =await this.prisma.assignEquipment.update({where:{id: id},data:dto});
+  //   return data;
+  // }
+
   async update(id: string, dto: UpdateAssignEquipmentDto) {
-    if (!id) throw new BadRequestException('id is required');
+    if (!id) throw new BadRequestException('ID is required');
 
-    const data =await this.prisma.assignEquipment.update({where:{id: id},data:dto});
-    return data;
+    const updated = await this.prisma.assignEquipment.update({
+      where: { id },
+      data: {
+        date: dto.date,
+        status: dto.status,
+        equipment: dto.equipment
+          ? {
+            update: {
+              name: dto.equipment.name,
+              standard_frequency: dto.equipment.standard_frequency,
+              notes_or_purpose: dto.equipment.notes_or_purpose,
+            },
+          }
+          : undefined,
+      },
+      include: {
+        equipment: true,
+      },
+    });
+
+    return {
+      statusCode: 200,
+      success: true,
+      message: 'Assign Equipment updated successfully.',
+      data: updated,
+    };
   }
-
 
   async remove(id: string) {
     if(!id) {
