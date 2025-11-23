@@ -72,8 +72,9 @@ export class UserController {
       data,
     });
   }
-  //@UseGuards(JwtAuthGuard, RolesGuard)
-  //@Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
+  @ApiOperation({ summary: 'Allows only ADMIN to update a user’s role or status' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() dto: UpdateUserDto, @Res() res: Response) {
     const data = await this.userService.update(id, dto);
@@ -81,6 +82,22 @@ export class UserController {
       statusCode: HttpStatus.CREATED,
       success: true,
       message: 'User updated successfully.',
+      data,
+    });
+  }
+
+  @ApiOperation({ summary: 'update my profile' })
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Patch('my-profile/:id')
+  async myProfile(@Param('id') id: string,@Body() dto: UpdateUserDto,@Req() req: RequestWithUser, @Res() res: Response) {
+    //const user = req.user;
+    // console.log("userID------------------------------------------->",user)
+    // console.log("req.user------------------------------------------->",req.user)
+    const data = await this.userService.myProfile(id, dto);
+    return sendResponse(res, {
+      statusCode: HttpStatus.CREATED,
+      success: true,
+      message: 'Profile updated successfully.',
       data,
     });
   }

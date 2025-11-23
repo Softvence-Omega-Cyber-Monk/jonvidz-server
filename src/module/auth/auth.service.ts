@@ -1,4 +1,9 @@
-import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ConflictException,
+  BadRequestException,
+} from '@nestjs/common';
 import { LoginDto, RegisterPatientDto, RegisterStaffDto } from './dto/create-auth.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
@@ -23,6 +28,9 @@ export class AuthService {
   ) {}
 
   async registerStaff(dto: RegisterStaffDto): Promise<Staff> {
+    if(dto.role === "ADMIN"){
+      throw new BadRequestException("Assigning the role 'ADMIN' is not permitted.");
+    }
     const existingUser = await this.prisma.user.findUnique({ where: { email: dto.email } });
     if (existingUser) {
       throw new ConflictException('User with this email already exists.');

@@ -81,8 +81,35 @@ export class UserService {
       },
     });
   }
+
+
   @UseGuards(JwtAuthGuard, RolesGuard)
   async update(id: string, dto: UpdateUserDto) {
+    // check if user exists
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    if (!user) throw new NotFoundException(`User with id ${id} not found`);
+    // Build update data object properly
+    // const updateData = {
+    //   ...(dto.email && { email: dto.email }),
+    //   ...(dto.phone && { phone: dto.phone }),
+    //   ...(dto.fullName && { firstName: dto.fullName }),
+    // };
+    const updateData = {
+      ...dto,
+      firstName:dto.fullName,
+    };
+    if (Object.keys(updateData).length === 0) {
+      throw new BadRequestException('No valid fields provided for update');
+    }
+
+    return this.prisma.user.update({
+      where: { id },
+      data: updateData,
+    });
+  }
+
+  //@UseGuards(JwtAuthGuard, RolesGuard)
+  async myProfile(id: string, dto: UpdateUserDto) {
     // check if user exists
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) throw new NotFoundException(`User with id ${id} not found`);
@@ -92,7 +119,10 @@ export class UserService {
       ...(dto.phone && { phone: dto.phone }),
       ...(dto.fullName && { firstName: dto.fullName }),
     };
-
+    // const updateData = {
+    //   ...dto,
+    //   firstName:dto.fullName,
+    // };
     if (Object.keys(updateData).length === 0) {
       throw new BadRequestException('No valid fields provided for update');
     }
