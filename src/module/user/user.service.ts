@@ -41,7 +41,8 @@ export class UserService {
         data: {
           email: dto.email,
           password: hashedPassword,
-          firstName: dto.fullName,
+          firstName: dto.firstName,
+          lastName: dto.lastName,
           phone: dto.phone,
           role: 'USER',
         },
@@ -97,7 +98,11 @@ export class UserService {
     // };
     const updateData = {
       ...dto,
-      firstName:dto.fullName,
+        ...(dto.email && { email: dto.email }),
+        ...(dto.phone && { phone: dto.phone }),
+        ...(dto.firstName && { firstName: dto.firstName }),
+        ...(dto.lastName && { firstName: dto.lastName }),
+
     };
     if (Object.keys(updateData).length === 0) {
       throw new BadRequestException('No valid fields provided for update');
@@ -118,7 +123,8 @@ export class UserService {
     const updateData = {
       ...(dto.email && { email: dto.email }),
       ...(dto.phone && { phone: dto.phone }),
-      ...(dto.fullName && { firstName: dto.fullName }),
+      ...(dto.firstName && { firstName: dto.firstName }),
+      ...(dto.lastName && { firstName: dto.lastName }),
     };
     // const updateData = {
     //   ...dto,

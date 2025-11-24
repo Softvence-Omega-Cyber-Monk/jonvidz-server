@@ -9,10 +9,15 @@ import { Match } from './match.decorator';
 //import { UserRole } from '@prisma/client';
 
 export class CreateUserDto {
-  @ApiProperty({ example: 'Sarah', description: 'Full name of the User' })
+  @ApiProperty({ example: 'Sarah', description: 'First name of the User' })
   @IsString()
   @IsNotEmpty()
-  fullName: string;
+  firstName: string;
+
+  @ApiProperty({ example: 'Sarah', description: 'Last name of the User' })
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
 
   @ApiProperty({ example: 'nurse.sarah@clinic.com', description: 'Staff member email address' })
   @IsEmail()

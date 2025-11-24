@@ -15,7 +15,13 @@ export class UpdateMyProfileDto {
   @ApiProperty({ example: 'Sarah', description: 'Full name of the User' })
   @IsString()
   @IsNotEmpty()
-  fullName: string;
+  firstName: string;
+
+
+  @ApiProperty({ example: 'Sarah', description: 'Full name of the User' })
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
 
   @ApiProperty({ example: '0190000', description: 'phone member (Optional)', required: false })
   @IsString()

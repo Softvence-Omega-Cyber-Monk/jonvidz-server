@@ -13,10 +13,15 @@ export class UpdateUserDto {
   @IsEmail()
   email?: string;
 
-  @ApiProperty({ example: 'Sarah', description: 'Full name of the User' })
+  @ApiProperty({ example: 'Sarah', description: 'First name of the User' })
   @IsString()
   @IsNotEmpty()
-  fullName: string;
+  firstName: string;
+
+  @ApiProperty({ example: 'Sarah', description: 'Last name of the User' })
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
 
   // @ApiProperty({ example: '0190000', description: 'phone member (Optional)', required: false })
   // @IsOptional()
