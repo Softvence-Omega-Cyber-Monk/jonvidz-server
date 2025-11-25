@@ -124,7 +124,7 @@ export class UserService {
       ...(dto.email && { email: dto.email }),
       ...(dto.phone && { phone: dto.phone }),
       ...(dto.firstName && { firstName: dto.firstName }),
-      ...(dto.lastName && { firstName: dto.lastName }),
+      ...(dto.lastName && { lastName: dto.lastName }),
     };
     // const updateData = {
     //   ...dto,
