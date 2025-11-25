@@ -17,7 +17,7 @@ export class MyPatientsService {
       return ;
     }
     const data = await this.prisma.patientCareAssignment.findMany({
-      where: { staffId: myStaffID.id },
+      where: { staffId: myStaffID.id,status:"ACTIVE" },
       include: { patient: true },
       orderBy: { createdAt: 'desc' },
     });
