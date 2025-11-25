@@ -48,7 +48,7 @@ export class AuditLogService {
   }
 
   // U - Update Operation
-  async update(id: string, updateAuditLogDto: UpdateAuditLogDto): Promise<AuditLog> {
+  async update(id: string, updateAuditLogDto: UpdateAuditLogDto) {
     try {
       return await this.prisma.auditLog.update({
         where: { id },

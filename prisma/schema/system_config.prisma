@@ -9,7 +9,7 @@ enum ChartingPeriodTYpe {
 
 model SystemConfig {
   /// Singleton primary key — we keep the default value 1 and use upsert to maintain one row.
-  id              String              @id @default(ulid())
+  id              String              @id @default(uuid())
   defaultTimezone String?
   retentionDays   Int?
   chartingPeriod  ChartingPeriodTYpe?

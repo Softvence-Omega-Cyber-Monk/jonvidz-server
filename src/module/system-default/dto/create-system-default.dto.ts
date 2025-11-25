@@ -6,15 +6,17 @@ export class CreateSystemDefaultDto {
     description: 'Default timezone for the system',
     example: 'Asia/Dhaka',
   })
-  defaultTimezone: string;
+  @IsOptional()
+  defaultTimezone?: string;
 
   @ApiPropertyOptional({
     description: 'Number of days to retain records',
     example: 30,
   })
-  retentionDays: number;
+  @IsOptional()
+  retentionDays?: number;
 
-  @ApiProperty({ example: 'MONTHLY', enum: ChartingPeriodTYpe })
+  @ApiProperty({ example: 'Monthly', enum: ChartingPeriodTYpe })
   @IsEnum(ChartingPeriodTYpe)
   @IsOptional()
   chartingPeriod?: ChartingPeriodTYpe;

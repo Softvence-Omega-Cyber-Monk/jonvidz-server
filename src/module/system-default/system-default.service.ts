@@ -7,8 +7,9 @@ import { PrismaService } from '../../prisma/prisma.service';
 export class SystemDefaultService {
   constructor(private prisma: PrismaService) {}
 
-  create(createSystemDefaultDto: CreateSystemDefaultDto) {
-    return 'This action adds a new systemDefault';
+  create(dto: CreateSystemDefaultDto) {
+
+    return this.prisma.systemConfig.create({data:dto})
   }
 
   async findAll() {
@@ -16,8 +17,11 @@ export class SystemDefaultService {
     return data;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} systemDefault`;
+  findOne(id: string) {
+    if(!id){
+      throw new NotFoundException(`id ${id} not found`);
+    }
+    return this.prisma.systemConfig.findUnique({where: {id}});
   }
 
   async update(id: string, dto: UpdateSystemDefaultDto) {
@@ -31,7 +35,10 @@ export class SystemDefaultService {
   }
 
   remove(id: string) {
-    return `This action removes a #${id} systemDefault`;
+    if(!id){
+      throw new NotFoundException(`id ${id} not found`);
+    }
+    return this.prisma.systemConfig.delete({where: {id}});
   }
 }
 /*

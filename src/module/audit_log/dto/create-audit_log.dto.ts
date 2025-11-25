@@ -20,11 +20,11 @@ export class CreateAuditLogDto {
   @IsEnum(AuditEventType)
   eventType: AuditEventType;
 
-  @ApiProperty({
-    description: 'Optional ID of the patient involved in the event.',
-    example: 'PAT-004',
-    required: false,
-  })
+  // @ApiProperty({
+  //   description: 'Optional ID of the patient involved in the event.',
+  //   example: 'PAT-004',
+  //   required: false,
+  // })
   @IsOptional()
   @IsString()
   patientId?: string;
