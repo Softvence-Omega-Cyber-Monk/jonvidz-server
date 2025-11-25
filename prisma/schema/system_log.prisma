@@ -1,0 +1,15 @@
+enum SystemActionType {
+  UPDATE_CONFIG
+  CREATE_CONFIG
+  RESET
+}
+
+model SystemLog {
+  id        String           @id @default(uuid())
+  action    SystemActionType
+  actorId   String?
+  changes   Json?
+  createdAt DateTime         @default(now())
+
+  @@map("system_log")
+}

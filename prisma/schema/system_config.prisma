@@ -1,0 +1,21 @@
+// Monthly
+enum ChartingPeriodTYpe {
+  Daily
+  Weekly
+  Bi_Weekly
+  Monthly
+  Quarterly
+}
+
+model SystemConfig {
+  /// Singleton primary key — we keep the default value 1 and use upsert to maintain one row.
+  id              String              @id @default(ulid())
+  defaultTimezone String?
+  retentionDays   Int?
+  chartingPeriod  ChartingPeriodTYpe?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("system_config")
+}

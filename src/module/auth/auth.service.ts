@@ -100,7 +100,7 @@ export class AuthService {
         data: {
           userId: user.id,
           medicalRecordNo: finalMrn,
-          dob: new Date(dto.dob),
+          dob: (dto.dob),
           gender: dto.gender,
           allergies: dto.allergies,
           room: dto.room,

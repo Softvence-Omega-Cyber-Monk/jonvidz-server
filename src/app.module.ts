@@ -24,6 +24,7 @@ import { ShiftCheckListModule } from './module/shift-check-list/shift-check-list
 import { AssignMedicationModule } from './module/assign-medication/assign-medication.module';
 import { AssignEquipmentModule } from './module/assign-equipment/assign-equipment.module';
 import { ListEquipmentModule } from './module/list-equipment/list-equipment.module';
+import { SystemDefaultModule } from './module/system-default/system-default.module';
 
 
 @Module({
@@ -52,6 +53,7 @@ import { ListEquipmentModule } from './module/list-equipment/list-equipment.modu
       AssignMedicationModule,
       AssignEquipmentModule,
       ListEquipmentModule,
+      SystemDefaultModule,
    
   ],
   controllers: [AppController],

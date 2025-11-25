@@ -1,7 +1,7 @@
 model Patient {
-  id              String   @id @default(uuid())
-  medicalRecordNo String   @unique
-  dob             DateTime
+  id              String  @id @default(uuid())
+  medicalRecordNo String  @unique
+  dob             String?
   gender          String?
   allergies       String?
 

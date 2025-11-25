@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "patients" ALTER COLUMN "dob" DROP NOT NULL,
+ALTER COLUMN "dob" SET DATA TYPE TEXT;

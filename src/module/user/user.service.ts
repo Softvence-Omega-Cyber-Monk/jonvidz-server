@@ -141,14 +141,14 @@ export class UserService {
   }
 
   async remove(id: string) {
-    console.log("id----------------->",id)
+    //console.log("id----------------->",id)
     if (!id) {
       throw new BadRequestException('ID is required');
     }
     const isExists = await this.prisma.user.findUnique({
       where: { id }
     });
-    console.log("isExists--------->",isExists);
+    //console.log("isExists--------->",isExists);
     if (!isExists) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
