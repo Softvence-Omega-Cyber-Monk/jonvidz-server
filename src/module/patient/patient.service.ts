@@ -106,7 +106,7 @@ export class PatientService {
         });
 
         if (!patientWithUser || !patientWithUser.user) {
-          throw new NotFoundException(`Staff with ID "${id}" not found or has no user.`);
+          throw new NotFoundException(`Patient with ID "${id}" not found or has no user.`);
         }
 
         const currentHash = patientWithUser.user.password;
@@ -144,13 +144,13 @@ export class PatientService {
       return {
         statusCode: 200,
         success: true,
-        message: 'Staff updated successfully.',
+        message: 'Patient updated successfully.',
         data: updated,
       };
     } catch (error: any) {
       // prisma: record not found when updating
       if (error?.code === 'P2025') {
-        throw new NotFoundException(`Staff with ID "${id}" not found.`);
+        throw new NotFoundException(`Patient with ID "${id}" not found.`);
       }
       // rethrow other known Nest exceptions
       if (error instanceof BadRequestException || error instanceof NotFoundException || error instanceof ConflictException) {
