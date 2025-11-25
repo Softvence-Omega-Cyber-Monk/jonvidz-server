@@ -72,14 +72,14 @@ export class UserService {
   }
   @UseGuards(JwtAuthGuard, RolesGuard)
   async findOne(id: string) {
-    const isUser=await this.prisma.staff.findUnique({ where: { id: id } });
+    const isUser=await this.prisma.user.findUnique({ where: { id: id } });
     if (!isUser) {
       throw new NotFoundException('User with this ID Not exists.');
     }
-    return this.prisma.staff.findUnique({
+    return this.prisma.user.findUnique({
       where: { id },
       include: {
-        user: { select: safeUserSelect },
+        staff: true,
       },
     });
   }
@@ -141,16 +141,18 @@ export class UserService {
   }
 
   async remove(id: string) {
+    console.log("id----------------->",id)
     if (!id) {
       throw new BadRequestException('ID is required');
     }
     const isExists = await this.prisma.user.findUnique({
       where: { id }
     });
+    console.log("isExists--------->",isExists);
     if (!isExists) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-    return this.prisma.user.delete({where: { id }});
+    return this.prisma.user.delete({where: { id:id }});
   }
   async activeStaffAndTotalUser() {
     const data = await this.prisma.staff.findMany({

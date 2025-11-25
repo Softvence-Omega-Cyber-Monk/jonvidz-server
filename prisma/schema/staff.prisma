@@ -5,7 +5,7 @@ model Staff {
   licenseNumber String? @unique
 
   userId String @unique
-  user   User   @relation(fields: [userId], references: [id]) // Staff user
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade) // Staff user
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
