@@ -29,14 +29,6 @@ export class UpdateOffVentMonitoringDto {
   @IsOptional()
   rr_bpm?: number;
 
-  @ApiProperty({ required: false, description: 'Start time' })
-  @IsOptional()
-  startTime?: Date;
-
-  @ApiProperty({ required: false, description: 'End time' })
-  @IsOptional()
-  endTime?: Date;
-
 }
 
 // Measured Data Update DTO
@@ -131,7 +123,7 @@ export class UpdateVentSettingDto {
 
   @ApiProperty({ required: false, description: 'I:E ratio' })
   @IsOptional()
-  ieRatio?: string;
+  ieRatio?: number;
 
   @ApiProperty({ required: false, description: 'Rise time' })
   @IsOptional()
@@ -197,7 +189,7 @@ export class UpdateFlowSheetDto {
   @IsString()
   signature?: string;
 
-  @ApiProperty({ required: false, description: 'User ID' })
+  //@ApiProperty({ required: false, description: 'User ID' })
   @IsOptional()
   @IsString()
   userId?: string;
