@@ -58,6 +58,21 @@ export class UserController {
     });
   }
 
+  // STATIC route first
+  @UseGuards(JwtAuthGuard)
+  @Get('get-me')
+  @ApiOperation({ summary: 'GetME Retrieve successfully.' })
+  getMe(@Req() req: any, @Res() res: Response) {
+    const user = req.user;
+    const { password, ...safeUser } = user;
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'GetME Retrieve successfully.',
+      data: safeUser,
+    });
+  }
+
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':id')
   @ApiOperation({ summary: 'Retrieve User by ID' })
@@ -73,6 +88,8 @@ export class UserController {
       data,
     });
   }
+
+
   @ApiOperation({ summary: 'Allows only ADMIN to update a user’s role or status' })
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)

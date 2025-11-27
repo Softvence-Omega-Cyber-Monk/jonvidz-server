@@ -84,7 +84,19 @@ export class UserService {
     });
   }
 
-
+  async getMe(id: string) {
+    const isUser=await this.prisma.user.findUnique({ where: { id: id } });
+    if (!isUser) {
+      throw new NotFoundException('User with this ID Not existsssssssssssss.');
+    }
+    return this.prisma.user.findUnique({
+      where: { id },
+      include: {
+        staff: true,
+        patient: true,
+      },
+    });
+  }
   @UseGuards(JwtAuthGuard, RolesGuard)
   async update(id: string, dto: UpdateUserDto) {
     // check if user exists

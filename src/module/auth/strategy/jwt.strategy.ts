@@ -1,9 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
-import {jwtConstants} from '../../../common/jwt.constants';
+import { jwtConstants } from '../../../common/jwt.constants';
 import { PrismaService } from '../../../prisma/prisma.service';
-
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -15,25 +14,17 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  // payload is what you signed inside AuthService (sub, email, role)
   async validate(payload: any) {
-    // Optionally validate that user still exists / is active
+    //console.log("payload----->", payload);
     const user = await this.prisma.user.findUnique({
       where: { id: payload.sub },
-      select: {
-        id: true,
-        email: true,
-        firstName: true,
-        lastName: true,
-        role: true,
-        // any other fields you want in request.user
-      },
+      include:{staff:true,patient:true}
     });
-    if (!user) {
-      return null; // fail auth
+    console.log("user found", user);
+    if (!user?.id) {
+      throw new NotFoundException('User with this ID does not exist.');
     }
 
-    // attach user to request (req.user), used by Guards/Controllers
-    return user;
+    return user; // this becomes req.user in your controllers
   }
 }
