@@ -16,7 +16,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/guards/roles.decorator';
 import { UserRole } from '@prisma/client';
-import { RequestWithUser } from './dto/request-with-user.interface';
+import { GetMe, RequestWithUser } from './dto/request-with-user.interface';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Request, Response } from 'express';
 import sendResponse from '../../utils/sendResponse';
@@ -62,7 +62,7 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @Get('get-me')
   @ApiOperation({ summary: 'GetME Retrieve successfully.' })
-  getMe(@Req() req: any, @Res() res: Response) {
+  getMe(@Req() req: GetMe, @Res() res: Response) {
     const user = req.user;
     const { password, ...safeUser } = user;
     return sendResponse(res, {

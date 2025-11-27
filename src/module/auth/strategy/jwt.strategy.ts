@@ -17,10 +17,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: any) {
     //console.log("payload----->", payload);
     const user = await this.prisma.user.findUnique({
-      where: { id: payload.sub },
+      where: { id: payload?.sub },
       include:{staff:true,patient:true}
     });
-    console.log("user found", user);
+    //console.log("user found", user);
     if (!user?.id) {
       throw new NotFoundException('User with this ID does not exist.');
     }
