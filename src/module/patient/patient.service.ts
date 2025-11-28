@@ -80,6 +80,7 @@ export class PatientService {
       if (dto.allergies !== undefined) patientFields.allergies = dto.allergies;
       if (dto.dob !== undefined) patientFields.dob = dto.dob;
       if (dto.gender !== undefined) patientFields.gender = dto.gender;
+      if (dto.room !== undefined) patientFields.room = dto.room;
       // add other staff-level fields similarly...
 
       // 2) prepare user-level updates

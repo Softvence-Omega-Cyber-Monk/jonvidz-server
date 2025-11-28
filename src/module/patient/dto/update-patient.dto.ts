@@ -55,6 +55,11 @@ export class UpdatePatientDto {
   @IsString()
   @IsOptional()
   gender?: string;
+  @ApiProperty({ example: 'room', description: '10A', required: false })
+  @IsString()
+  @IsOptional()
+  room?: string;
+
 
   @ApiPropertyOptional({
     description: 'Partial user object to update nested user fields',
