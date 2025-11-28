@@ -9,7 +9,7 @@ model Patient {
   primaryDoctor   Staff?  @relation("PrimaryDoctor", fields: [primaryDoctorId], references: [id], onDelete: Cascade)
 
   userId String? @unique
-  user   User?   @relation(fields: [userId], references: [id]) // Patient user
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade) // Patient user
 
   // roomId String?
   // room   Room?   @relation(fields: [roomId], references: [id])
