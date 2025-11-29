@@ -25,7 +25,7 @@ import { AssignMedicationModule } from './module/assign-medication/assign-medica
 import { AssignEquipmentModule } from './module/assign-equipment/assign-equipment.module';
 import { ListEquipmentModule } from './module/list-equipment/list-equipment.module';
 import { SystemDefaultModule } from './module/system-default/system-default.module';
-
+import { SeederService } from './seeder/seeder.service';
 
 @Module({
   imports: [
@@ -57,6 +57,6 @@ import { SystemDefaultModule } from './module/system-default/system-default.modu
    
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,SeederService],
 })
 export class AppModule {}
