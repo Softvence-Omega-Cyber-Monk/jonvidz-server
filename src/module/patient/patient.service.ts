@@ -57,16 +57,38 @@ export class PatientService {
         measured_data: true,
         alarms_parameters: true,
         off_vent_monitoring: true,
-        mar: true,
+        // mar: true,
         suction_log: true,
         pre_suction_vitals: true,
         secretions_description: true,
         post_suction_vitals: true,
         progress_notes: true,
         shift_check_list: true,
-        listOfEquipment: true,
+        //listOfEquipment: true,
         standardVitalRange: true,
         audit_log: true,
+        mar: {
+          include: {
+            patientCareAssignment: true,
+            user: true,
+            listOfMadications: {
+              include: {
+                medication: true,  // Include medication details
+              },
+            },
+          },
+        },
+        listOfEquipment: {
+          include: {
+            patientCareAssignment: true,
+            //user: true,
+            // assignEquipment: {
+            //   include: { equipment: true },
+            //   orderBy: { createdAt: 'desc' },
+            // },
+          },
+          orderBy: { createdAt: 'desc' },
+        },
       },
     });
 
