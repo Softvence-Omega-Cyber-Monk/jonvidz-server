@@ -35,10 +35,15 @@ export class PatientService {
   }
 
   async findOne(id: string) {
-    const data = await this.prisma.patient.findUnique({where: { id },include: {
-        patientCareAssignments: true, // <- returns full objects (all columns on that model)
+    const data = await this.prisma.patient.findUnique({
+      where: { id },
+      include: {
+        user: true,                  // Patient user
+        primaryDoctor: true,         // Primary doctor
+        Room: true,                  // Room
+        patientCareAssignments: true,
         flow_sheet: {
-          orderBy: { createdAt: 'desc' }, // newest first
+          orderBy: { createdAt: 'desc' },
           include: {
             off_vent_monitoring: true,
             measured_data: true,
@@ -47,10 +52,27 @@ export class PatientService {
             vital_parameters: true,
           },
         },
+        vital_parameters: true,
+        vent_setting: true,
+        measured_data: true,
+        alarms_parameters: true,
+        off_vent_monitoring: true,
+        mar: true,
+        suction_log: true,
+        pre_suction_vitals: true,
+        secretions_description: true,
+        post_suction_vitals: true,
+        progress_notes: true,
+        shift_check_list: true,
+        listOfEquipment: true,
+        standardVitalRange: true,
+        audit_log: true,
       },
     });
+
     return data;
   }
+
   async totalPatient() {
     const data = await this.prisma.patient.findMany();
     return data;
