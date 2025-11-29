@@ -5,8 +5,8 @@ enum NoteType {
 }
 
 model ProgressNotes {
-  id       String    @id @default(uuid())
-  noteType NoteType?
+  id       String   @id @default(uuid())
+  noteType String?
   checked  Boolean?
 
   comments  String? @db.Text
