@@ -38,7 +38,8 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           port: 22
           script: |
-            cd ~/jonvidz-server
+            # Go to the folder where your docker-compose.yml exists
+            cd ~/server
 
             echo "Pulling latest Docker image..."
             docker pull ${{ secrets.DOCKER_USERNAME }}/jonvidz-server:latest
@@ -49,7 +50,7 @@ jobs:
             echo "Cleaning dangling resources..."
             docker system prune -f
 
-            echo "Starting containers using docker-compose..."
+            echo "Starting containers using docker compose..."
             docker compose up -d --build
 
             echo "Deployment completed!"
