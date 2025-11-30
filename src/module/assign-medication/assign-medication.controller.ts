@@ -32,22 +32,46 @@ export class AssignMedicationController {
   }
 
   @Get()
-  findAll() {
-    return this.assignMedicationService.findAll();
+  async findAll(@Res() res: Response) {
+    const data= await this.assignMedicationService.findAll();
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'assign medication retrieve successfully.',
+      data,
+    });
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.assignMedicationService.findOne(+id);
+  async findOne(@Param('id') id: string, @Res() res: Response) {
+    const data = await this.assignMedicationService.findOne(id);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'assign medication retrieve successfully.',
+      data,
+    });
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAssignMedicationDto: UpdateAssignMedicationDto) {
-    return this.assignMedicationService.update(+id, updateAssignMedicationDto);
+  async update(@Param('id') id: string, @Body() updateAssignMedicationDto: UpdateAssignMedicationDto, @Res() res: Response) {
+    const data = await this.assignMedicationService.update(id, updateAssignMedicationDto);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'assign medication updated successfully.',
+      data,
+    });
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.assignMedicationService.remove(+id);
+  async remove(@Param('id') id: string, @Res() res: Response) {
+    const data = await this.assignMedicationService.remove(id);
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'assign medication deleted successfully.',
+      data,
+    });
   }
 }

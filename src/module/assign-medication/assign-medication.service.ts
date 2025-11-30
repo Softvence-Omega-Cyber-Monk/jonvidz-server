@@ -6,6 +6,7 @@ import {
 import { CreateAssignMedicationDto } from './dto/create-assign-medication.dto';
 import { UpdateAssignMedicationDto } from './dto/update-assign-medication.dto';
 import { PrismaService } from '../../prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class AssignMedicationService {
@@ -23,18 +24,51 @@ export class AssignMedicationService {
   }
 
   findAll() {
-    return `This action returns all assignMedication`;
+    return this.prisma.patientCareAssignment.findMany({include:{patient:true,staff:true}});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} assignMedication`;
+  async findOne(id: string) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const exists = await this.prisma.patientCareAssignment.findUnique({
+      where: { id },
+    });
+
+    if (!exists) {
+      throw new NotFoundException(`Assignment ID ${id} not found`);
+    }
+    return this.prisma.patientCareAssignment.findUnique({where:{id:id},include:{patient:true,staff:true}});
   }
 
-  update(id: number, updateAssignMedicationDto: UpdateAssignMedicationDto) {
-    return `This action updates a #${id} assignMedication`;
+  async update(id: string, dto: UpdateAssignMedicationDto) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const exists = await this.prisma.patientCareAssignment.findUnique({
+      where: { id },
+    });
+
+    if (!exists) {
+      throw new NotFoundException(`Assignment ID ${id} not found`);
+    }
+    return this.prisma.patientCareAssignment.update({
+      where: { id },
+      data: dto as unknown as Prisma.PatientCareAssignmentUncheckedUpdateInput,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} assignMedication`;
+  async remove(id: string) {
+    if (!id) {
+      throw new BadRequestException('ID is required');
+    }
+    const exists = await this.prisma.patientCareAssignment.findUnique({
+      where: { id },
+    });
+
+    if (!exists) {
+      throw new NotFoundException(`Assignment ID ${id} not found`);
+    }
+    return this.prisma.patientCareAssignment.delete({where:{id:id}});
   }
 }
