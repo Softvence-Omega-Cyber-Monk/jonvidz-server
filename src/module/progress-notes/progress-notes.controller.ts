@@ -71,7 +71,7 @@ export class ProgressNotesController {
     return sendResponse(res, {
       statusCode: HttpStatus.OK,
       success: true,
-      message: 'Progress Notes  successfully.',
+      message: 'Progress Notes updated successfully.',
       data,
     });
   }
