@@ -10,6 +10,9 @@ export class CreateProgressNoteDto {
   @ApiPropertyOptional({ type: String })
   comments?: string;
 
+  @ApiPropertyOptional({ type: String, description: "ISO datetime string (optional). If not provided, backend will auto-set." })
+  dateTime?: string;
+
   @ApiPropertyOptional({ type: String })
   signature?: string;
 

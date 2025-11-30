@@ -26,7 +26,7 @@ export class UpdateMyProfileDto {
   @IsOptional()
   phone?: string;
 
-  @ApiPropertyOptional({ description: 'address', example: 'dhaka,Bangladesh' })
+  @ApiPropertyOptional({ description: 'address', example: 'dhaka,Bangladesh' ,required: false})
   @IsOptional()
   @IsString()
   emergencyName?: string;
@@ -34,6 +34,7 @@ export class UpdateMyProfileDto {
   @ApiPropertyOptional({
     description: 'Contact number',
     example: '+8801XXXXXXXXX',
+    required: false
   })
   @IsOptional()
   @IsString()

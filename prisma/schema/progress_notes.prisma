@@ -5,12 +5,12 @@ enum NoteType {
 }
 
 model ProgressNotes {
-  id       String   @id @default(uuid())
-  noteType String?
-  checked  Boolean?
-
-  comments  String? @db.Text
-  signature String? @db.Text
+  id        String   @id @default(uuid())
+  noteType  String?
+  checked   Boolean?
+  dateTime  DateTime @default(now())
+  comments  String?  @db.Text
+  signature String?  @db.Text
 
   patientCareAssignmentId String                @unique
   patientCareAssignment   PatientCareAssignment @relation(fields: [patientCareAssignmentId], references: [id], onDelete: Cascade)
