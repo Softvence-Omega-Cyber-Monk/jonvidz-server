@@ -4,6 +4,8 @@ export const safeUserSelect = {
   firstName: true,
   lastName: true,
   phone: true,
+  emergencyNumber:true,
+  emergencyName: true,
   profileImage: true,
   role: true,
   status: true,
