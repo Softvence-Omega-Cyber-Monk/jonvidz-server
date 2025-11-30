@@ -38,7 +38,23 @@ export class PatientService {
     const data = await this.prisma.patient.findUnique({
       where: { id },
       include: {
-        user: true,                  // Patient user
+        user: {
+          select: {
+            id: true,
+            email: true,
+            firstName: true,
+            lastName: true,
+            phone: true,
+            profileImage: true,
+            signature: true,
+            role: true,
+            status: true,
+            lastLogin: true,
+            createdAt: true,
+            updatedAt: true,
+            // password excluded!
+          }
+        },                  // Patient user
         primaryDoctor: true,         // Primary doctor
         Room: true,                  // Room
         patientCareAssignments: true,
