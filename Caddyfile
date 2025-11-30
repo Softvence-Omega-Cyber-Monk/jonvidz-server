@@ -1,0 +1,10 @@
+vidamosrs.com {
+    root * /usr/share/caddy
+    try_files {path} /index.html
+    file_server
+}
+
+
+api.vidamosrs.com {
+    reverse_proxy app:5000
+}
