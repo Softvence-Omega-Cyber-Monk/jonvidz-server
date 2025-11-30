@@ -10,7 +10,7 @@ async function bootstrap() {
   });
 
   app.enableCors({
-    origin: ['http://localhost:5173','https://jonvidz.vercel.app','*'],
+    origin: ['http://localhost:5173','https://jonvidz.vercel.app','https://vidamosrs.com','*'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
