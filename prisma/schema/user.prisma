@@ -23,6 +23,8 @@ model User {
   firstName       String
   lastName        String?
   phone           String?
+  emergencyNumber String?
+  emergencyName   String?
   profileImage    String?
   signature       String?
   role            UserRole          @default(USER)

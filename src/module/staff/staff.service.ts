@@ -59,6 +59,8 @@ export class StaffService {
         if (dto.user.lastName !== undefined) userUpdate.lastName = dto.user.lastName;
         if (dto.user.phone !== undefined) userUpdate.phone = dto.user.phone;
         if (dto.user.profileImage !== undefined) userUpdate.profileImage = dto.user.profileImage;
+        if (dto.user.emergencyName !== undefined) userUpdate.emergencyName = dto.user.emergencyName;
+        if (dto.user.emergencyNumber !== undefined) userUpdate.emergencyNumber = dto.user.emergencyNumber;
         // add other safe user fields similarly...
       }
 

@@ -5,7 +5,7 @@ import {
   IsNotEmpty,
   IsEnum,
 } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { UserRole ,UserStatus} from '@prisma/client';
 export class UpdateUserDto {
   @ApiProperty({ example: 'user@Gmail.com', description: 'user email address' })
@@ -32,6 +32,16 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   phone?: string;
+
+  @ApiPropertyOptional({ description: 'address', example: 'dhaka,Bangladesh' })
+  @IsOptional()
+  @IsString()
+  emergencyName?: string;
+
+  @ApiPropertyOptional({ description: 'Contact number', example: '+8801XXXXXXXXX' })
+  @IsOptional()
+  @IsString()
+  emergencyNumber?: string;
 
   @ApiProperty({ example: UserRole.DOCTOR, description: 'Role of the staff member', enum: UserRole })
   @IsEnum(UserRole)

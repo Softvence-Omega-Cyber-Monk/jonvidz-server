@@ -23,6 +23,16 @@ export class UpdateUserPartialDto {
   @IsString()
   phone?: string;
 
+  @ApiPropertyOptional({ description: 'address', example: 'dhaka,Bangladesh' })
+  @IsOptional()
+  @IsString()
+  emergencyName?: string;
+
+  @ApiPropertyOptional({ description: 'Contact number', example: '+8801XXXXXXXXX' })
+  @IsOptional()
+  @IsString()
+  emergencyNumber?: string;
+
   //@ApiPropertyOptional({ description: 'Profile image URL', example: 'https://...' })
   @IsOptional()
   @IsString()
