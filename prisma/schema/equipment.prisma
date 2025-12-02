@@ -1,7 +1,7 @@
 enum EquipmentFrequency {
   QDAY
   QWEEK
-  QBI_WEEK
+  BI_WEEKLY
   QMONTH
   THREEMOS
   SIXTYMOS
