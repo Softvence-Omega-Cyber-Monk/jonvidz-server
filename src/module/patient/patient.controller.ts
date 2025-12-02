@@ -41,6 +41,19 @@ export class PatientController {
       data,
     });
   }
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.DOCTOR,UserRole.ADMIN,UserRole.NURSE,UserRole.RECEPTIONIST,UserRole.MODERATOR)
+  @Get('no-assignment-patients')
+  @ApiOperation({ summary: 'Retrieve all Unassigned patients who are currently not assigned to any staff' })
+  async noAssignmentPatients(@Req() req: Request, @Res() res: Response) {
+    const data = await this.patientService.noAssignmentPatients();
+    return sendResponse(res, {
+      statusCode: HttpStatus.OK,
+      success: true,
+      message: 'Unassigned patients retrieved successfully.',
+      data,
+    });
+  }
   @Get('total-patients')
   @ApiOperation({ summary: 'Retrieve total patients' })
   async totalPatient(@Req() req: Request, @Res() res: Response) {

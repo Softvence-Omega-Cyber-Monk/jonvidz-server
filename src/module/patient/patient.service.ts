@@ -110,7 +110,19 @@ export class PatientService {
 
     return data;
   }
-
+  async noAssignmentPatients() {
+    const data = await this.prisma.patient.findMany({
+      where: {
+        patientCareAssignments: {
+          none: { status: 'ACTIVE' },
+        },
+      },
+      include: {
+        user: { select: safeUserSelect },
+      },
+    });
+    return data;
+  }
   async totalPatient() {
     const data = await this.prisma.patient.findMany();
     return data;

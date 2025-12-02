@@ -10,13 +10,13 @@ export class MedicationService {
   constructor(private prisma: PrismaService) {}
 
   async create(createMedicationDto: CreateMedicationDto): Promise<Medication> {
-    const isRouteExist = await this.prisma.medication.findFirst({
-      where: { route: createMedicationDto.route },
-    });
-
-    if (isRouteExist) {
-      throw new BadRequestException('Medication route already exists');
-    }
+    // const isRouteExist = await this.prisma.medication.findFirst({
+    //   where: { route: createMedicationDto.route },
+    // });
+    //
+    // if (isRouteExist) {
+    //   throw new BadRequestException('Medication route already exists');
+    // }
 
     return this.prisma.medication.create({
       data: createMedicationDto,

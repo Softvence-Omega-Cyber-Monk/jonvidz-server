@@ -33,10 +33,10 @@ model MAR {
 model ListOfMadications {
   id String @id @default(uuid())
 
-  marId        String
+  marId        String?
   medicationId String?
 
-  mar        MAR         @relation(fields: [marId], references: [id], onDelete: Cascade)
+  mar        MAR?        @relation(fields: [marId], references: [id], onDelete: Cascade)
   medication Medication? @relation(fields: [medicationId], references: [id], onDelete: Cascade)
 
   time_of_record String?
