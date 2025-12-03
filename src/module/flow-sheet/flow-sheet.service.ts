@@ -2,7 +2,42 @@ import { Injectable, NotFoundException, BadRequestException,ConflictException,In
 import { CreateFlowSheetDto } from './dto/create-flow-sheet.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import { Response } from 'express';
+import { Prisma,TrachSize } from '@prisma/client';
+const TrachSizeMap: Record<string, TrachSize> = {
+  "3.0": TrachSize.TrachSize_3_0,
+  "3.5": TrachSize.TrachSize_3_5,
+  "4.0": TrachSize.TrachSize_4_0,
+  "4.5": TrachSize.TrachSize_4_5,
+  "5.0": TrachSize.TrachSize_5_0,
+  "5.5": TrachSize.TrachSize_5_5,
+  "6.0": TrachSize.TrachSize_6_0,
+  "6.5": TrachSize.TrachSize_6_5,
+  "7.0": TrachSize.TrachSize_7_0,
+  "7.5": TrachSize.TrachSize_7_5,
+  "8.0": TrachSize.TrachSize_8_0,
+  "8.5": TrachSize.TrachSize_8_5,
+  "9.0": TrachSize.TrachSize_9_0,
+};
+const mapVitalParameters = (data: any): Prisma.VitalParametersUncheckedCreateInput => {
+  // transformedData is initialized as a plain object, so direct property access is safe.
+  const transformedData: any = { ...data };
 
+  // --- ENUM TRANSFORMATION ---
+
+  // FIX: Remove ?. on the left-hand side (transformedData)
+  if (data?.trachSize && TrachSizeMap[data?.trachSize]) {
+    transformedData.trachSize = TrachSizeMap[data?.trachSize]; // Removed ?.
+  }
+  // FIX: Remove ?. on the left-hand side (transformedData)
+  else if (data?.trachSize === null) {
+    transformedData.trachSize = null; // Removed ?.
+  }
+
+  // NOTE: I recommend adding transformations for ventMode and trachType here as well
+  // if they are coming in as strings, to prevent future validation errors.
+
+  return transformedData;
+};
 @Injectable()
 export class FlowSheetService {
   constructor(private prisma: PrismaService) {}
@@ -162,18 +197,32 @@ export class FlowSheetService {
         });
       }
 
+      // if (vital_parameters) {
+      //   await prisma.vitalParameters.upsert({
+      //     where: { flowSheetId: id },
+      //     update: vital_parameters,
+      //     create: {
+      //       ...vital_parameters,
+      //       trachSize:vital_parameters.trachSize,
+      //       flowSheetId: id,
+      //       patientId: existingFlowSheet.patientId,
+      //     }
+      //   });
+      // }
       if (vital_parameters) {
+        // 1. TRANSFORM the incoming DTO object
+        const transformedVitalParams = mapVitalParameters(vital_parameters);
+
         await prisma.vitalParameters.upsert({
           where: { flowSheetId: id },
-          update: vital_parameters,
+          update: transformedVitalParams, // <-- USE TRANSFORMED OBJECT
           create: {
-            ...vital_parameters,
+            ...transformedVitalParams, // <-- USE TRANSFORMED OBJECT
             flowSheetId: id,
             patientId: existingFlowSheet.patientId,
           }
         });
       }
-
       // Return the updated flow sheet with all relations
       return prisma.flowSheet.findUnique({
         where: { id },
