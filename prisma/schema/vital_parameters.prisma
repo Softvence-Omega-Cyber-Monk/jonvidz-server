@@ -20,22 +20,6 @@ enum TrachType {
   Cuffless
 }
 
-enum TrachSize {
-  TrachSize_3_0 @map("3.0")
-  TrachSize_3_5 @map("3.5")
-  TrachSize_4_0 @map("4.0")
-  TrachSize_4_5 @map("4.5")
-  TrachSize_5_0 @map("5.0")
-  TrachSize_5_5 @map("5.5")
-  TrachSize_6_0 @map("6.0")
-  TrachSize_6_5 @map("6.5")
-  TrachSize_7_0 @map("7.0")
-  TrachSize_7_5 @map("7.5")
-  TrachSize_8_0 @map("8.0")
-  TrachSize_8_5 @map("8.5")
-  TrachSize_9_0 @map("9.0")
-}
-
 model VitalParameters {
   id String @id @default(uuid())
 
@@ -43,9 +27,9 @@ model VitalParameters {
   rrBPM   Int?
   spO2Pct Decimal? @db.Decimal(5, 2)
 
-  ventMode  VentMode   @default(AC_VC)
-  trachType TrachType  @default(Cuffed)
-  trachSize TrachSize? @default(TrachSize_3_0)
+  ventMode  VentMode  @default(AC_VC)
+  trachType TrachType @default(Cuffed)
+  trachSize String?
 
   flowSheetId String    @unique
   FlowSheet   FlowSheet @relation(fields: [flowSheetId], references: [id], onDelete: Cascade)
